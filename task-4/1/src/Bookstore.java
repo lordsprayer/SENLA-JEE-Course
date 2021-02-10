@@ -16,7 +16,6 @@ import com.senla.courses.service.RequestService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -36,41 +35,82 @@ public class Bookstore {
         //System.out.println(bookDao.getById(1L));
         bookDao.save(book2);
         bookService.cancelBook(book2);
-        Order order = orderService.createOrder(book1, book2);
+        List <Book> books = new ArrayList<>();
+        books.add(book1);
+        books.add(book2);
+        Order order = orderService.createOrder(books, LocalDate.of(2020, 1, 21));
         //System.out.println(order);
         //System.out.println(requestDao.getById(1L));
-        orderService.cancelOrder(order);
+        //orderService.cancelOrder(order);
         Date date = new Date();
         Request request = new Request(book2, date);
         requestDao.save(request);
         //System.out.println(request);
-        Order order1 = orderService.createOrder(book1, book2);
+        Order order1 = orderService.createOrder(books, LocalDate.of(2020, 1, 21));
         orderService.changeStatus(order1, Order.Status.COMPLETED);
-        bookService.addBook(book2);
+        //bookService.addBook(book2);
         //System.out.println(order1);
         //System.out.println(request);
         Book book3 = new Book ("Бессмертный","Кэтрин Валенте",  2018,12.3, LocalDate.of(2020, 7, 28),true);
         bookDao.save(book3);
-        List<Book> bookList = new ArrayList<Book>();
-        bookList.addAll(bookDao.getAll());
+        books.add(book3);
+        Order order3 = orderService.createOrder(books, LocalDate.of(2020, 1, 21));
+        List<Book> bookList = new ArrayList<Book>(bookDao.getAll());
         System.out.println("Без сортировки:\n");
 
         for(Book book : bookList){
             System.out.println(book);
         }
-
-        Collections.sort(bookList, Book.NameComparator);
+        //сортировка книг по названию
+        bookList.sort(Book.NameComparator);
         System.out.println("Сортировка по названию книги:\n");
+        for(Book book : bookList){
+            System.out.println(book);
+        }
+        //сортировка книг по году издания
+        bookList.sort(Book.PublicationComparator);
+        System.out.println("Сортировка по году издания книги:\n");
+        for(Book book : bookList){
+            System.out.println(book);
+        }
+        System.out.println();
+        //сортировка книг по стоимости
+        bookList.sort(Book.CostComparator);
+        for(Book book : bookList){
+            System.out.println(book);
+        }
+        //сортировка книг по наличию (сначала книги в наличии)
+        bookList.sort(Book.AvailabilityComparator);
+        System.out.println("Сортировка по наличию книги:\n");
 
         for(Book book : bookList){
             System.out.println(book);
         }
-
-        Collections.sort(bookList, Book.CostComparator);
-        System.out.println("Сортировка по стоимости:\n");
-
-        for(Book book : bookList){
-            System.out.println(book);
+        //сортировка заказов по дате выполнения
+        List<Order> orders = new ArrayList<>(orderDao.getAll());
+        orders.sort(Order.DateComparator);
+        for(Order ord : orders){
+                System.out.println(ord);
+        }
+        //сортировка заказов по стоимости
+        //List<Order> orders = new ArrayList<>();
+        //orders.addAll(orderDao.getAll());
+        orders.sort(Order.TotalCostComparator);
+        for(Order ord : orders){
+            System.out.println(ord);
+        }
+        //сортировка запросов по названию книги
+        List<Request> requests = new ArrayList<>(requestDao.getAll());
+        requests.sort(Request.NameComparator);
+        requests.forEach(System.out::println);
+        //сортировка выполненных заказов по дате выполнения
+        //List<Order> orders = new ArrayList<>();
+        //orders.addAll(orderDao.getAll());
+        orders.sort(Order.DateComparator);
+        for(Order ord : orders){
+            if(ord.getStatus() == Order.Status.COMPLETED){
+                System.out.println(ord);
+            }
         }
 
 

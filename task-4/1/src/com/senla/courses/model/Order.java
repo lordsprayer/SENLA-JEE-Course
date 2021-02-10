@@ -1,14 +1,15 @@
 package com.senla.courses.model;
 
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
-public class Order extends AId {
+public class Order extends AId implements Comparable<Order>{
 
     private List<Book> bookList;
-    //private Date creationDate;
-    //private Date completionDate;
+    private LocalDate creationDate;
+    private LocalDate completionDate;
     private Double totalCost;
     private Status status;
 
@@ -28,10 +29,10 @@ public class Order extends AId {
         return totalCost;
     }
 
-    public Order(List<Book> bookList) {
+    public Order(List<Book> bookList, LocalDate creationDate) {
         this.bookList = bookList;
-        //this.creationDate = creationDate;
-        //this.completionDate = completionDate;
+        this.creationDate = creationDate;
+        this.completionDate = LocalDate.of(1970, 1, 1);
         this.totalCost = calculateTotalCost(bookList);
         this.status = Status.NEW;
     }
@@ -42,6 +43,22 @@ public class Order extends AId {
 
     public void setBookList(List<Book> bookList) {
         this.bookList = bookList;
+    }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public LocalDate getCompletionDate() {
+        return completionDate;
+    }
+
+    public void setCompletionDate(LocalDate completionDate) {
+        this.completionDate = completionDate;
     }
 
     public Double getTotalCost() {
@@ -72,4 +89,23 @@ public class Order extends AId {
         String str1 = str.toString();
         return str1;
     }
+
+    @Override
+    public int compareTo(Order order) {
+        return (int)(this.id - order.id);
+    }
+
+    //компаратор по дате выполнения заказа
+    public static Comparator<Order> DateComparator = Comparator.comparing(Order::getCompletionDate);
+
+    //компаратор по стоимости заказа
+    public static Comparator<Order> TotalCostComparator = (o1, o2) -> (int)(o1.getTotalCost() - o2.getTotalCost());
+
+    public static Comparator<Order> StatusComparator = new Comparator<Order>() { //компаратор по статусу заказа
+        //дописать
+        @Override
+        public int compare(Order o1, Order o2) {
+            return (int)(o1.getTotalCost() - o2.getTotalCost());
+        }
+    };
 }

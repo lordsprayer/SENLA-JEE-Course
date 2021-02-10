@@ -85,35 +85,21 @@ public class Book extends AId implements Comparable<Book>{
         return (int)(this.id - book.id);
     }
 
-    public static Comparator<Book> NameComparator = new Comparator<Book>() {
+    public static Comparator<Book> NameComparator = Comparator.comparing(Book::getName);
 
-        @Override
-        public int compare(Book e1, Book e2) {
-            return e1.getName().compareTo(e2.getName());
+    public static Comparator<Book> CostComparator = (e1, e2) -> (int)(e1.getCost() - e2.getCost());
+
+    public static Comparator<Book> AvailabilityComparator = (b1, b2) -> {
+        if (b1.getAvailability() == b2.getAvailability()) {
+            return 0;
+        }
+        if (b1.getAvailability() && !b2.getAvailability()) {
+            return -1;
+        }
+        else {
+            return 1;
         }
     };
 
-    public static Comparator<Book> CostComparator = new Comparator<Book>() {
-
-        @Override
-        public int compare(Book e1, Book e2) {
-            return (int)(e1.getCost() - e2.getCost());
-        }
-    };
-
-    public static Comparator<Book> AvailabilityComparator = new Comparator<Book>() {
-
-        @Override
-        public int compare(Book e1, Book e2) {
-            return 1;//(int)(e1.getAvailability() - e2.getAvailability());
-        }
-    };
-
-    public static Comparator<Book> PublicationComparator = new Comparator<Book>() {
-
-        @Override
-        public int compare(Book e1, Book e2) {
-            return e1.getPublicationYear().compareTo(e2.getPublicationYear());
-        }
-    };
+    public static Comparator<Book> PublicationComparator = Comparator.comparing(Book::getPublicationYear);
 }

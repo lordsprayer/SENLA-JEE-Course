@@ -7,6 +7,7 @@ import com.senla.courses.api.service.IRequestService;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Order;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,15 +24,15 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public Order createOrder(Book... books) {
-        List<Book> list = new ArrayList<Book>();
+    public Order createOrder(List<Book> books, LocalDate creationDate) {
+        //List<Book> list = new ArrayList<Book>();
         for(Book book : books){
-            list.add(book);
+            //list.add(book);
             if (book.getAvailability()==false){
                 requestService.createRequest(book);
             }
         }
-        Order order = new Order(list);
+        Order order = new Order(books, creationDate);
         orderDao.save(order);
         return order;
     }
