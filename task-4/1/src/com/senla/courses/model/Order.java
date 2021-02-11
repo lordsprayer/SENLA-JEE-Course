@@ -15,9 +15,15 @@ public class Order extends AId implements Comparable<Order>{
 
     public enum Status
     {
-        NEW,
-        COMPLETED,
-        CANCELED
+        NEW(1),
+        COMPLETED(2),
+        CANCELED(3);
+
+        private Integer severity;
+
+        Status(Integer severity) {
+            this.severity = severity;
+        }
     }
 
     public Double calculateTotalCost(List<Book> bookList){
@@ -81,13 +87,10 @@ public class Order extends AId implements Comparable<Order>{
     public String toString() {
         StringBuilder str = new StringBuilder("Order number " + getId());
         for (Book book : bookList) {
-            str.append("\nBook { id = " + book.getId() + " name = " +
-                    book.getName() + " author = " + book.getAuthor() +
-                    " price = " + book.getCost() + " availability = " + book.getAvailability() + "}");
+            str.append("\nBook { id = ").append(book.getId()).append(" name = ").append(book.getName()).append(" author = ").append(book.getAuthor()).append(" price = ").append(book.getCost()).append(" availability = ").append(book.getAvailability()).append("}");
         }
-        str.append("\nTotal cost = " + totalCost + " status  = " + status);
-        String str1 = str.toString();
-        return str1;
+        str.append("\nTotal cost = ").append(totalCost).append(" status  = ").append(status);
+        return str.toString();
     }
 
     @Override
@@ -99,13 +102,8 @@ public class Order extends AId implements Comparable<Order>{
     public static Comparator<Order> DateComparator = Comparator.comparing(Order::getCompletionDate);
 
     //компаратор по стоимости заказа
-    public static Comparator<Order> TotalCostComparator = (o1, o2) -> (int)(o1.getTotalCost() - o2.getTotalCost());
+    public static Comparator<Order> TotalCostComparator = Comparator.comparing(Order::getTotalCost);
 
-    public static Comparator<Order> StatusComparator = new Comparator<Order>() { //компаратор по статусу заказа
-        //дописать
-        @Override
-        public int compare(Order o1, Order o2) {
-            return (int)(o1.getTotalCost() - o2.getTotalCost());
-        }
-    };
+    //компаратор по статусу заказа
+    public static Comparator<Order> StatusComparator = Comparator.comparingInt(o -> o.getStatus().severity);
 }

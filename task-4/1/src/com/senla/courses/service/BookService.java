@@ -7,8 +7,10 @@ import com.senla.courses.api.service.IRequestService;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Request;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BookService implements IBookService {
 
@@ -39,6 +41,13 @@ public class BookService implements IBookService {
             }
         }
         return book;
+    }
+
+    @Override
+    public List<Book> unsoldBook() {
+        List<Book> books= new ArrayList<>(bookDao.getAll());
+        LocalDate date = LocalDate.now().minusMonths(6);
+        return books.stream().filter(book -> book.getReceiptDate().compareTo(date)<=0).collect(Collectors.toList());
     }
 
 

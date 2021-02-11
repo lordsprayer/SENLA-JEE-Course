@@ -1,7 +1,9 @@
 package com.senla.courses.api.dao;
 
+import com.senla.courses.model.Book;
 import com.senla.courses.model.Request;
 
+import java.util.Comparator;
 import java.util.List;
 
 public interface IRequestDao {
@@ -12,5 +14,7 @@ public interface IRequestDao {
     Request update(Request request);
     Request getById(Long id);
     List<Request> getAll();
+    List<Request> getSortRequests(Comparator<Request> comp);
+
 
 }

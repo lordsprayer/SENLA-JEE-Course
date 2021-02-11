@@ -5,11 +5,12 @@ import com.senla.courses.model.Book;
 import com.senla.courses.util.IdGenerator;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class BookDao implements IBookDao {
 
-    private List<Book> books = new ArrayList<Book>();
+    private final List<Book> books = new ArrayList<>();
 
     @Override
     public void save(Book book) {
@@ -27,9 +28,9 @@ public class BookDao implements IBookDao {
         Book book1 = getById(book.getId());
         book1.setName(book.getName());
         book1.setAuthor(book.getAuthor());
-        ///book1.setPublicationDate(book.getPublicationDate());
+        book1.setPublicationYear(book.getPublicationYear());
         book1.setCost(book.getCost());
-        //book1.setReceiptDate(book.getReceiptDate());
+        book1.setReceiptDate(book.getReceiptDate());
         book1.setAvailability(book.getAvailability());
         return book1;
     }
@@ -46,7 +47,15 @@ public class BookDao implements IBookDao {
 
     @Override
     public List<Book> getAll() {
-        List<Book> books1 = new ArrayList<Book>(books);
-        return books1;
+        return new ArrayList<>(books);
     }
+
+    @Override
+    public List<Book> getSortBooks(Comparator<Book> comp) {
+        List<Book> bookList = new ArrayList<>(books);
+        bookList.sort(comp);
+        return bookList;
+    }
+
+
 }

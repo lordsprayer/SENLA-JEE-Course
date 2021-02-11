@@ -48,4 +48,28 @@ public class OrderService implements IOrderService {
         orderDao.update(order);
         return order;
     }
+
+    @Override
+    public Double countIncome(LocalDate date) {
+        List<Order> orders = new ArrayList<>(orderDao.getAll());
+        double income= 0;
+        for (Order order: orders){
+            if(order.getCompletionDate().compareTo(date)>= 0){
+                income += order.getTotalCost();
+            }
+        }
+        return income;
+    }
+
+    @Override
+    public Integer countCompleteOrders(LocalDate date) {
+        List<Order> orders = new ArrayList<>(orderDao.getAll());
+        int count= 0;
+        for (Order order: orders){
+            if(order.getCompletionDate().compareTo(date)>= 0){
+                count ++;
+            }
+        }
+        return count;
+    }
 }

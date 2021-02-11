@@ -55,8 +55,11 @@ public class Bookstore {
         bookDao.save(book3);
         books.add(book3);
         Order order3 = orderService.createOrder(books, LocalDate.of(2020, 1, 21));
-        List<Book> bookList = new ArrayList<Book>(bookDao.getAll());
-        System.out.println("Без сортировки:\n");
+        List<Book> bookList = bookDao.getSortBooks(Book.ReceiptComparator);
+        bookList.forEach(System.out::println);
+        bookDao.getAll().forEach(System.out::println);
+
+        /*System.out.println("Без сортировки:\n");
 
         for(Book book : bookList){
             System.out.println(book);
@@ -85,8 +88,8 @@ public class Bookstore {
 
         for(Book book : bookList){
             System.out.println(book);
-        }
-        //сортировка заказов по дате выполнения
+        }*/
+        /*//сортировка заказов по дате выполнения
         List<Order> orders = new ArrayList<>(orderDao.getAll());
         orders.sort(Order.DateComparator);
         for(Order ord : orders){
@@ -98,21 +101,39 @@ public class Bookstore {
         orders.sort(Order.TotalCostComparator);
         for(Order ord : orders){
             System.out.println(ord);
-        }
+        }*/
+        List<Order> orderList = orderDao.getSortOrders(Order.StatusComparator);
+        orderList.forEach(System.out::println);
+        System.out.println();
+        List<Order> orderList1 = orderDao.getSortCompletedOrders(Order.TotalCostComparator);
+        orderList1.forEach(System.out::println);
         //сортировка запросов по названию книги
-        List<Request> requests = new ArrayList<>(requestDao.getAll());
-        requests.sort(Request.NameComparator);
+        Request request1 = new Request(book3, date);
+        requestDao.save(request1);
+        Request request2 = new Request(book3, date);
+        Request request3 = new Request(book1, date);
+        Request request4 = new Request(book3, date);
+        Request request5 = new Request(book3, date);
+        Request request6 = new Request(book1, date);
+        requestDao.save(request2);
+        requestDao.save(request3);
+        requestDao.save(request4);
+        requestDao.save(request5);
+        requestDao.save(request6);
+        List<Request> requests = requestService.getSortRequestsByBookCount();
+
         requests.forEach(System.out::println);
+
         //сортировка выполненных заказов по дате выполнения
         //List<Order> orders = new ArrayList<>();
         //orders.addAll(orderDao.getAll());
-        orders.sort(Order.DateComparator);
+        /*orders.sort(Order.DateComparator);
         for(Order ord : orders){
             if(ord.getStatus() == Order.Status.COMPLETED){
                 System.out.println(ord);
             }
         }
-
+*/
 
     }
 

@@ -1,7 +1,9 @@
 package com.senla.courses.model;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 public class Request extends AId implements Comparable<Request>{
     private Book book;
@@ -51,12 +53,9 @@ public class Request extends AId implements Comparable<Request>{
         return (int)(this.id - request.id);
     }
 
-    public static Comparator<Request> NameComparator = new Comparator<Request>() { //компаратор по названию книги
+    //компаратор по названию книги
+    public static Comparator<Request> NameComparator = Comparator.comparing(r -> r.book.getName());
+    //компаратор по количеству запросов на книгу
 
-        @Override
-        public int compare(Request r1, Request r2) {
-            return r1.book.getName().compareTo(r2.book.getName());
-        }
-    };
 
 }

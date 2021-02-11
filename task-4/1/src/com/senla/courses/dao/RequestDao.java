@@ -1,16 +1,17 @@
 package com.senla.courses.dao;
 
 import com.senla.courses.api.dao.IRequestDao;
-import com.senla.courses.model.Book;
 import com.senla.courses.model.Request;
 import com.senla.courses.util.IdGenerator;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class RequestDao implements IRequestDao {
 
-    private List<Request> requests = new ArrayList<Request>();
+    private List<Request> requests = new ArrayList<>();
 
     @Override
     public void save(Request request) {
@@ -42,7 +43,15 @@ public class RequestDao implements IRequestDao {
 
     @Override
     public List<Request> getAll() {
-        List<Request> request1 = new ArrayList<Request>(requests);
+        List<Request> request1 = new ArrayList<>(requests);
         return request1;
     }
+
+    @Override
+    public List<Request> getSortRequests(Comparator<Request> comp) {
+        List<Request> requestList = new ArrayList<>(requests);
+        requestList.sort(comp);
+        return requestList;
+    }
+
 }

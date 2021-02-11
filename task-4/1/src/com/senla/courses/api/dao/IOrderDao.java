@@ -1,7 +1,9 @@
 package com.senla.courses.api.dao;
 
+import com.senla.courses.model.Book;
 import com.senla.courses.model.Order;
 
+import java.util.Comparator;
 import java.util.List;
 
 public interface IOrderDao {
@@ -11,4 +13,6 @@ public interface IOrderDao {
     Order update(Order order);
     Order getById(Long id);
     List<Order> getAll();
+    List<Order> getSortOrders(Comparator<Order> comp);
+    List<Order> getSortCompletedOrders(Comparator<Order> comp);
 }
