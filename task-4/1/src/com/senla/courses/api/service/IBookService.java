@@ -9,4 +9,5 @@ public interface IBookService {
     Book cancelBook(Book book);
     Book addBook(Book book);
     List<Book> unsoldBook();
+    void lookDescription(Book book);
 }

@@ -26,12 +26,13 @@ public class BookDao implements IBookDao {
     @Override
     public Book update(Book book) {
         Book book1 = getById(book.getId());
-        book1.setName(book.getName());
+        book1.setTitle(book.getTitle());
         book1.setAuthor(book.getAuthor());
         book1.setPublicationYear(book.getPublicationYear());
         book1.setCost(book.getCost());
         book1.setReceiptDate(book.getReceiptDate());
         book1.setAvailability(book.getAvailability());
+        book1.setDescription(book.getDescription());
         return book1;
     }
 

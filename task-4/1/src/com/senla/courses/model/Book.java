@@ -4,33 +4,35 @@ import java.time.LocalDate;
 import java.util.Comparator;
 
 public class Book extends AId implements Comparable<Book>{
-    private String name;
+    private String title;
     private String author;
     private Integer publicationYear;
     private Double cost;
     private LocalDate receiptDate;
     private Boolean availability;
+    private String description;
 
-    public Book(String name,
+    public Book(String title,
                 String author,
                 Integer publicationYear,
                 Double cost,
                 LocalDate receiptDate,
                 Boolean availability) {
-        this.name = name;
+        this.title = title;
         this.author = author;
         this.publicationYear = publicationYear;
         this.cost = cost;
         this.receiptDate = receiptDate;
         this.availability = availability;
+        this.description = null;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getAuthor() {
@@ -71,10 +73,18 @@ public class Book extends AId implements Comparable<Book>{
         this.availability = availability;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString(){
-        return "Book { id = " + getId() + " name = " +
-                name + " author = " + author + " publication Year = " +
+        return "Book { id = " + getId() + " title = " +
+                title + " author = " + author + " publication Year = " +
                 publicationYear +" price = " + cost + " date Of Receipt = " +
                 receiptDate +" availability = " +availability + "}";
     }
@@ -85,7 +95,7 @@ public class Book extends AId implements Comparable<Book>{
         return (int)(this.id - book.id);
     }
 
-    public static Comparator<Book> NameComparator = Comparator.comparing(Book::getName);
+    public static Comparator<Book> NameComparator = Comparator.comparing(Book::getTitle);
 
     public static Comparator<Book> CostComparator = Comparator.comparing(Book::getCost);;
 

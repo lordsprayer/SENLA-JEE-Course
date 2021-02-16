@@ -5,6 +5,7 @@ import com.senla.courses.api.dao.IRequestDao;
 import com.senla.courses.api.service.IOrderService;
 import com.senla.courses.api.service.IRequestService;
 import com.senla.courses.model.Book;
+import com.senla.courses.model.Customer;
 import com.senla.courses.model.Order;
 
 import java.time.LocalDate;
@@ -14,25 +15,23 @@ import java.util.List;
 public class OrderService implements IOrderService {
 
     private final IOrderDao orderDao;
-    private final IRequestDao requestDao;
     private final IRequestService requestService;
 
-    public OrderService(IOrderDao orderDao, IRequestDao requestDao, IRequestService requestService) {
+    public OrderService(IOrderDao orderDao, IRequestService requestService) {
         this.orderDao = orderDao;
-        this.requestDao = requestDao;
         this.requestService = requestService;
     }
 
     @Override
-    public Order createOrder(List<Book> books, LocalDate creationDate) {
+    public Order createOrder(Customer customer, List<Book> books, LocalDate creationDate) {
         //List<Book> list = new ArrayList<Book>();
         for(Book book : books){
             //list.add(book);
-            if (book.getAvailability()==false){
+            if (!book.getAvailability()){
                 requestService.createRequest(book);
             }
         }
-        Order order = new Order(books, creationDate);
+        Order order = new Order(customer, books, creationDate);
         orderDao.save(order);
         return order;
     }
@@ -71,5 +70,17 @@ public class OrderService implements IOrderService {
             }
         }
         return count;
+    }
+
+    @Override
+    public void orderDeatails(Order order) {
+        System.out.println(order);
+    }
+
+    @Override
+    public Order completeOrder(Order order) {
+        order.setStatus(Order.Status.COMPLETED);
+        orderDao.update(order);
+        return order;
     }
 }

@@ -5,7 +5,6 @@ import com.senla.courses.model.Request;
 import com.senla.courses.util.IdGenerator;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -48,9 +47,9 @@ public class RequestDao implements IRequestDao {
     }
 
     @Override
-    public List<Request> getSortRequests(Comparator<Request> comp) {
+    public List<Request> getSortRequests() {
         List<Request> requestList = new ArrayList<>(requests);
-        requestList.sort(comp);
+        requestList.sort(Comparator.comparing(r -> r.getBook().getTitle()));
         return requestList;
     }
 

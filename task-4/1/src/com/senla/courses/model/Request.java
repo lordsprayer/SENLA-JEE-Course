@@ -1,16 +1,15 @@
 package com.senla.courses.model;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+
 
 public class Request extends AId implements Comparable<Request>{
     private Book book;
-    private Date date;
+    private LocalDate date;
     private Boolean status;
 
-    public Request(Book book, Date date) {
+    public Request(Book book, LocalDate date) {
         this.book = book;
         this.date = date;
         this.status = true;
@@ -24,11 +23,11 @@ public class Request extends AId implements Comparable<Request>{
         this.book = book;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -43,7 +42,7 @@ public class Request extends AId implements Comparable<Request>{
     @Override
     public String toString(){
         return "Request #" + getId() + " Book { id = " + book.getId() + " name = " +
-                book.getName() + " author = " + book.getAuthor() +
+                book.getTitle() + " author = " + book.getAuthor() +
                 " price = " + book.getCost() + " availability = " +book.getAvailability() +
                 " date = " + date + " + status = " + status + "}";
     }
@@ -54,8 +53,8 @@ public class Request extends AId implements Comparable<Request>{
     }
 
     //компаратор по названию книги
-    public static Comparator<Request> NameComparator = Comparator.comparing(r -> r.book.getName());
-    //компаратор по количеству запросов на книгу
+    public static Comparator<Request> NameComparator = Comparator.comparing(r -> r.book.getTitle());
+
 
 
 }

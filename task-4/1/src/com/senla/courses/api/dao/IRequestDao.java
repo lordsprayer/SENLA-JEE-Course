@@ -14,7 +14,7 @@ public interface IRequestDao {
     Request update(Request request);
     Request getById(Long id);
     List<Request> getAll();
-    List<Request> getSortRequests(Comparator<Request> comp);
+    List<Request> getSortRequests();
 
 
 }

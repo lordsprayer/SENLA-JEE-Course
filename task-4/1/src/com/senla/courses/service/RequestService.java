@@ -1,5 +1,6 @@
 package com.senla.courses.service;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,7 @@ public class RequestService implements IRequestService {
 
     @Override
     public Request createRequest(Book book) {
-        Date date = new Date();
+        LocalDate date = LocalDate.now();
         Request request = new Request(book, date);
         requestDao.save(request);
         return request;
@@ -28,6 +29,18 @@ public class RequestService implements IRequestService {
         request.setStatus(false);
         requestDao.update(request);
         return null;
+    }
+
+    @Override
+    public int countRequests(Book book) {
+        List<Request> requestList = new ArrayList<>(requestDao.getAll());
+        int count = 0;
+        for(Request request : requestList){
+            if(request.getBook().equals(book)){
+                count++;
+            }
+        }
+        return -count;
     }
 
 
@@ -44,13 +57,7 @@ public class RequestService implements IRequestService {
     //не закончено
     public List<Request> getSortRequestsByBookCount() {
         List<Request> requestList = new ArrayList<>(requestDao.getAll());
-        List<Book> bookList = new ArrayList<>();
-        for (Request request : requestList){
-            bookList.add(request.getBook());
-        }
-        bookList.sort(Comparator.comparingInt(o -> Collections.frequency(bookList, o)));
-        List <Book> bookList1 = bookList.stream().distinct().collect(Collectors.toList());
-        //Map<Integer, Book> map = new HashMap<>()
+        requestList.sort(Comparator.comparing(o -> countRequests(o.getBook())));
         return requestList;
     }
 

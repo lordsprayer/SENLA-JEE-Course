@@ -50,5 +50,10 @@ public class BookService implements IBookService {
         return books.stream().filter(book -> book.getReceiptDate().compareTo(date)<=0).collect(Collectors.toList());
     }
 
+    @Override
+    public void lookDescription(Book book) {
+        System.out.println(book.getDescription());;
+    }
+
 
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Order extends AId implements Comparable<Order>{
 
+    private Customer customer;
     private List<Book> bookList;
     private LocalDate creationDate;
     private LocalDate completionDate;
@@ -35,12 +36,22 @@ public class Order extends AId implements Comparable<Order>{
         return totalCost;
     }
 
-    public Order(List<Book> bookList, LocalDate creationDate) {
+    public Order(Customer customer, List<Book> bookList, LocalDate creationDate) {
+        this.customer = customer;
         this.bookList = bookList;
         this.creationDate = creationDate;
         this.completionDate = LocalDate.of(1970, 1, 1);
         this.totalCost = calculateTotalCost(bookList);
+
         this.status = Status.NEW;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public List<Book> getBookList() {
@@ -85,9 +96,13 @@ public class Order extends AId implements Comparable<Order>{
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder("Order number " + getId());
+        StringBuilder str = new StringBuilder("Order #" + getId() + " customer " + getCustomer().getName()
+                + " phone number " + getCustomer().getPhoneNumber() + "\nBooks in order ");
         for (Book book : bookList) {
-            str.append("\nBook { id = ").append(book.getId()).append(" name = ").append(book.getName()).append(" author = ").append(book.getAuthor()).append(" price = ").append(book.getCost()).append(" availability = ").append(book.getAvailability()).append("}");
+            str.append("\n{ id = ").append(book.getId()).append(" name = ")
+                    .append(book.getTitle()).append(" author = ").append(book.getAuthor())
+                    .append(" price = ").append(book.getCost()).append(" availability = ")
+                    .append(book.getAvailability()).append("}");
         }
         str.append("\nTotal cost = ").append(totalCost).append(" status  = ").append(status);
         return str.toString();
