@@ -19,6 +19,7 @@ public class MenuController {
     }
 
     public static MenuController getInstance() {
+
         return Objects.requireNonNullElse(instance, new MenuController());
     }
 
@@ -29,7 +30,7 @@ public class MenuController {
         Integer index = -1;
         while (!index.equals(0)){
             index = scan.nextInt();
-            navigator.navigate(index -1);
+            navigator.navigate(index);
             navigator.printMenu();
         }
     }

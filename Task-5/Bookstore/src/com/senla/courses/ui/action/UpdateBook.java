@@ -3,17 +3,18 @@ package com.senla.courses.ui.action;
 import java.time.LocalDate;
 import java.util.Scanner;
 
-public class AddBook extends AbstractAction implements IAction{
-
-
+public class UpdateBook extends AbstractAction implements IAction{
 
     @Override
     public void execute() {
+        facade.printAllBook();
         Scanner scan = new Scanner(System.in);
+        System.out.println("Введите id книги ");
+        int id = scan.nextInt();
         System.out.println("Введите название ");
-        String title = scan.nextLine();
+        String title = scan.next();
         System.out.println("Введите автора ");
-        String author = scan.nextLine();
+        String author = scan.next();
         System.out.println("Введите год публикации ");
         Integer publicationYear = scan.nextInt();
         System.out.println("Введите стоимость ");
@@ -26,11 +27,9 @@ public class AddBook extends AbstractAction implements IAction{
         System.out.println("Введите день ");
         int day = scan.nextInt();
         LocalDate receiptDate = LocalDate.of(year, month,day);
-        //Boolean availability = true;
-        facade.saveBook(facade.createBook(title, author, publicationYear, cost, receiptDate, true));
-        System.out.println("Книга добавлена");
-        //facade.printBook(facade.getBookById());
-        //scan.close();
-
+        facade.updateBook(facade.createBook(title, author, publicationYear, cost, receiptDate, true), (long)id);
+        System.out.println("Книга обновлена");
+        facade.printBook((long)id);
+        scan.close();
     }
 }

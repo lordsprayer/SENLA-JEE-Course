@@ -34,7 +34,7 @@ public class BookService implements IBookService {
     public Book addBook(Book book) {
         book.setAvailability(true);
         bookDao.update(book);
-        List<Request> requests= new ArrayList<Request>(requestDao.getAll());
+        List<Request> requests= new ArrayList<>(requestDao.getAll());
         for (Request request : requests){
             if(request.getBook().equals(book)){
                 requestService.closeRequest(request);
