@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface IBookService {
 
-    Book cancelBook(Book book);
-    Book addBook(Book book);
+    void cancelBook(Book book);
+    void addBook(Book book);
     List<Book> unsoldBook();
     void lookDescription(Book book);
 }

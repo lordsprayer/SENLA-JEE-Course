@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface IRequestService {
 
-    Request createRequest (Book book);
-    Request closeRequest (Request request);
-    public int countRequests(Book book);
+    void createRequest (Book book);
+    void closeRequest (Request request);
+    int countRequests(Book book);
     List<Request> getSortRequestsByBookCount();
 
 }

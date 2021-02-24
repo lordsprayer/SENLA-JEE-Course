@@ -1,7 +1,6 @@
 package com.senla.courses.service;
 
 import com.senla.courses.api.dao.IOrderDao;
-import com.senla.courses.api.dao.IRequestDao;
 import com.senla.courses.api.service.IOrderService;
 import com.senla.courses.api.service.IRequestService;
 import com.senla.courses.model.Book;
@@ -10,7 +9,9 @@ import com.senla.courses.model.Order;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OrderService implements IOrderService {
 
@@ -24,9 +25,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public Order createOrder(Customer customer, List<Book> books, LocalDate creationDate) {
-        //List<Book> list = new ArrayList<Book>();
         for(Book book : books){
-            //list.add(book);
             if (!book.getAvailability()){
                 requestService.createRequest(book);
             }
@@ -42,10 +41,9 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public Order changeStatus(Order order, Order.Status status) {
+    public void changeStatus(Order order, Order.Status status) {
         order.setStatus(status);
         orderDao.update(order);
-        return order;
     }
 
     @Override
@@ -73,14 +71,24 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public void orderDeatails(Order order) {
+    public void orderDetails(Order order) {
         System.out.println(order);
     }
 
     @Override
-    public Order completeOrder(Order order) {
+    public void completeOrder(Order order, LocalDate date) {
         order.setStatus(Order.Status.COMPLETED);
+        order.setCompletionDate(date);
         orderDao.update(order);
-        return order;
+    }
+
+    @Override
+    public List<Order> getSortCompletedOrders(Comparator<Order> comp, LocalDate date) {
+        List<Order> orderList = new ArrayList<>(orderDao.getAll());
+        orderList.sort(comp);
+        return orderList.stream()
+                .filter(o -> o.getStatus().equals(Order.Status.COMPLETED))
+                .filter(o -> o.getCompletionDate().compareTo(date)>=0)
+                .collect(Collectors.toList());
     }
 }

@@ -26,6 +26,7 @@ public class CustomerDao implements ICustomerDao {
     public Customer update(Customer customer) {
         Customer customer1 = getById(customer.getId());
         customer1.setName(customer.getName());
+        customer1.setSurname(customer.getSurname());
         customer1.setPhoneNumber(customer.getPhoneNumber());
         return customer1;
     }

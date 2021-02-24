@@ -8,14 +8,7 @@ public class Menu {
     private String name;
     private List<MenuItem> menuItems;
 
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public Menu() {
     }
 
     public List<MenuItem> getMenuItems() {
@@ -24,11 +17,6 @@ public class Menu {
         }
         return menuItems;
     }
-
-    public void setMenuItems(List<MenuItem> menuItems) {
-        this.menuItems = menuItems;
-    }
-
 
     public void addMenuItem(MenuItem item){
         getMenuItems().add(item);

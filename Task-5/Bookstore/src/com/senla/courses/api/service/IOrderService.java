@@ -5,15 +5,18 @@ import com.senla.courses.model.Customer;
 import com.senla.courses.model.Order;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 public interface IOrderService {
 
     Order createOrder(Customer customer, List<Book> books, LocalDate creationDate);
     void cancelOrder(Order order);
-    Order changeStatus(Order order, Order.Status status);
+    void changeStatus(Order order, Order.Status status);
     Double countIncome (LocalDate date);
     Integer countCompleteOrders(LocalDate date);
-    void orderDeatails (Order order);
-    Order completeOrder(Order order);
+    void orderDetails (Order order);
+    void completeOrder(Order order, LocalDate date);
+    List<Order> getSortCompletedOrders(Comparator<Order> comp, LocalDate date);
+
 }

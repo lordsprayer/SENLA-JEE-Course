@@ -6,5 +6,5 @@ import java.util.Scanner;
 
 public abstract class AbstractAction {
     protected BookstoreFacade facade = new BookstoreFacade();
-    //protected Scanner scan = new Scanner(System.in);
+    protected Scanner scan = new Scanner(System.in);
 }

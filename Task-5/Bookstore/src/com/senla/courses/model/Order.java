@@ -20,18 +20,18 @@ public class Order extends AId implements Comparable<Order>{
         COMPLETED(2),
         CANCELED(3);
 
-        private Integer severity;
+        private final Integer severity;
 
         Status(Integer severity) {
             this.severity = severity;
         }
+
     }
 
     public Double calculateTotalCost(List<Book> bookList){
         double totalCost=0;
         for(Book book : bookList){
-            //Double cost = book.getCost();
-            totalCost += book.getCost();;
+            totalCost += book.getCost();
         }
         return totalCost;
     }
@@ -96,15 +96,14 @@ public class Order extends AId implements Comparable<Order>{
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder("Order #" + getId() + " customer " + getCustomer().getName()
-                + " phone number " + getCustomer().getPhoneNumber() + "\nBooks in order ");
+        StringBuilder str = new StringBuilder("Заказ #" + getId() + " \nПокупатель \n[" + getCustomer().getName()
+                + " " + getCustomer().getSurname() + ", номер телефона " + getCustomer().getPhoneNumber()
+                + "]\nКниги в заказе ");
         for (Book book : bookList) {
-            str.append("\n{ id = ").append(book.getId()).append(" name = ")
-                    .append(book.getTitle()).append(" author = ").append(book.getAuthor())
-                    .append(" price = ").append(book.getCost()).append(" availability = ")
-                    .append(book.getAvailability()).append("}");
+            str.append("\n[").append(book.getTitle()).append(" ").append(book.getAuthor())
+                    .append(" стоимость ").append(book.getCost()).append("]");
         }
-        str.append("\nTotal cost = ").append(totalCost).append(" status  = ").append(status);
+        str.append("\nОбщая стоимость заказа ").append(totalCost).append(" статус = ").append(status);
         return str.toString();
     }
 

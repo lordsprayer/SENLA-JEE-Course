@@ -5,9 +5,9 @@ import com.senla.courses.ui.action.IAction;
 
 public class MenuItem {
 
-    private String title;
-    private IAction action;
-    private Menu nextMenu;
+    private final String title;
+    private final IAction action;
+    private final Menu nextMenu;
 
     public Menu getNextMenu() {
         return nextMenu;

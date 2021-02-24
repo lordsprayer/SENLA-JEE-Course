@@ -83,10 +83,10 @@ public class Book extends AId implements Comparable<Book>{
 
     @Override
     public String toString(){
-        return "Book { id = " + getId() + " title = " +
-                title + " author = " + author + " publication Year = " +
-                publicationYear +" price = " + cost + " date Of Receipt = " +
-                receiptDate +" availability = " +availability + "}";
+        return "Книга [id " + getId() + " Название " +
+                title + " Автор " + author + " Год публикации " +
+                publicationYear +" Стоимость " + cost + " Дата поступления " +
+                receiptDate +" Доступность  " + availability + "]";
     }
 
 
@@ -97,7 +97,7 @@ public class Book extends AId implements Comparable<Book>{
 
     public static Comparator<Book> NameComparator = Comparator.comparing(Book::getTitle);
 
-    public static Comparator<Book> CostComparator = Comparator.comparing(Book::getCost);;
+    public static Comparator<Book> CostComparator = Comparator.comparing(Book::getCost);
 
     public static Comparator<Book> AvailabilityComparator = (b1, b2) -> {
         if (b1.getAvailability() == b2.getAvailability()) {

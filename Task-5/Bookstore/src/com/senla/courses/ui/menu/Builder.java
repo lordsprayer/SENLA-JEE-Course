@@ -1,20 +1,20 @@
 package com.senla.courses.ui.menu;
 
-import com.senla.courses.ui.action.*;
+import com.senla.courses.ui.action.TempAction;
+import com.senla.courses.ui.action.book.*;
+import com.senla.courses.ui.action.order.*;
+import com.senla.courses.ui.action.request.*;
 
 import java.util.Objects;
 
 public class Builder {
 
-    private static Builder instance;// = new Builder();
+    private static Builder instance;
     private Menu rootMenu;
 
-    //public Builder() {
-     //   this.rootMenu = Builder.instance.rootMenu;
-   // }
-
     public static Builder getInstance(){
-        return Objects.requireNonNullElse(instance, new Builder());
+        instance = Objects.requireNonNullElse(instance, new Builder());
+        return instance;
     }
 
     public void buildMenu(){
@@ -24,7 +24,6 @@ public class Builder {
         rootMenu.addMenuItem(new MenuItem("Работа с заказами", () -> {}, createOrderMenu()));
         rootMenu.addMenuItem(new MenuItem("Работа с запросами", () -> {}, createRequestMenu()));
         rootMenu.addMenuItem(new MenuItem("Добавить книги в базу", new TempAction(), rootMenu));
-
     }
 
     public Menu getRootMenu() {
@@ -45,6 +44,8 @@ public class Builder {
         bookMenu.addMenuItem(new MenuItem("Удалить книгу", new DeleteBook(), rootMenu));
         bookMenu.addMenuItem(new MenuItem("Списать книгу со склада", new CancelBookToWarehouse(), rootMenu));
         bookMenu.addMenuItem(new MenuItem("Добавить книгу на склад", new AddBookToWarehouse(), rootMenu));
+        bookMenu.addMenuItem(new MenuItem("Добавить описание книги", new SetBookDescription(), rootMenu));
+        bookMenu.addMenuItem(new MenuItem("Посмотреть описание книги", new GetBookDescription(), rootMenu));
         bookMenu.addMenuItem(new MenuItem("Вывести список книг", () -> {}, createSortingBookMenu()));
         return bookMenu;
     }
@@ -65,15 +66,39 @@ public class Builder {
 
 
     private Menu createOrderMenu(){
-        Menu bookMenu = new Menu();
-        bookMenu.addMenuItem(new MenuItem("Добавить книгу2", new AddBook(), rootMenu));
-        return bookMenu;
+        Menu orderMenu = new Menu();
+        orderMenu.addMenuItem(new MenuItem("Выход", () -> {}, createExitMenu()));
+        orderMenu.addMenuItem(new MenuItem("Создать заказ", new CreateOrder(), rootMenu));
+        orderMenu.addMenuItem(new MenuItem("Удалить заказ", new DeleteOrder(), rootMenu));
+        orderMenu.addMenuItem(new MenuItem("Изменить статус заказа", new ChangeOrderStatus(), rootMenu));
+        orderMenu.addMenuItem(new MenuItem("Просмотреть детали заказа", new OrderDetails(), rootMenu));
+        orderMenu.addMenuItem(new MenuItem("Сумма заработанных средств за период врмени", new GetCountIncome(), rootMenu));
+        orderMenu.addMenuItem(new MenuItem("Количество выполненных заказов за период времени", new GetCountCompleteOrders(), rootMenu));
+        orderMenu.addMenuItem(new MenuItem("Просмотр заказов", () -> {}, createSortingOrderMenu()));
+        return orderMenu;
+    }
+
+    private Menu createSortingOrderMenu(){
+        Menu sortingOrderMenu = new Menu();
+        sortingOrderMenu.addMenuItem(new MenuItem("Выход", () -> {}, createExitMenu()));
+        sortingOrderMenu.addMenuItem(new MenuItem("Без сортировки", new PrintAllOrders(), rootMenu));
+        sortingOrderMenu.addMenuItem(new MenuItem("Сортирвка по дате исполнения", new SortOrderBy(0), rootMenu));
+        sortingOrderMenu.addMenuItem(new MenuItem("Сортирвка по цене", new SortOrderBy(1), rootMenu));
+        sortingOrderMenu.addMenuItem(new MenuItem("Сортирвка по статусу", new SortOrderBy(2), rootMenu));
+        sortingOrderMenu.addMenuItem(new MenuItem("Сортирвка выполненных заказов за период времени по дате исполнения", new SortCompleteOrderBy(0), rootMenu));
+        sortingOrderMenu.addMenuItem(new MenuItem("Сортирвка выполненных заказов за период времени по цене", new SortCompleteOrderBy(1), rootMenu));
+        return sortingOrderMenu;
     }
 
     private Menu createRequestMenu(){
-        Menu bookMenu = new Menu();
-        bookMenu.addMenuItem(new MenuItem("Добавить книгу3", new AddBook(), rootMenu));
-        return bookMenu;
+        Menu requestMenu = new Menu();
+        requestMenu.addMenuItem(new MenuItem("Выход", () -> {}, createExitMenu()));
+        requestMenu.addMenuItem(new MenuItem("Создать запрос", new CreateRequest(), rootMenu));
+        requestMenu.addMenuItem(new MenuItem("Удалить запрос", new DeleteRequest(), rootMenu));
+        requestMenu.addMenuItem(new MenuItem("Закрыть запрос", new CloseRequest(), rootMenu));
+        requestMenu.addMenuItem(new MenuItem("Список запросов, отсортированный по количеству запросов", new SortRequestsByBookCount(), rootMenu));
+        requestMenu.addMenuItem(new MenuItem("Список запросов, отсортированный по названию книги", new SortRequestsByTitle(), rootMenu));
+        return requestMenu;
     }
 
 }

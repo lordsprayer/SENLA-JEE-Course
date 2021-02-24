@@ -10,7 +10,7 @@ import java.util.List;
 
 public class RequestDao implements IRequestDao {
 
-    private List<Request> requests = new ArrayList<>();
+    private final List<Request> requests = new ArrayList<>();
 
     @Override
     public void save(Request request) {
@@ -42,8 +42,7 @@ public class RequestDao implements IRequestDao {
 
     @Override
     public List<Request> getAll() {
-        List<Request> request1 = new ArrayList<>(requests);
-        return request1;
+        return new ArrayList<>(requests);
     }
 
     @Override

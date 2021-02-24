@@ -1,6 +1,5 @@
 package com.senla.courses.api.dao;
 
-import com.senla.courses.model.Book;
 import com.senla.courses.model.Customer;
 
 import java.util.List;

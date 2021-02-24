@@ -1,7 +1,6 @@
 package com.senla.courses.model;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 
 
 public class Request extends AId implements Comparable<Request>{
@@ -41,10 +40,10 @@ public class Request extends AId implements Comparable<Request>{
 
     @Override
     public String toString(){
-        return "Request #" + getId() + " Book { id = " + book.getId() + " name = " +
-                book.getTitle() + " author = " + book.getAuthor() +
-                " price = " + book.getCost() + " availability = " +book.getAvailability() +
-                " date = " + date + " + status = " + status + "}";
+        return "Запрос #" + getId() + " [Книга " +
+                book.getTitle() + " Автор " + book.getAuthor() +
+                " Стоимость " + book.getCost() +
+                " Дата создания " + date +  "Статус" + getStatus() + "]";
     }
 
     @Override
@@ -53,8 +52,5 @@ public class Request extends AId implements Comparable<Request>{
     }
 
     //компаратор по названию книги
-    public static Comparator<Request> NameComparator = Comparator.comparing(r -> r.book.getTitle());
-
-
-
+   // public static Comparator<Request> NameComparator = Comparator.comparing(r -> r.book.getTitle());
 }

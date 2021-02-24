@@ -1,18 +1,16 @@
 package com.senla.courses.dao;
 
 import com.senla.courses.api.dao.IOrderDao;
-import com.senla.courses.model.Book;
 import com.senla.courses.model.Order;
 import com.senla.courses.util.IdGenerator;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class OrderDao implements IOrderDao {
 
-    private List<Order> orders = new ArrayList<>();
+    private final List<Order> orders = new ArrayList<>();
 
     @Override
     public void save(Order order) {
@@ -28,6 +26,7 @@ public class OrderDao implements IOrderDao {
     @Override
     public Order update(Order order) {
         Order order1 = getById(order.getId());
+        order1.setCustomer(order.getCustomer());
         order1.setBookList(order.getBookList());
         order1.setCreationDate(order.getCreationDate());
         order1.setCompletionDate(order.getCompletionDate());
@@ -57,12 +56,4 @@ public class OrderDao implements IOrderDao {
         return orderList;
     }
 
-    @Override
-    public List<Order> getSortCompletedOrders(Comparator<Order> comp) {
-        List<Order> orderList = new ArrayList<>(orders);
-        orderList.sort(comp);
-        return orderList.stream()
-                .filter(o -> o.getStatus().equals(Order.Status.COMPLETED))
-                .collect(Collectors.toList());
-    }
 }

@@ -20,13 +20,11 @@ public class Navigator {
     }
 
     public void printMenu(){
-        //Builder.buildMenu();
         int k=0;
         for(MenuItem item: currentMenu.getMenuItems()){
             System.out.println( k + " "+ item.getTitle());
             k++;
         }
-
     }
 
     public void navigate(Integer index){
@@ -34,5 +32,4 @@ public class Navigator {
         menuItem.doAction();
         currentMenu = menuItem.getNextMenu();
     }
-
 }

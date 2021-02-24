@@ -24,14 +24,13 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public Book cancelBook(Book book) {
+    public void cancelBook(Book book) {
         book.setAvailability(false);
         bookDao.update(book);
-        return book;
     }
 
     @Override
-    public Book addBook(Book book) {
+    public void addBook(Book book) {
         book.setAvailability(true);
         bookDao.update(book);
         List<Request> requests= new ArrayList<>(requestDao.getAll());
@@ -40,7 +39,6 @@ public class BookService implements IBookService {
                 requestService.closeRequest(request);
             }
         }
-        return book;
     }
 
     @Override
@@ -52,8 +50,6 @@ public class BookService implements IBookService {
 
     @Override
     public void lookDescription(Book book) {
-        System.out.println(book.getDescription());;
+        System.out.println(book.getDescription());
     }
-
-
 }

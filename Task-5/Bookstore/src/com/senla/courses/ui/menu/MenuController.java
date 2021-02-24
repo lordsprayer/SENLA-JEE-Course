@@ -6,15 +6,13 @@ import java.util.Scanner;
 public class MenuController {
 
     private static MenuController instance;
-    private Builder builder = Builder.getInstance();
-    private Navigator navigator = Navigator.getInstance();
+    private final Builder builder = Builder.getInstance();
+    private final Navigator navigator = Navigator.getInstance();
 
     private MenuController(){
-        builder.getInstance();
+        Builder.getInstance();
         builder.buildMenu();
-        navigator.getInstance();
-        //navigator.setCurrentMenu(builder.getRootMenu());
-        //navigator.printMenu();
+        Navigator.getInstance();
 
     }
 
@@ -33,5 +31,6 @@ public class MenuController {
             navigator.navigate(index);
             navigator.printMenu();
         }
+        scan.close();
     }
 }
