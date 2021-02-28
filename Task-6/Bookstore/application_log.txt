@@ -1,0 +1,14 @@
+11:46:23 / 2021-46-28 - WARNING - [com.senla.courses.dao.BookDao] - getById - Could not find an book by id: 4 
+   
+11:46:23 / 2021-46-28 - WARNING - [com.senla.courses.facade.BookstoreFacade] - getBookById - Search showed no matches 
+   
+11:46:23 / 2021-46-28 - WARNING - [com.senla.courses.ui.action.request.CreateRequest] - execute - Could not find an book by id: 4 
+ com.senla.courses.exception.DaoException: Could not find an book by id: 4
+	at bookServer/com.senla.courses.dao.BookDao.getById(BookDao.java:52)
+	at bookServer/com.senla.courses.facade.BookstoreFacade.getBookById(BookstoreFacade.java:105)
+	at ui/com.senla.courses.ui.action.request.CreateRequest.execute(CreateRequest.java:15)
+	at ui/com.senla.courses.ui.menu.MenuItem.doAction(MenuItem.java:17)
+	at ui/com.senla.courses.ui.menu.Navigator.navigate(Navigator.java:33)
+	at ui/com.senla.courses.ui.menu.MenuController.run(MenuController.java:32)
+	at bookstore/com.start.Starter.main(Starter.java:11)
+ 
