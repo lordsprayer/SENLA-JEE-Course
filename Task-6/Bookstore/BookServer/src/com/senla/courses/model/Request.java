@@ -43,7 +43,7 @@ public class Request extends AId implements Comparable<Request>{
         return "Запрос #" + getId() + " [Книга " +
                 book.getTitle() + " Автор " + book.getAuthor() +
                 " Стоимость " + book.getCost() +
-                " Дата создания " + date +  "Статус" + getStatus() + "]";
+                " Дата создания " + date +  " Статус " + getStatus() + "]";
     }
 
     @Override
@@ -51,6 +51,4 @@ public class Request extends AId implements Comparable<Request>{
         return (int)(this.id - request.id);
     }
 
-    //компаратор по названию книги
-   // public static Comparator<Request> NameComparator = Comparator.comparing(r -> r.book.getTitle());
 }

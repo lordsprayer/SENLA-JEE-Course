@@ -1,15 +1,20 @@
 package com.senla.courses.dao;
 
 import com.senla.courses.api.dao.IRequestDao;
+import com.senla.courses.exception.DaoException;
 import com.senla.courses.model.Request;
 import com.senla.courses.util.IdGenerator;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RequestDao implements IRequestDao {
 
+    private static final String GET_BY_ID_ERROR_MESSAGE = "Could not find an request by id: %d";
+    private static final Logger log = Logger.getLogger(BookDao.class.getName());
     private final List<Request> requests = new ArrayList<>();
 
     @Override
@@ -37,7 +42,9 @@ public class RequestDao implements IRequestDao {
             if (id.equals(request.getId())){
                 return request;
             }
-        }return null;
+        }
+        log.log(Level.WARNING, String.format(GET_BY_ID_ERROR_MESSAGE, id));
+        throw new DaoException(String.format(GET_BY_ID_ERROR_MESSAGE, id));
     }
 
     @Override

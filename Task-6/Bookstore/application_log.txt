@@ -1,12 +1,14 @@
-11:46:23 / 2021-46-28 - WARNING - [com.senla.courses.dao.BookDao] - getById - Could not find an book by id: 4 
+22:40:59 / 2021-40-01 - WARNING - [com.senla.courses.dao.RequestDao] - getById - Could not find an request by id: 8 
    
-11:46:23 / 2021-46-28 - WARNING - [com.senla.courses.facade.BookstoreFacade] - getBookById - Search showed no matches 
+22:40:59 / 2021-40-01 - WARNING - [com.senla.courses.service.RequestService] - getById - Search showed no matches 
    
-11:46:23 / 2021-46-28 - WARNING - [com.senla.courses.ui.action.request.CreateRequest] - execute - Could not find an book by id: 4 
- com.senla.courses.exception.DaoException: Could not find an book by id: 4
-	at bookServer/com.senla.courses.dao.BookDao.getById(BookDao.java:52)
-	at bookServer/com.senla.courses.facade.BookstoreFacade.getBookById(BookstoreFacade.java:105)
-	at ui/com.senla.courses.ui.action.request.CreateRequest.execute(CreateRequest.java:15)
+22:40:59 / 2021-40-01 - WARNING - [com.senla.courses.facade.BookstoreFacade] - closeRequest - An request with this id was not found 
+   
+22:40:59 / 2021-40-01 - WARNING - [com.senla.courses.ui.action.request.CloseRequest] - execute - Search showed no matches 
+ com.senla.courses.exception.ServiceException: Search showed no matches
+	at bookServer/com.senla.courses.service.RequestService.getById(RequestService.java:64)
+	at bookServer/com.senla.courses.facade.BookstoreFacade.closeRequest(BookstoreFacade.java:306)
+	at ui/com.senla.courses.ui.action.request.CloseRequest.execute(CloseRequest.java:27)
 	at ui/com.senla.courses.ui.menu.MenuItem.doAction(MenuItem.java:17)
 	at ui/com.senla.courses.ui.menu.Navigator.navigate(Navigator.java:33)
 	at ui/com.senla.courses.ui.menu.MenuController.run(MenuController.java:32)

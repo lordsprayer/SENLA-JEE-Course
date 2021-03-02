@@ -10,7 +10,7 @@ public class CancelBookToWarehouse extends AbstractAction implements IAction {
         facade.printBooksByAvailability(true);
         System.out.println("Введите id книги");
         int id = scan.nextInt();
-        //facade.cancelBookToWarehouse(facade.getBookById((long)id));
+        facade.cancelBookToWarehouse(facade.getBookById((long)id));
         System.out.println("Книга списана");
         facade.printBook((long)id);
     }

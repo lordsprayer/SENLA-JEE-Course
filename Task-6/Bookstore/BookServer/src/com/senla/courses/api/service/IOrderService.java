@@ -10,6 +10,9 @@ import java.util.List;
 
 public interface IOrderService {
 
+    Order getById(Long id);
+    List<Order> getAll();
+    List<Order> getSortOrders(Comparator<Order> comp);
     Order createOrder(Customer customer, List<Book> books, LocalDate creationDate);
     void cancelOrder(Order order);
     void changeStatus(Order order, Order.Status status);

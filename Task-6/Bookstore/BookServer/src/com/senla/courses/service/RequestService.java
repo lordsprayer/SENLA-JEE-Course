@@ -2,14 +2,19 @@ package com.senla.courses.service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.senla.courses.api.dao.IRequestDao;
 import com.senla.courses.api.service.IRequestService;
+import com.senla.courses.exception.DaoException;
+import com.senla.courses.exception.ServiceException;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Request;
 
 public class RequestService implements IRequestService {
 
+    private static final Logger log = Logger.getLogger(RequestService.class.getName());
     private static IRequestDao requestDao;
     public RequestService(IRequestDao requestDao) {
         RequestService.requestDao = requestDao;
@@ -17,9 +22,19 @@ public class RequestService implements IRequestService {
 
     @Override
     public void createRequest(Book book) {
-        LocalDate date = LocalDate.now();
-        Request request = new Request(book, date);
-        requestDao.save(request);
+        if (book.getAvailability().equals(false)) {
+            LocalDate date = LocalDate.now();
+            Request request = new Request(book, date);
+            requestDao.save(request);
+            System.out.println("Запрос создан");
+        } else {
+            System.out.println("Запрос не может быть создан, т.к. книга всё ещё в наличии");
+        }
+    }
+
+    @Override
+    public void delete(Request request) {
+        requestDao.delete(request);
     }
 
     @Override
@@ -30,7 +45,7 @@ public class RequestService implements IRequestService {
 
     @Override
     public int countRequests(Book book) {
-        List<Request> requestList = new ArrayList<>(requestDao.getAll());
+        List<Request> requestList = new ArrayList<>(getAll());
         int count = 0;
         for(Request request : requestList){
             if(request.getBook().equals(book)){
@@ -41,11 +56,29 @@ public class RequestService implements IRequestService {
     }
 
     @Override
+    public Request getById(Long id) {
+        try{
+            return requestDao.getById(id);
+        } catch (DaoException e){
+            log.log(Level.WARNING, "Search showed no matches");
+            throw new ServiceException ("Search showed no matches");
+        }
+    }
+
+    @Override
+    public List<Request> getAll() {
+        return requestDao.getAll();
+    }
+
+    @Override
+    public List<Request> getSortRequests() {
+        return requestDao.getSortRequests();
+    }
+
+    @Override
     public List<Request> getSortRequestsByBookCount() {
-        List<Request> requestList = new ArrayList<>(requestDao.getAll());
+        List<Request> requestList = new ArrayList<>(getAll());
         requestList.sort(Comparator.comparing(o -> countRequests(o.getBook())));
         return requestList;
     }
-
-
 }

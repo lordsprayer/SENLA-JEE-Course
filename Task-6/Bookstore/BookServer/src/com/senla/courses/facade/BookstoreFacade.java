@@ -1,12 +1,13 @@
 package com.senla.courses.facade;
 
 import com.senla.courses.api.dao.ICustomerDao;
+import com.senla.courses.api.service.ICustomerService;
 import com.senla.courses.api.service.IOrderService;
 import com.senla.courses.api.service.IRequestService;
 import com.senla.courses.dao.BookDao;
 import com.senla.courses.dao.OrderDao;
 import com.senla.courses.dao.RequestDao;
-import com.senla.courses.exception.DaoException;
+import com.senla.courses.exception.ServiceException;
 import com.senla.courses.model.Customer;
 import com.senla.courses.api.dao.IBookDao;
 import com.senla.courses.api.dao.IOrderDao;
@@ -17,6 +18,7 @@ import com.senla.courses.model.Book;
 import com.senla.courses.model.Order;
 import com.senla.courses.model.Request;
 import com.senla.courses.service.BookService;
+import com.senla.courses.service.CustomerService;
 import com.senla.courses.service.OrderService;
 import com.senla.courses.service.RequestService;
 
@@ -34,13 +36,14 @@ public class BookstoreFacade {
     private static final IOrderDao orderDao = new OrderDao();
     private static final IRequestDao requestDao = new RequestDao();
     private static final ICustomerDao customerDao = new CustomerDao();
+    private static final ICustomerService customerService = new CustomerService(customerDao);
     private static final IRequestService requestService = new RequestService(requestDao);
     private static final IBookService bookService = new BookService(bookDao, requestDao, requestService);
     private static final IOrderService orderService = new OrderService(orderDao, requestService);
     private final List<Comparator<Book>> bookComp = new ArrayList<>();
     private final List<Comparator<Order>> orderComp = new ArrayList<>();
-    private static Logger log = Logger.getLogger(BookDao.class.getName());
-    private static final String GET_BY_ID_ERROR_MESSAGE = "Could not find an book by id: %d";
+    private static final Logger log = Logger.getLogger(BookDao.class.getName());
+    //private static final String GET_BY_ID_ERROR_MESSAGE = "Could not find an book by id: %d";
 
     public  List<Comparator<Book>> createBookComparators(){
         bookComp.add(Book.NameComparator);
@@ -63,16 +66,16 @@ public class BookstoreFacade {
         Book book1 = new Book("Созерцатель", "Алексей Пехов", 2018, 12.5, LocalDate.of(2021, 1, 3), true);
         Book book2 = new Book("Страж", "Алексей Пехов", 2019, 17.5, LocalDate.of(2020, 9, 21), true);
         Book book3 = new Book("Бессмертный", "Кэтрин Валенте", 2018, 12.3, LocalDate.of(2020, 7, 28), false);
-        bookDao.save(book1);
-        bookDao.save(book2);
-        bookDao.save(book3);
-        bookDao.save(new Book("Черные крылья", "Эд Макдональд", 2018, 14.3, LocalDate.of(2020, 12, 12), false));
+        bookService.save(book1);
+        bookService.save(book2);
+        bookService.save(book3);
+        bookService.save(new Book("Черные крылья", "Эд Макдональд", 2018, 14.3, LocalDate.of(2020, 12, 12), false));
         Customer customer1 = new Customer("Иван", "Иванов", "+375297746363");
         Customer customer2 = new Customer("Петр",  "Петров", "+375445878745");
         Customer customer3 = new Customer("Дмитрий", "Сидоров ", "+375443698521");
-        customerDao.save(customer1);
-        customerDao.save(customer2);
-        customerDao.save(customer3);
+        customerService.save(customer1);
+        customerService.save(customer2);
+        customerService.save(customer3);
         List<Book> books = new ArrayList<>();
         books.add(book1);
         books.add(book2);
@@ -92,18 +95,18 @@ public class BookstoreFacade {
     }
 
     public void saveBook(Book book){
-        bookDao.save(book);
+        bookService.save(book);
         System.out.println(book);
     }
 
     public List<Book> getAllBook(){
-        return bookDao.getAll();
+        return bookService.getAll();
     }
 
     public Book getBookById(Long id){
         try{
-            return bookDao.getById(id);
-        } catch(DaoException e){
+            return bookService.getById(id);
+        } catch(ServiceException e){
             log.log(Level.WARNING, "Search showed no matches");
             throw e;
         }
@@ -114,20 +117,25 @@ public class BookstoreFacade {
     }
 
     public void printBook(Long id){
-        System.out.println(getBookById(id));
+        try{
+            System.out.println(getBookById(id));
+        } catch (ServiceException e){
+            log.log(Level.WARNING, "Search showed no matches");
+            throw e;
+        }
     }
 
     public void updateBook(Book book, Long id){
         book.setId(id);
-        bookDao.update(book);
+        bookService.update(book);
     }
 
     public void deleteBook(Long id){
-        bookDao.delete(getBookById(id));
+        bookService.delete(getBookById(id));
     }
 
     public void sortBooks(Comparator<Book> bookComparator){
-        List<Book> bookList = bookDao.getSortBooks(bookComparator);
+        List<Book> bookList = bookService.getSortBooks(bookComparator);
         bookList.forEach(System.out::println);
     }
 
@@ -145,10 +153,12 @@ public class BookstoreFacade {
         bookService.cancelBook(book);
     }
 
-    public void printBooksByAvailability(Boolean availability) {
-        List<Book> books= new ArrayList<>(bookDao.getAll());
-        books.stream().filter(book -> book.getAvailability().equals(availability))
-                .collect(Collectors.toList()).forEach(System.out::println);
+    public List<Book> printBooksByAvailability(Boolean availability) {
+        List<Book> books= new ArrayList<>(bookService.getAll());
+        List<Book> books1 = books.stream().filter(book -> book.getAvailability().equals(availability))
+                .collect(Collectors.toList());
+        books1.forEach(System.out::println);
+        return books1;
     }
 
     public void createOrder(Customer customer, List<Book> books) {
@@ -158,7 +168,7 @@ public class BookstoreFacade {
 
     public Customer createCustomer(String name, String surname, String phoneNumber) {
         Customer customer = new Customer(name, surname, phoneNumber);
-        customerDao.save(customer);
+        customerService.save(customer);
         return customer;
     }
 
@@ -172,27 +182,47 @@ public class BookstoreFacade {
 
     public void setBookDescription(Book book, String description){
         book.setDescription(description);
-        bookDao.update(book);
+        bookService.update(book);
     }
 
     public void getBookDescription(Long id){
-        bookService.lookDescription(getBookById(id));
+        try {
+            bookService.lookDescription(getBookById(id));
+        } catch (ServiceException e){
+            log.log(Level.WARNING, "Search showed no matches");
+            throw e;
+        }
     }
 
     public void printAllOrders(){
-        orderDao.getAll().forEach(System.out::println);
+        orderService.getAll().forEach(System.out::println);
     }
 
     public Order getOrderById(Long id){
-        return orderDao.getById(id);
+        try {
+            return orderService.getById(id);
+        } catch (ServiceException e){
+            log.log(Level.WARNING, "An order with this id was not found");
+            throw e;
+        }
     }
 
     public void printOrder(Long id) {
-        orderService.orderDetails(getOrderById(id));
+        try {
+            orderService.orderDetails(getOrderById(id));
+        } catch (ServiceException e){
+            log.log(Level.WARNING, "An order with this id was not found");
+            throw e;
+        }
     }
 
     public void deleteOrder(Long id){
-        orderService.cancelOrder(getOrderById(id));
+        try{
+            orderService.cancelOrder(getOrderById(id));
+        }  catch (ServiceException e) {
+            log.log(Level.WARNING, "An order with this id was not found");
+            throw e;
+        }
     }
 
     public Order.Status getStatus(int severity) {
@@ -210,15 +240,20 @@ public class BookstoreFacade {
 
 
     public void changeOrderStatus(Long id, Order.Status status){
-        if(status.equals(Order.Status.COMPLETED)){
-            orderService.completeOrder(getOrderById(id), LocalDate.now());
-        }else {
-            orderService.changeStatus(getOrderById(id), status);
+        try {
+            if(status.equals(Order.Status.COMPLETED)){
+                orderService.completeOrder(getOrderById(id), LocalDate.now());
+            }else {
+                orderService.changeStatus(getOrderById(id), status);
+            }
+        } catch (ServiceException e) {
+            log.log(Level.WARNING, "An order with this id was not found");
+            throw e;
         }
     }
 
     public void sortOrders(Comparator<Order> orderComparator){
-        List<Order> orderList = orderDao.getSortOrders(orderComparator);
+        List<Order> orderList = orderService.getSortOrders(orderComparator);
         orderList.forEach(System.out::println);
     }
 
@@ -248,34 +283,50 @@ public class BookstoreFacade {
     }
 
     public void createRequest(Book book) {
-        try {
-            requestService.createRequest(book);
-        } catch (Exception e) {
-            log.log(Level.WARNING, "Search showed no matches");
+        requestService.createRequest(book);
+    }
+
+
+    public List<Request> printAllRequests(){
+        requestService.getAll().forEach(System.out::println);
+        return requestService.getAll();
+    }
+
+    public void deleteRequest(Long id){
+        try{
+            requestService.delete(requestService.getById(id));
+        } catch (ServiceException e){
+            log.log(Level.WARNING, "An request with this id was not found");
             throw e;
         }
     }
 
-
-    public void printAllRequests(){
-        requestDao.getAll().forEach(System.out::println);
-    }
-
-    public void deleteRequest(Long id){
-        requestDao.delete(requestDao.getById(id));
-    }
-
     public void closeRequest(Long id){
-        requestService.closeRequest(requestDao.getById(id));
+        try{
+            requestService.closeRequest(requestService.getById(id));
+        } catch (ServiceException e){
+            log.log(Level.WARNING, "An request with this id was not found");
+            throw e;
+        }
     }
 
     public void sortRequestsByBookCount(){
         List<Request> requestList = requestService.getSortRequestsByBookCount();
-        requestList.forEach(System.out::println);
+        if(requestList.isEmpty()){
+            System.out.println("Пока в базе нет запросов");
+        }
+        else {
+            requestList.forEach(System.out::println);
+        }
     }
 
     public void sortRequestsByBookTitle(){
-        List<Request> requestList = requestDao.getSortRequests();
-        requestList.forEach(System.out::println);
+        List<Request> requestList = requestService.getSortRequests();
+        if(requestList.isEmpty()){
+            System.out.println("Пока в базе нет запросов");
+        }
+        else {
+            requestList.forEach(System.out::println);
+        }
     }
 }

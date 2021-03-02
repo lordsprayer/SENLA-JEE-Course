@@ -9,7 +9,7 @@ import java.util.logging.LogRecord;
 
 public class FileFormatter extends Formatter {
 
-    private static final MessageFormat messageFormat = new MessageFormat("{3,date,hh:mm:ss / yyyy-mm-dd} - " +
+    private static final MessageFormat messageFormat = new MessageFormat("{3,date,HH:mm:ss / yyyy-mm-dd} - " +
             "{1} - [{2}] - {5} - {4} \n {0} \n");
 
     @Override

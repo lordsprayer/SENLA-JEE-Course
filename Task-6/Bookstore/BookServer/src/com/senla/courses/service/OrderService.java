@@ -3,6 +3,8 @@ package com.senla.courses.service;
 import com.senla.courses.api.dao.IOrderDao;
 import com.senla.courses.api.service.IOrderService;
 import com.senla.courses.api.service.IRequestService;
+import com.senla.courses.exception.DaoException;
+import com.senla.courses.exception.ServiceException;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Customer;
 import com.senla.courses.model.Order;
@@ -11,16 +13,39 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class OrderService implements IOrderService {
 
+    private static final Logger log = Logger.getLogger(OrderService.class.getName());
     private final IOrderDao orderDao;
     private final IRequestService requestService;
 
     public OrderService(IOrderDao orderDao, IRequestService requestService) {
         this.orderDao = orderDao;
         this.requestService = requestService;
+    }
+
+    @Override
+    public Order getById(Long id) {
+        try {
+            return orderDao.getById (id);
+        } catch (DaoException e) {
+            log.log (Level.WARNING, "Search showed no matches");
+            throw new ServiceException ("Search showed no matches");
+        }
+    }
+
+    @Override
+    public List<Order> getAll() {
+        return orderDao.getAll();
+    }
+
+    @Override
+    public List<Order> getSortOrders(Comparator<Order> comp) {
+        return orderDao.getSortOrders(comp);
     }
 
     @Override

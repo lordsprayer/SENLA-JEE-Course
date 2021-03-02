@@ -7,7 +7,7 @@ import java.util.logging.LogRecord;
 
 public class ConsoleFormatter extends Formatter {
 
-    private static final MessageFormat messageFormat = new MessageFormat("{1,date,hh:mm:ss / yyyy-mm-dd} - {0} - {2} \n");
+    private static final MessageFormat messageFormat = new MessageFormat("{1,date,HH:mm:ss / yyyy-mm-dd} - {0} - {2} \n");
 
     @Override
     public String format(LogRecord record) {
