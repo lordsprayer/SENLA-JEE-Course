@@ -7,6 +7,8 @@ public class PrintAllOrders extends AbstractAction implements IAction {
 
     @Override
     public void execute() {
-        facade.printAllOrders();
+        if(facade.printAllOrders().isEmpty()){
+            System.out.println("В базе ещё нет заказов");
+        }
     }
 }

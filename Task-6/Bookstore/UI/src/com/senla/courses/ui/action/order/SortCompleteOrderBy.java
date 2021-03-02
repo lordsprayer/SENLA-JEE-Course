@@ -14,14 +14,8 @@ public class SortCompleteOrderBy extends AbstractAction implements IAction {
 
     @Override
     public void execute() {
-        System.out.println("Введите дату:");
-        System.out.println("Введите год ");
-        int year = scan.nextInt();
-        System.out.println("Введите месяц ");
-        int month = scan.nextInt();
-        System.out.println("Введите день ");
-        int day = scan.nextInt();
-        LocalDate date = LocalDate.of(year, month,day);
-        facade.sortCompleteOrders(facade.createOrderComparators().get(index), date);
+        if(facade.sortCompleteOrders(facade.createOrderComparators().get(index), facade.createDate()).isEmpty()){
+            System.out.println("В базе пока нет заказов");
+        }
     }
 }

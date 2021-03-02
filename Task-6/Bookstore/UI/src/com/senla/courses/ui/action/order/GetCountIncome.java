@@ -7,6 +7,6 @@ public class GetCountIncome extends AbstractAction implements IAction {
 
     @Override
     public void execute() {
-        System.out.println(facade.countIncome(facade.createDate()));
+        System.out.println("Прибыль за период времени = " + facade.countIncome(facade.createDate()));
     }
 }

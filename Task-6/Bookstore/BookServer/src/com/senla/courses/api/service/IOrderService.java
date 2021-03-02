@@ -14,7 +14,7 @@ public interface IOrderService {
     List<Order> getAll();
     List<Order> getSortOrders(Comparator<Order> comp);
     Order createOrder(Customer customer, List<Book> books, LocalDate creationDate);
-    void cancelOrder(Order order);
+    void deleteOrder(Order order);
     void changeStatus(Order order, Order.Status status);
     Double countIncome (LocalDate date);
     Integer countCompleteOrders(LocalDate date);
