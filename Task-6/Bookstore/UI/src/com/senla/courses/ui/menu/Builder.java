@@ -54,12 +54,12 @@ public class Builder {
         Menu sortingBookMenu = new Menu();
         sortingBookMenu.addMenuItem(new MenuItem("Выход", () -> {}, createExitMenu()));
         sortingBookMenu.addMenuItem(new MenuItem("Без сортировки", new PrintAllBooks(), rootMenu));
-        sortingBookMenu.addMenuItem(new MenuItem("Сортирвка по названию", new SortBookBy(0), rootMenu));
-        sortingBookMenu.addMenuItem(new MenuItem("Сортирвка по дате издания", new SortBookBy(1), rootMenu));
-        sortingBookMenu.addMenuItem(new MenuItem("Сортирвка по цене", new SortBookBy(2), rootMenu));
-        sortingBookMenu.addMenuItem(new MenuItem("Сортирвка по наличию на складе", new SortBookBy(3), rootMenu));
-        sortingBookMenu.addMenuItem(new MenuItem("Сортирвка залежавшихся книг по дате поступления", new SortUnsoldBookBy(4), rootMenu));
-        sortingBookMenu.addMenuItem(new MenuItem("Сортирвка залежавшихся книг по стоимости", new SortUnsoldBookBy(2), rootMenu));
+        sortingBookMenu.addMenuItem(new MenuItem("Сортировка по названию", new SortBookBy(0), rootMenu));
+        sortingBookMenu.addMenuItem(new MenuItem("Сортировка по дате издания", new SortBookBy(1), rootMenu));
+        sortingBookMenu.addMenuItem(new MenuItem("Сортировка по цене", new SortBookBy(2), rootMenu));
+        sortingBookMenu.addMenuItem(new MenuItem("Сортировка по наличию на складе", new SortBookBy(3), rootMenu));
+        sortingBookMenu.addMenuItem(new MenuItem("Сортировка залежавшихся книг по дате поступления", new SortUnsoldBookBy(4), rootMenu));
+        sortingBookMenu.addMenuItem(new MenuItem("Сортировка залежавшихся книг по стоимости", new SortUnsoldBookBy(2), rootMenu));
         return sortingBookMenu;
     }
 
@@ -82,11 +82,11 @@ public class Builder {
         Menu sortingOrderMenu = new Menu();
         sortingOrderMenu.addMenuItem(new MenuItem("Выход", () -> {}, createExitMenu()));
         sortingOrderMenu.addMenuItem(new MenuItem("Без сортировки", new PrintAllOrders(), rootMenu));
-        sortingOrderMenu.addMenuItem(new MenuItem("Сортирвка по дате исполнения", new SortOrderBy(0), rootMenu));
-        sortingOrderMenu.addMenuItem(new MenuItem("Сортирвка по цене", new SortOrderBy(1), rootMenu));
-        sortingOrderMenu.addMenuItem(new MenuItem("Сортирвка по статусу", new SortOrderBy(2), rootMenu));
-        sortingOrderMenu.addMenuItem(new MenuItem("Сортирвка выполненных заказов за период времени по дате исполнения", new SortCompleteOrderBy(0), rootMenu));
-        sortingOrderMenu.addMenuItem(new MenuItem("Сортирвка выполненных заказов за период времени по цене", new SortCompleteOrderBy(1), rootMenu));
+        sortingOrderMenu.addMenuItem(new MenuItem("Сортировка по дате исполнения", new SortOrderBy(0), rootMenu));
+        sortingOrderMenu.addMenuItem(new MenuItem("Сортировка по цене", new SortOrderBy(1), rootMenu));
+        sortingOrderMenu.addMenuItem(new MenuItem("Сортировка по статусу", new SortOrderBy(2), rootMenu));
+        sortingOrderMenu.addMenuItem(new MenuItem("Сортировка выполненных заказов за период времени по дате исполнения", new SortCompleteOrderBy(0), rootMenu));
+        sortingOrderMenu.addMenuItem(new MenuItem("Сортировка выполненных заказов за период времени по цене", new SortCompleteOrderBy(1), rootMenu));
         return sortingOrderMenu;
     }
 

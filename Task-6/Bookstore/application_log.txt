@@ -1,8 +1,19 @@
-00:25:23 / 2021-25-03 - WARNING - [com.senla.courses.dao.OrderDao] - getById - Could not find an order by id: 5 
+13:14:54 / 2021-14-03 - WARNING - [com.senla.courses.dao.BookDao] - getById - Could not find an book by id: 6 
    
-00:25:23 / 2021-25-03 - WARNING - [com.senla.courses.service.OrderService] - getById - Search showed no matches 
+13:14:54 / 2021-14-03 - WARNING - [com.senla.courses.service.BookService] - getById - Search showed no matches 
    
-00:25:23 / 2021-25-03 - WARNING - [com.senla.courses.facade.BookstoreFacade] - getOrderById - An order with this id was not found 
+13:14:54 / 2021-14-03 - WARNING - [com.senla.courses.facade.BookstoreFacade] - getBookById - Search showed no matches 
    
-00:25:23 / 2021-25-03 - WARNING - [com.senla.courses.facade.BookstoreFacade] - printOrder - An order with this id was not found 
+13:14:54 / 2021-14-03 - WARNING - [com.senla.courses.facade.BookstoreFacade] - getBookDescription - Search showed no matches 
    
+13:14:54 / 2021-14-03 - WARNING - [com.senla.courses.ui.action.book.GetBookDescription] - execute - Search showed no matches 
+ com.senla.courses.exception.ServiceException: Search showed no matches
+	at bookServer/com.senla.courses.service.BookService.getById(BookService.java:43)
+	at bookServer/com.senla.courses.facade.BookstoreFacade.getBookById(BookstoreFacade.java:108)
+	at bookServer/com.senla.courses.facade.BookstoreFacade.getBookDescription(BookstoreFacade.java:197)
+	at ui/com.senla.courses.ui.action.book.GetBookDescription.execute(GetBookDescription.java:20)
+	at ui/com.senla.courses.ui.menu.MenuItem.doAction(MenuItem.java:17)
+	at ui/com.senla.courses.ui.menu.Navigator.navigate(Navigator.java:33)
+	at ui/com.senla.courses.ui.menu.MenuController.run(MenuController.java:32)
+	at bookstore/com.start.Starter.main(Starter.java:11)
+ 

@@ -12,6 +12,8 @@ public class SortBookBy extends AbstractAction implements IAction {
 
     @Override
     public void execute() {
-        facade.sortBooks(facade.createBookComparators().get(index));
+        if(facade.sortBooks(facade.createBookComparators().get(index)).isEmpty()){
+            System.out.println("В базе пока нет книг");
+        }
     }
 }

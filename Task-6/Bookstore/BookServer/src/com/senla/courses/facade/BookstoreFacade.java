@@ -134,15 +134,17 @@ public class BookstoreFacade {
         bookService.delete(getBookById(id));
     }
 
-    public void sortBooks(Comparator<Book> bookComparator){
+    public List<Book> sortBooks(Comparator<Book> bookComparator){
         List<Book> bookList = bookService.getSortBooks(bookComparator);
         bookList.forEach(System.out::println);
+        return bookList;
     }
 
-    public void sortUnsoldBooks(Comparator<Book> bookComparator){
+    public List<Book> sortUnsoldBooks(Comparator<Book> bookComparator){
         List<Book> bookList = bookService.unsoldBook();
         bookList.sort(bookComparator);
         bookList.forEach(System.out::println);
+        return bookList;
     }
 
     public void addBookToWarehouse(Book book){
@@ -190,9 +192,9 @@ public class BookstoreFacade {
         bookService.update(book);
     }
 
-    public void getBookDescription(Long id){
+    public String getBookDescription(Long id){
         try {
-            bookService.lookDescription(getBookById(id));
+            return bookService.getDescription(getBookById(id));
         } catch (ServiceException e){
             log.log(Level.WARNING, "Search showed no matches");
             throw e;

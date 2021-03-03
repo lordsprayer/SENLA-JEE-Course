@@ -85,8 +85,9 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public void lookDescription(Book book) {
+    public String getDescription(Book book) {
         System.out.println(book.getDescription());
+        return book.getDescription();
     }
 
     @Override
