@@ -9,3 +9,4 @@ out
 gen
 META-INF
 *.txt
+*.log
