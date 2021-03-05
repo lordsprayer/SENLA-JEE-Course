@@ -61,7 +61,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public void cancelOrder(Order order){
+    public void deleteOrder(Order order){
         orderDao.delete(order);
     }
 

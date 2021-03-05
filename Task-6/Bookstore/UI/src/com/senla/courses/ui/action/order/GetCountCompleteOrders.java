@@ -7,6 +7,6 @@ public class GetCountCompleteOrders extends AbstractAction implements IAction {
 
     @Override
     public void execute() {
-        System.out.println(facade.countCompleteOrders(facade.createDate()));
+        System.out.println("Количество выполненных заказов, удовлетворяющих условиям = " + facade.countCompleteOrders(facade.createDate()));
     }
 }

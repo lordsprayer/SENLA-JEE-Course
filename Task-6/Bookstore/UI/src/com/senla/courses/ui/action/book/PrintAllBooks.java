@@ -7,6 +7,10 @@ public class PrintAllBooks extends AbstractAction implements IAction {
 
     @Override
     public void execute() {
-        facade.printAllBook();
+        if(facade.getAllBook().isEmpty()){
+            System.out.println("В базе пока нет книг");
+        } else {
+            facade.printAllBook();
+        }
     }
 }

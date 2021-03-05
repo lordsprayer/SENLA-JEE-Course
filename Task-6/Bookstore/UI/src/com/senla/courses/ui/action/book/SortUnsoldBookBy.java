@@ -12,6 +12,9 @@ public class SortUnsoldBookBy extends AbstractAction implements IAction {
 
     @Override
     public void execute() {
-        facade.sortUnsoldBooks(facade.createBookComparators().get(index));
+
+        if(facade.sortUnsoldBooks(facade.createBookComparators().get(index)).isEmpty()){
+            System.out.println("В базе нет залежавшихся книг");
+        }
     }
 }

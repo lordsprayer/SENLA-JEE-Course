@@ -15,6 +15,6 @@ public interface IBookService {
     void cancelBook(Book book);
     void addBook(Book book);
     List<Book> unsoldBook();
-    void lookDescription(Book book);
+    String getDescription(Book book);
     List<Book> getSortBooks(Comparator<Book> comp);
 }

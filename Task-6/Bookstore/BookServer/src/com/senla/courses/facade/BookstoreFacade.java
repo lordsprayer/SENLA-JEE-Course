@@ -134,15 +134,17 @@ public class BookstoreFacade {
         bookService.delete(getBookById(id));
     }
 
-    public void sortBooks(Comparator<Book> bookComparator){
+    public List<Book> sortBooks(Comparator<Book> bookComparator){
         List<Book> bookList = bookService.getSortBooks(bookComparator);
         bookList.forEach(System.out::println);
+        return bookList;
     }
 
-    public void sortUnsoldBooks(Comparator<Book> bookComparator){
+    public List<Book> sortUnsoldBooks(Comparator<Book> bookComparator){
         List<Book> bookList = bookService.unsoldBook();
         bookList.sort(bookComparator);
         bookList.forEach(System.out::println);
+        return bookList;
     }
 
     public void addBookToWarehouse(Book book){
@@ -172,12 +174,17 @@ public class BookstoreFacade {
         return customer;
     }
 
-    public List<Book> createBookList(List<Long> ids){
-        List<Book> bookList = new ArrayList<>();
-        for(Long id : ids ){
-            bookList.add(getBookById(id));
+    public List<Book> createBookList(List<Long> ids) {
+        try {
+            List<Book> bookList = new ArrayList<>();
+            for (Long id : ids) {
+                bookList.add(getBookById(id));
+            }
+            return bookList;
+        } catch (ServiceException e) {
+            log.log(Level.WARNING, "Search showed no matches");
+            throw e;
         }
-        return bookList;
     }
 
     public void setBookDescription(Book book, String description){
@@ -185,17 +192,18 @@ public class BookstoreFacade {
         bookService.update(book);
     }
 
-    public void getBookDescription(Long id){
+    public String getBookDescription(Long id){
         try {
-            bookService.lookDescription(getBookById(id));
+            return bookService.getDescription(getBookById(id));
         } catch (ServiceException e){
             log.log(Level.WARNING, "Search showed no matches");
             throw e;
         }
     }
 
-    public void printAllOrders(){
+    public List<Order> printAllOrders(){
         orderService.getAll().forEach(System.out::println);
+        return orderService.getAll();
     }
 
     public Order getOrderById(Long id){
@@ -218,7 +226,7 @@ public class BookstoreFacade {
 
     public void deleteOrder(Long id){
         try{
-            orderService.cancelOrder(getOrderById(id));
+            orderService.deleteOrder(getOrderById(id));
         }  catch (ServiceException e) {
             log.log(Level.WARNING, "An order with this id was not found");
             throw e;
@@ -235,7 +243,8 @@ public class BookstoreFacade {
         if (severity == 3) {
             return Order.Status.CANCELED;
         } else
-            return null;
+            log.log(Level.WARNING, "Wrong order status");
+            throw new NullPointerException();
     }
 
 
@@ -252,14 +261,16 @@ public class BookstoreFacade {
         }
     }
 
-    public void sortOrders(Comparator<Order> orderComparator){
+    public List<Order> sortOrders(Comparator<Order> orderComparator){
         List<Order> orderList = orderService.getSortOrders(orderComparator);
         orderList.forEach(System.out::println);
+        return orderList;
     }
 
-    public void sortCompleteOrders(Comparator<Order> orderComparator,LocalDate date){
+    public List<Order> sortCompleteOrders(Comparator<Order> orderComparator,LocalDate date){
         List<Order> orderList = orderService.getSortCompletedOrders(orderComparator, date);
         orderList.forEach(System.out::println);
+        return orderList;
     }
 
     public Double countIncome(LocalDate date){
@@ -271,15 +282,20 @@ public class BookstoreFacade {
     }
 
     public LocalDate createDate(){
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Введите дату:");
-        System.out.println("Введите год");
-        int year = scan.nextInt();
-        System.out.println("Введите месяц");
-        int month = scan.nextInt();
-        System.out.println("Введите день");
-        int day = scan.nextInt();
-        return LocalDate.of(year, month,day);
+        try {
+            Scanner scan = new Scanner(System.in);
+            System.out.println("Введите дату:");
+            System.out.println("Введите год");
+            int year = scan.nextInt();
+            System.out.println("Введите месяц");
+            int month = scan.nextInt();
+            System.out.println("Введите день");
+            int day = scan.nextInt();
+            return LocalDate.of(year, month, day);
+        } catch (Exception e){
+            System.out.println("Данные введены неверно");
+            return LocalDate.now();
+        }
     }
 
     public void createRequest(Book book) {
