@@ -116,4 +116,9 @@ public class OrderService implements IOrderService {
                 .filter(o -> o.getCompletionDate().compareTo(date)>=0)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void saveAll() {
+        orderDao.saveAll();
+    }
 }

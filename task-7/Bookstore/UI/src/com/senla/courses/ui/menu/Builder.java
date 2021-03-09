@@ -1,5 +1,6 @@
 package com.senla.courses.ui.menu;
 
+import com.senla.courses.ui.action.SaveAction;
 import com.senla.courses.ui.action.TempAction;
 import com.senla.courses.ui.action.book.*;
 import com.senla.courses.ui.action.order.*;
@@ -19,7 +20,7 @@ public class Builder {
 
     public void buildMenu(){
         rootMenu = new Menu();
-        rootMenu.addMenuItem(new MenuItem("Выход", () -> {}, createExitMenu()));
+        rootMenu.addMenuItem(new MenuItem("Выход", new SaveAction(), createExitMenu()));
         rootMenu.addMenuItem(new MenuItem("Работа с книгами", () -> {}, createBookMenu()));
         rootMenu.addMenuItem(new MenuItem("Работа с заказами", () -> {}, createOrderMenu()));
         rootMenu.addMenuItem(new MenuItem("Работа с запросами", () -> {}, createRequestMenu()));
@@ -38,7 +39,7 @@ public class Builder {
 
     private Menu createBookMenu(){
         Menu bookMenu = new Menu();
-        bookMenu.addMenuItem(new MenuItem("Выход", () -> {}, createExitMenu()));
+        bookMenu.addMenuItem(new MenuItem("Выход", new SaveAction(), createExitMenu()));
         bookMenu.addMenuItem(new MenuItem("Добавить книгу", new AddBook(), rootMenu));
         bookMenu.addMenuItem(new MenuItem("Редактировать книгу", new UpdateBook(), rootMenu));
         bookMenu.addMenuItem(new MenuItem("Удалить книгу", new DeleteBook(), rootMenu));
@@ -52,7 +53,7 @@ public class Builder {
 
     private Menu createSortingBookMenu(){
         Menu sortingBookMenu = new Menu();
-        sortingBookMenu.addMenuItem(new MenuItem("Выход", () -> {}, createExitMenu()));
+        sortingBookMenu.addMenuItem(new MenuItem("Выход", new SaveAction(), createExitMenu()));
         sortingBookMenu.addMenuItem(new MenuItem("Без сортировки", new PrintAllBooks(), rootMenu));
         sortingBookMenu.addMenuItem(new MenuItem("Сортировка по названию", new SortBookBy(0), rootMenu));
         sortingBookMenu.addMenuItem(new MenuItem("Сортировка по дате издания", new SortBookBy(1), rootMenu));
@@ -67,7 +68,7 @@ public class Builder {
 
     private Menu createOrderMenu(){
         Menu orderMenu = new Menu();
-        orderMenu.addMenuItem(new MenuItem("Выход", () -> {}, createExitMenu()));
+        orderMenu.addMenuItem(new MenuItem("Выход", new SaveAction(), createExitMenu()));
         orderMenu.addMenuItem(new MenuItem("Создать заказ", new CreateOrder(), rootMenu));
         orderMenu.addMenuItem(new MenuItem("Удалить заказ", new DeleteOrder(), rootMenu));
         orderMenu.addMenuItem(new MenuItem("Изменить статус заказа", new ChangeOrderStatus(), rootMenu));
@@ -80,7 +81,7 @@ public class Builder {
 
     private Menu createSortingOrderMenu(){
         Menu sortingOrderMenu = new Menu();
-        sortingOrderMenu.addMenuItem(new MenuItem("Выход", () -> {}, createExitMenu()));
+        sortingOrderMenu.addMenuItem(new MenuItem("Выход", new SaveAction(), createExitMenu()));
         sortingOrderMenu.addMenuItem(new MenuItem("Без сортировки", new PrintAllOrders(), rootMenu));
         sortingOrderMenu.addMenuItem(new MenuItem("Сортировка по дате исполнения", new SortOrderBy(0), rootMenu));
         sortingOrderMenu.addMenuItem(new MenuItem("Сортировка по цене", new SortOrderBy(1), rootMenu));
@@ -92,7 +93,7 @@ public class Builder {
 
     private Menu createRequestMenu(){
         Menu requestMenu = new Menu();
-        requestMenu.addMenuItem(new MenuItem("Выход", () -> {}, createExitMenu()));
+        requestMenu.addMenuItem(new MenuItem("Выход", new SaveAction(), createExitMenu()));
         requestMenu.addMenuItem(new MenuItem("Создать запрос", new CreateRequest(), rootMenu));
         requestMenu.addMenuItem(new MenuItem("Удалить запрос", new DeleteRequest(), rootMenu));
         requestMenu.addMenuItem(new MenuItem("Закрыть запрос", new CloseRequest(), rootMenu));

@@ -4,4 +4,5 @@ module bookServer {
     exports com.senla.courses.model;
     exports com.senla.courses.config;
     exports com.senla.courses.exception;
+    exports com.senla.courses.util;
 }

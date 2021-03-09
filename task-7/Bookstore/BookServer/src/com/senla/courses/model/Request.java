@@ -1,9 +1,10 @@
 package com.senla.courses.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 
-public class Request extends AId implements Comparable<Request>{
+public class Request extends AId implements Comparable<Request>, Serializable {
     private Book book;
     private LocalDate date;
     private Boolean status;

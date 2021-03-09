@@ -3,7 +3,7 @@ package com.senla.courses.dao;
 import com.senla.courses.api.dao.IOrderDao;
 import com.senla.courses.exception.DaoException;
 import com.senla.courses.model.Order;
-import com.senla.courses.util.IdGenerator;
+import com.senla.courses.util.SerializationHandler;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -15,11 +15,22 @@ public class OrderDao implements IOrderDao {
 
     private static final String GET_BY_ID_ERROR_MESSAGE = "Could not find an order by id: %d";
     private static final Logger log = Logger.getLogger(BookDao.class.getName());
-    private final List<Order> orders = new ArrayList<>();
+    private List<Order> orders;
+
+    public OrderDao() {
+        try{
+            orders = SerializationHandler.deserialize(Order.class);
+        } catch(Exception e){
+            orders = new ArrayList<>();}
+    }
 
     @Override
     public void save(Order order) {
-        order.setId(IdGenerator.GenerateOrderId());
+        try {
+            order.setId(orders.get(orders.size() - 1).getId() + 1L);
+        } catch (Exception e){
+            order.setId(1L);
+        }
         orders.add(order);
     }
 
@@ -61,6 +72,11 @@ public class OrderDao implements IOrderDao {
         List<Order> orderList = new ArrayList<>(orders);
         orderList.sort(comp);
         return orderList;
+    }
+
+    @Override
+    public void saveAll() {
+        SerializationHandler.serialize(orders);
     }
 
 }

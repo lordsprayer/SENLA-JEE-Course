@@ -10,5 +10,6 @@ public interface ICustomerDao {
     Customer update(Customer customer);
     Customer getById(Long id);
     List<Customer> getAll();
+    void saveAll();
 
 }

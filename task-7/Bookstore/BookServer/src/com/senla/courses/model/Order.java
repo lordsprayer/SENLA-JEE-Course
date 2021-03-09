@@ -1,11 +1,12 @@
 package com.senla.courses.model;
 
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 
-public class Order extends AId implements Comparable<Order>{
+public class Order extends AId implements Comparable<Order>, Serializable {
 
     private Customer customer;
     private List<Book> bookList;

@@ -6,6 +6,7 @@ import com.senla.courses.exception.DaoException;
 import com.senla.courses.exception.ServiceException;
 import com.senla.courses.model.Customer;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,5 +27,15 @@ public class CustomerService implements ICustomerService {
             log.log(Level.WARNING, "Search showed no matches");
             throw new ServiceException("Search showed no matches");
         }
+    }
+
+    @Override
+    public void saveAll() {
+        customerDao.saveAll();
+    }
+
+    @Override
+    public List<Customer> getAll() {
+        return customerDao.getAll();
     }
 }

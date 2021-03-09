@@ -1,17 +1,8 @@
-15:42:41 / 2021-42-05 - WARNING - [com.senla.courses.dao.BookDao] - getById - Could not find an book by id: 5 
+13:36:39 / 2021-36-09 - WARNING - [com.senla.courses.util.SerializationHandler] - deserialize - Deserialization from file failed: BookServer\resources\serialization_file.txt (Не удается найти указанный файл) 
    
-15:42:41 / 2021-42-05 - WARNING - [com.senla.courses.service.BookService] - getById - Search showed no matches 
+13:36:40 / 2021-36-09 - WARNING - [com.senla.courses.util.SerializationHandler] - deserialize - Deserialization from file failed: BookServer\resources\serialization_file.txt (Не удается найти указанный файл) 
    
-15:42:41 / 2021-42-05 - WARNING - [com.senla.courses.facade.BookstoreFacade] - getBookById - Search showed no matches 
+13:36:40 / 2021-36-09 - WARNING - [com.senla.courses.util.SerializationHandler] - deserialize - Deserialization from file failed: BookServer\resources\serialization_file.txt (Не удается найти указанный файл) 
    
-15:42:41 / 2021-42-05 - WARNING - [com.senla.courses.ui.action.book.DeleteBook] - execute - Search showed no matches 
- com.senla.courses.exception.ServiceException: Search showed no matches
-	at bookServer/com.senla.courses.service.BookService.getById(BookService.java:43)
-	at bookServer/com.senla.courses.facade.BookstoreFacade.getBookById(BookstoreFacade.java:108)
-	at bookServer/com.senla.courses.facade.BookstoreFacade.deleteBook(BookstoreFacade.java:134)
-	at ui/com.senla.courses.ui.action.book.DeleteBook.execute(DeleteBook.java:20)
-	at ui/com.senla.courses.ui.menu.MenuItem.doAction(MenuItem.java:17)
-	at ui/com.senla.courses.ui.menu.Navigator.navigate(Navigator.java:33)
-	at ui/com.senla.courses.ui.menu.MenuController.run(MenuController.java:32)
-	at bookstore/com.start.Starter.main(Starter.java:11)
- 
+13:36:40 / 2021-36-09 - WARNING - [com.senla.courses.util.SerializationHandler] - deserialize - Deserialization from file failed: BookServer\resources\serialization_file.txt (Не удается найти указанный файл) 
+   

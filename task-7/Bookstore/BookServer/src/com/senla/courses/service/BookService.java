@@ -66,21 +66,23 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public void addBook(Book book) {
+    public void addBook(Book book, Boolean permit) {
         book.setAvailability(true);
         bookDao.update(book);
-        List<Request> requests= new ArrayList<>(requestDao.getAll());
-        for (Request request : requests){
-            if(request.getBook().equals(book)){
-                requestService.closeRequest(request);
+        if(permit) {
+            List<Request> requests = new ArrayList<>(requestDao.getAll());
+            for (Request request : requests) {
+                if (request.getBook().equals(book)) {
+                    requestService.closeRequest(request);
+                }
             }
         }
     }
 
     @Override
-    public List<Book> unsoldBook() {
+    public List<Book> unsoldBook(Integer months) {
         List<Book> books= new ArrayList<>(getAll());
-        LocalDate date = LocalDate.now().minusMonths(6);
+        LocalDate date = LocalDate.now().minusMonths(months);
         return books.stream().filter(book -> book.getReceiptDate().compareTo(date)<=0).collect(Collectors.toList());
     }
 
@@ -93,5 +95,10 @@ public class BookService implements IBookService {
     @Override
     public List<Book> getSortBooks(Comparator<Book> comp) {
         return bookDao.getSortBooks(comp);
+    }
+
+    @Override
+    public void saveAll() {
+        bookDao.saveAll();
     }
 }

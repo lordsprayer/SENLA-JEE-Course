@@ -3,7 +3,7 @@ package com.senla.courses.dao;
 import com.senla.courses.api.dao.IBookDao;
 import com.senla.courses.exception.DaoException;
 import com.senla.courses.model.Book;
-import com.senla.courses.util.IdGenerator;
+import com.senla.courses.util.SerializationHandler;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -15,11 +15,23 @@ public class BookDao implements IBookDao {
 
     private static final String GET_BY_ID_ERROR_MESSAGE = "Could not find an book by id: %d";
     private static final Logger log = Logger.getLogger(BookDao.class.getName());
-    private final List<Book> books = new ArrayList<>();
+    private List<Book> books;
+
+    public BookDao() {
+        try{
+            books = SerializationHandler.deserialize(Book.class);
+        } catch(Exception e){
+            books = new ArrayList<>();}
+    }
+
 
     @Override
     public void save(Book book) {
-        book.setId(IdGenerator.GenerateBookId());
+        try {
+            book.setId(books.get(books.size() - 1).getId() + 1L);
+        } catch (Exception e){
+            book.setId(1L);
+        }
         books.add(book);
     }
 
@@ -62,6 +74,11 @@ public class BookDao implements IBookDao {
         List<Book> bookList = new ArrayList<>(books);
         bookList.sort(comp);
         return bookList;
+    }
+
+    @Override
+    public void saveAll() {
+        SerializationHandler.serialize(books);
     }
 
 

@@ -3,7 +3,7 @@ package com.senla.courses.dao;
 import com.senla.courses.api.dao.IRequestDao;
 import com.senla.courses.exception.DaoException;
 import com.senla.courses.model.Request;
-import com.senla.courses.util.IdGenerator;
+import com.senla.courses.util.SerializationHandler;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -15,11 +15,22 @@ public class RequestDao implements IRequestDao {
 
     private static final String GET_BY_ID_ERROR_MESSAGE = "Could not find an request by id: %d";
     private static final Logger log = Logger.getLogger(BookDao.class.getName());
-    private final List<Request> requests = new ArrayList<>();
+    private List<Request> requests;
+
+    public RequestDao() {
+        try{
+            requests = SerializationHandler.deserialize(Request.class);
+        } catch(Exception e){
+            requests = new ArrayList<>();}
+    }
 
     @Override
     public void save(Request request) {
-        request.setId(IdGenerator.GenerateRequestId());
+        try {
+            request.setId(requests.get(requests.size() - 1).getId() + 1L);
+        } catch (Exception e){
+            request.setId(1L);
+        }
         requests.add(request);
     }
 
@@ -57,6 +68,11 @@ public class RequestDao implements IRequestDao {
         List<Request> requestList = new ArrayList<>(requests);
         requestList.sort(Comparator.comparing(r -> r.getBook().getTitle()));
         return requestList;
+    }
+
+    @Override
+    public void saveAll() {
+        SerializationHandler.serialize(requests);
     }
 
 }

@@ -21,6 +21,7 @@ public class MenuItem {
         return title;
     }
 
+    @SuppressWarnings("ClassEscapesDefinedScope")
     public MenuItem(String title, IAction action, Menu nextMenu) {
         this.title = title;
         this.action = action;

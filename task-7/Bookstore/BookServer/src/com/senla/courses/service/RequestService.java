@@ -81,4 +81,9 @@ public class RequestService implements IRequestService {
         requestList.sort(Comparator.comparing(o -> countRequests(o.getBook())));
         return requestList;
     }
+
+    @Override
+    public void saveAll() {
+        requestDao.saveAll();
+    }
 }

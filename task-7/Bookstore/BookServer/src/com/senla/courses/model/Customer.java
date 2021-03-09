@@ -1,6 +1,8 @@
 package com.senla.courses.model;
 
-public class Customer extends AId{
+import java.io.Serializable;
+
+public class Customer extends AId implements Serializable {
     String name;
     String surname;
     String phoneNumber;

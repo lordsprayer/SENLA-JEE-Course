@@ -3,7 +3,7 @@ package com.senla.courses.dao;
 import com.senla.courses.api.dao.ICustomerDao;
 import com.senla.courses.exception.DaoException;
 import com.senla.courses.model.Customer;
-import com.senla.courses.util.IdGenerator;
+import com.senla.courses.util.SerializationHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +14,22 @@ public class CustomerDao implements ICustomerDao {
 
     private static final String GET_BY_ID_ERROR_MESSAGE = "Could not find an customer by id: %d";
     private static final Logger log = Logger.getLogger(CustomerDao.class.getName());
-    private final List<Customer> customers = new ArrayList<>();
+    private List<Customer> customers;
+
+    public CustomerDao() {
+        try{
+            customers = SerializationHandler.deserialize(Customer.class);
+        } catch(Exception e){
+            customers = new ArrayList<>();}
+    }
 
     @Override
     public void save(Customer customer) {
-        customer.setId(IdGenerator.GenerateCustomerId());
+        try {
+            customer.setId(customers.get(customers.size() - 1).getId() + 1L);
+        } catch (Exception e){
+            customer.setId(1L);
+        }
         customers.add(customer);
     }
 
@@ -50,5 +61,10 @@ public class CustomerDao implements ICustomerDao {
     @Override
     public List<Customer> getAll() {
         return new ArrayList<>(customers);
+    }
+
+    @Override
+    public void saveAll() {
+        SerializationHandler.serialize(customers);
     }
 }

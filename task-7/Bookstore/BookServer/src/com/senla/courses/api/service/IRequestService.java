@@ -15,5 +15,6 @@ public interface IRequestService {
     List<Request> getAll();
     List<Request> getSortRequests();
     List<Request> getSortRequestsByBookCount();
+    void saveAll();
 
 }

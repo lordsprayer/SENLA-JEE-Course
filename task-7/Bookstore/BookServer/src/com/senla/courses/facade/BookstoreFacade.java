@@ -21,6 +21,7 @@ import com.senla.courses.service.BookService;
 import com.senla.courses.service.CustomerService;
 import com.senla.courses.service.OrderService;
 import com.senla.courses.service.RequestService;
+import com.senla.courses.util.SerializationHandler;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -43,7 +44,6 @@ public class BookstoreFacade {
     private final List<Comparator<Book>> bookComp = new ArrayList<>();
     private final List<Comparator<Order>> orderComp = new ArrayList<>();
     private static final Logger log = Logger.getLogger(BookDao.class.getName());
-    //private static final String GET_BY_ID_ERROR_MESSAGE = "Could not find an book by id: %d";
 
     public  List<Comparator<Book>> createBookComparators(){
         bookComp.add(Book.NameComparator);
@@ -140,15 +140,15 @@ public class BookstoreFacade {
         return bookList;
     }
 
-    public List<Book> sortUnsoldBooks(Comparator<Book> bookComparator){
-        List<Book> bookList = bookService.unsoldBook();
+    public List<Book> sortUnsoldBooks(Comparator<Book> bookComparator, Integer months){
+        List<Book> bookList = bookService.unsoldBook(months);
         bookList.sort(bookComparator);
         bookList.forEach(System.out::println);
         return bookList;
     }
 
-    public void addBookToWarehouse(Book book){
-        bookService.addBook(book);
+    public void addBookToWarehouse(Book book, Boolean permit){
+        bookService.addBook(book, permit);
     }
 
     public void cancelBookToWarehouse(Book book){
@@ -344,5 +344,9 @@ public class BookstoreFacade {
         else {
             requestList.forEach(System.out::println);
         }
+    }
+
+    public void saveAll(){
+        SerializationHandler.serialize(bookService.getAll(), customerService.getAll(), orderService.getAll(), requestService.getAll());
     }
 }

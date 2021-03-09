@@ -21,5 +21,6 @@ public interface IOrderService {
     void orderDetails (Order order);
     void completeOrder(Order order, LocalDate date);
     List<Order> getSortCompletedOrders(Comparator<Order> comp, LocalDate date);
+    void saveAll();
 
 }

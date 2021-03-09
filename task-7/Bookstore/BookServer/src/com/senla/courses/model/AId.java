@@ -1,6 +1,8 @@
 package com.senla.courses.model;
 
-public abstract class AId {
+import java.io.Serializable;
+
+public abstract class AId implements Serializable {
     Long id;
 
     public Long getId() {

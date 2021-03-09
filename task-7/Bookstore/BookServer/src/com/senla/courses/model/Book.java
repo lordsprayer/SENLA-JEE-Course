@@ -1,9 +1,10 @@
 package com.senla.courses.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Comparator;
 
-public class Book extends AId implements Comparable<Book>{
+public class Book extends AId implements Comparable<Book>, Serializable {
     private String title;
     private String author;
     private Integer publicationYear;
