@@ -1,0 +1,8 @@
+13:36:39 / 2021-36-09 - WARNING - [com.senla.courses.util.SerializationHandler] - deserialize - Deserialization from file failed: BookServer\resources\serialization_file.txt (Не удается найти указанный файл) 
+   
+13:36:40 / 2021-36-09 - WARNING - [com.senla.courses.util.SerializationHandler] - deserialize - Deserialization from file failed: BookServer\resources\serialization_file.txt (Не удается найти указанный файл) 
+   
+13:36:40 / 2021-36-09 - WARNING - [com.senla.courses.util.SerializationHandler] - deserialize - Deserialization from file failed: BookServer\resources\serialization_file.txt (Не удается найти указанный файл) 
+   
+13:36:40 / 2021-36-09 - WARNING - [com.senla.courses.util.SerializationHandler] - deserialize - Deserialization from file failed: BookServer\resources\serialization_file.txt (Не удается найти указанный файл) 
+   
