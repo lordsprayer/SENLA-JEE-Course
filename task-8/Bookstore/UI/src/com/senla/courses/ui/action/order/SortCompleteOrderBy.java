@@ -1,5 +1,6 @@
 package com.senla.courses.ui.action.order;
 
+import com.senla.courses.facade.BookstoreFacade;
 import com.senla.courses.ui.action.AbstractAction;
 import com.senla.courses.ui.action.IAction;
 
@@ -8,7 +9,8 @@ import java.time.LocalDate;
 public class SortCompleteOrderBy extends AbstractAction implements IAction {
     private final int index;
 
-    public SortCompleteOrderBy(int index) {
+    public SortCompleteOrderBy(BookstoreFacade facade, int index) {
+        super(facade);
         this.index = index;
     }
 

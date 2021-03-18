@@ -1,26 +1,18 @@
 package com.senla.courses.facade;
 
-import com.senla.courses.api.dao.ICustomerDao;
 import com.senla.courses.api.service.ICustomerService;
 import com.senla.courses.api.service.IOrderService;
 import com.senla.courses.api.service.IRequestService;
 import com.senla.courses.dao.BookDao;
-import com.senla.courses.dao.OrderDao;
-import com.senla.courses.dao.RequestDao;
+import com.senla.courses.di.api.annotation.ConfigProperty;
+import com.senla.courses.di.api.annotation.Inject;
+import com.senla.courses.di.api.annotation.Singleton;
 import com.senla.courses.exception.ServiceException;
 import com.senla.courses.model.Customer;
-import com.senla.courses.api.dao.IBookDao;
-import com.senla.courses.api.dao.IOrderDao;
-import com.senla.courses.api.dao.IRequestDao;
 import com.senla.courses.api.service.IBookService;
-import com.senla.courses.dao.CustomerDao;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Order;
 import com.senla.courses.model.Request;
-import com.senla.courses.service.BookService;
-import com.senla.courses.service.CustomerService;
-import com.senla.courses.service.OrderService;
-import com.senla.courses.service.RequestService;
 import com.senla.courses.util.SerializationHandler;
 
 import java.time.LocalDate;
@@ -32,18 +24,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+@Singleton
 public class BookstoreFacade {
-    private static final IBookDao bookDao = new BookDao();
-    private static final IOrderDao orderDao = new OrderDao();
-    private static final IRequestDao requestDao = new RequestDao();
-    private static final ICustomerDao customerDao = new CustomerDao();
-    private static final ICustomerService customerService = new CustomerService(customerDao);
-    private static final IRequestService requestService = new RequestService(requestDao);
-    private static final IBookService bookService = new BookService(bookDao, requestDao, requestService);
-    private static final IOrderService orderService = new OrderService(orderDao, requestService);
+    @Inject
+    private ICustomerService customerService;
+    @Inject
+    private IRequestService requestService;
+    @Inject
+    private IBookService bookService;
+    @Inject
+    private  IOrderService orderService;
     private final List<Comparator<Book>> bookComp = new ArrayList<>();
     private final List<Comparator<Order>> orderComp = new ArrayList<>();
     private static final Logger log = Logger.getLogger(BookDao.class.getName());
+    @ConfigProperty(propertyName = "number_of_months", value = "Integer")
+    private Integer months;
 
     public  List<Comparator<Book>> createBookComparators(){
         bookComp.add(Book.NameComparator);

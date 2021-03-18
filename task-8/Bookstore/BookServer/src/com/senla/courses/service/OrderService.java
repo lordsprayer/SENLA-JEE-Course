@@ -3,6 +3,8 @@ package com.senla.courses.service;
 import com.senla.courses.api.dao.IOrderDao;
 import com.senla.courses.api.service.IOrderService;
 import com.senla.courses.api.service.IRequestService;
+import com.senla.courses.di.api.annotation.Inject;
+import com.senla.courses.di.api.annotation.Singleton;
 import com.senla.courses.exception.DaoException;
 import com.senla.courses.exception.ServiceException;
 import com.senla.courses.model.Book;
@@ -17,16 +19,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+@Singleton
 public class OrderService implements IOrderService {
 
     private static final Logger log = Logger.getLogger(OrderService.class.getName());
-    private final IOrderDao orderDao;
-    private final IRequestService requestService;
-
-    public OrderService(IOrderDao orderDao, IRequestService requestService) {
-        this.orderDao = orderDao;
-        this.requestService = requestService;
-    }
+    @Inject
+    private IOrderDao orderDao;
+    @Inject
+    private IRequestService requestService;
 
     @Override
     public Order getById(Long id) {

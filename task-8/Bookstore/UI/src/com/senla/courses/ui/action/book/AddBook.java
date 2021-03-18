@@ -1,11 +1,16 @@
 package com.senla.courses.ui.action.book;
 
+import com.senla.courses.facade.BookstoreFacade;
 import com.senla.courses.ui.action.AbstractAction;
 import com.senla.courses.ui.action.IAction;
 
 import java.util.Scanner;
 
 public class AddBook extends AbstractAction implements IAction {
+
+    public AddBook(BookstoreFacade facade) {
+        super(facade);
+    }
 
     @Override
     public void execute() {

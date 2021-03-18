@@ -1,20 +1,20 @@
 package com.senla.courses.ui.menu;
 
+import com.senla.courses.di.api.annotation.Singleton;
+
 import java.util.Objects;
 
+@Singleton
 public class Navigator {
 
-    private static Navigator instance;
+    //private static Navigator instance;
     private Menu currentMenu;
 
-    private  Navigator(){
 
-    }
-
-    public static Navigator getInstance(){
-        instance = Objects.requireNonNullElse(instance, new Navigator());
-        return instance;
-    }
+//    public static Navigator getInstance(){
+//        instance = Objects.requireNonNullElse(instance, new Navigator());
+//        return instance;
+//    }
 
     public void setCurrentMenu(Menu currentMenu) {
         this.currentMenu = currentMenu;

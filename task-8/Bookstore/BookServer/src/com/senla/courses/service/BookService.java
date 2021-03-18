@@ -4,6 +4,8 @@ import com.senla.courses.api.dao.IBookDao;
 import com.senla.courses.api.dao.IRequestDao;
 import com.senla.courses.api.service.IBookService;
 import com.senla.courses.api.service.IRequestService;
+import com.senla.courses.di.api.annotation.Inject;
+import com.senla.courses.di.api.annotation.Singleton;
 import com.senla.courses.exception.DaoException;
 import com.senla.courses.exception.ServiceException;
 import com.senla.courses.model.Book;
@@ -17,17 +19,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+@Singleton
 public class BookService implements IBookService {
 
     private static final Logger log = Logger.getLogger(BookService.class.getName());
-    private final IBookDao bookDao;
-    private final IRequestDao requestDao;
-    private final IRequestService requestService;
-    public BookService(IBookDao bookDao, IRequestDao requestDao, IRequestService requestService) {
-        this.bookDao = bookDao;
-        this.requestDao = requestDao;
-        this.requestService = requestService;
-    }
+    @Inject
+    private IBookDao bookDao;
+    @Inject
+    private IRequestDao requestDao;
+    @Inject
+    private IRequestService requestService;
 
     @Override
     public List<Book> getAll() {

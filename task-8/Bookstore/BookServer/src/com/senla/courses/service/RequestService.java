@@ -7,18 +7,19 @@ import java.util.logging.Logger;
 
 import com.senla.courses.api.dao.IRequestDao;
 import com.senla.courses.api.service.IRequestService;
+import com.senla.courses.di.api.annotation.Inject;
+import com.senla.courses.di.api.annotation.Singleton;
 import com.senla.courses.exception.DaoException;
 import com.senla.courses.exception.ServiceException;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Request;
 
+@Singleton
 public class RequestService implements IRequestService {
 
     private static final Logger log = Logger.getLogger(RequestService.class.getName());
+    @Inject
     private static IRequestDao requestDao;
-    public RequestService(IRequestDao requestDao) {
-        RequestService.requestDao = requestDao;
-    }
 
     @Override
     public void createRequest(Book book) {

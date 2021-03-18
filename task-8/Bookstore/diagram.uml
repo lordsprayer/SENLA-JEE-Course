@@ -4,7 +4,7 @@
   <OriginalElement />
   <nodes>
     <node x="2482.434523809524" y="1940.0">BookService</node>
-    <node x="1435.8192313345094" y="2299.0">com.start.Starter</node>
+    <node x="1435.8192313345094" y="2299.0">Starter</node>
     <node x="81.27095581030744" y="1592.5">ICustomerDao</node>
     <node x="2319.2709558103074" y="1603.5">IRequestService</node>
     <node x="2817.863996668626" y="1060.0">Request</node>
@@ -27,7 +27,7 @@
   </nodes>
   <notes />
   <edges>
-    <edge source="com.start.Starter" target="IOrderService">
+    <edge source="Starter" target="IOrderService">
       <point x="-20.0" y="-104.5" />
       <point x="1520.8192313345094" y="2199.0" />
       <point x="1287.4562144816773" y="2199.0" />
@@ -61,7 +61,7 @@
       <point x="1651.6876224769742" y="878.0" />
       <point x="-94.33333333333326" y="324.5" />
     </edge>
-    <edge source="com.start.Starter" target="BookDao">
+    <edge source="Starter" target="BookDao">
       <point x="10.0" y="-104.5" />
       <point x="1550.8192313345094" y="2189.0" />
       <point x="1740.5209558103074" y="2189.0" />
@@ -85,7 +85,7 @@
       <point x="2588.7709558103074" y="1818.0" />
       <point x="122.5" y="60.0" />
     </edge>
-    <edge source="com.start.Starter" target="ICustomerDao">
+    <edge source="Starter" target="ICustomerDao">
       <point x="-90.0" y="-104.5" />
       <point x="1450.8192313345094" y="2269.0" />
       <point x="232.02095581030744" y="2269.0" />
@@ -105,7 +105,7 @@
       <point x="654.1228027630805" y="1529.0" />
       <point x="39.57142857142844" y="280.5" />
     </edge>
-    <edge source="com.start.Starter" target="Request">
+    <edge source="Starter" target="Request">
       <point x="90.0" y="-104.5" />
       <point x="1630.8192313345094" y="2269.0" />
       <point x="3277.3312144816773" y="2269.0" />
@@ -113,7 +113,7 @@
       <point x="3042.863996668626" y="1519.0" />
       <point x="90.0" y="148.5" />
     </edge>
-    <edge source="com.start.Starter" target="CustomerDao">
+    <edge source="Starter" target="CustomerDao">
       <point x="-100.0" y="-104.5" />
       <point x="1440.8192313345094" y="2279.0" />
       <point x="100.5" y="2279.0" />
@@ -131,7 +131,7 @@
       <point x="325.77095581030744" y="908.0" />
       <point x="23.0" y="93.5" />
     </edge>
-    <edge source="com.start.Starter" target="IBookDao">
+    <edge source="Starter" target="IBookDao">
       <point x="20.0" y="-104.5" />
       <point x="1560.8192313345094" y="2199.0" />
       <point x="1900.0209558103074" y="2199.0" />
@@ -181,13 +181,13 @@
       <point x="1295.7917891436407" y="119.0" />
       <point x="59.0625" y="49.5" />
     </edge>
-    <edge source="com.start.Starter" target="RequestService">
+    <edge source="Starter" target="RequestService">
       <point x="80.0" y="-104.5" />
       <point x="1620.8192313345094" y="2259.0" />
       <point x="3119.8312144816773" y="2259.0" />
       <point x="0.0" y="71.5" />
     </edge>
-    <edge source="com.start.Starter" target="Order">
+    <edge source="Starter" target="Order">
       <point x="-60.0" y="-104.5" />
       <point x="1480.8192313345094" y="2239.0" />
       <point x="312.77095581030744" y="2239.0" />
@@ -195,7 +195,7 @@
       <point x="495.83708847736625" y="1519.0" />
       <point x="-118.71428571428578" y="280.5" />
     </edge>
-    <edge source="com.start.Starter" target="OrderDao">
+    <edge source="Starter" target="OrderDao">
       <point x="-50.0" y="-104.5" />
       <point x="1490.8192313345094" y="2229.0" />
       <point x="564.4562144816773" y="2229.0" />
@@ -229,7 +229,7 @@
       <point x="535.4085170487947" y="1529.0" />
       <point x="-79.14285714285734" y="280.5" />
     </edge>
-    <edge source="com.start.Starter" target="Book">
+    <edge source="Starter" target="Book">
       <point x="-10.0" y="-104.5" />
       <point x="1530.8192313345094" y="2169.0" />
       <point x="1571.0209558103074" y="2169.0" />
@@ -237,13 +237,13 @@
       <point x="1689.4209558103075" y="898.0" />
       <point x="-56.59999999999991" y="324.5" />
     </edge>
-    <edge source="com.start.Starter" target="IRequestService">
+    <edge source="Starter" target="IRequestService">
       <point x="40.0" y="-104.5" />
       <point x="1580.8192313345094" y="2219.0" />
       <point x="2441.7709558103074" y="2219.0" />
       <point x="-24.5" y="60.0" />
     </edge>
-    <edge source="com.start.Starter" target="IOrderDao">
+    <edge source="Starter" target="IOrderDao">
       <point x="-40.0" y="-104.5" />
       <point x="1500.8192313345094" y="2219.0" />
       <point x="757.9562144816774" y="2219.0" />
@@ -257,13 +257,13 @@
       <point x="556.8937585733884" y="1858.0" />
       <point x="-137.25" y="93.0" />
     </edge>
-    <edge source="com.start.Starter" target="RequestDao">
+    <edge source="Starter" target="RequestDao">
       <point x="60.0" y="-104.5" />
       <point x="1600.8192313345094" y="2239.0" />
       <point x="2822.934523809524" y="2239.0" />
       <point x="0.0" y="93.5" />
     </edge>
-    <edge source="com.start.Starter" target="Customer">
+    <edge source="Starter" target="Customer">
       <point x="-70.0" y="-104.5" />
       <point x="1470.8192313345094" y="2249.0" />
       <point x="302.77095581030744" y="2249.0" />
@@ -373,13 +373,13 @@
       <point x="1802.6209558103076" y="888.0" />
       <point x="56.600000000000136" y="324.5" />
     </edge>
-    <edge source="com.start.Starter" target="BookService">
+    <edge source="Starter" target="BookService">
       <point x="50.0" y="-104.5" />
       <point x="1590.8192313345094" y="2229.0" />
       <point x="2587.434523809524" y="2229.0" />
       <point x="0.0" y="93.5" />
     </edge>
-    <edge source="com.start.Starter" target="IRequestDao">
+    <edge source="Starter" target="IRequestDao">
       <point x="70.0" y="-104.5" />
       <point x="1610.8192313345094" y="2249.0" />
       <point x="2962.3312144816773" y="2249.0" />
@@ -393,13 +393,13 @@
       <point x="2892.863996668626" y="1529.0" />
       <point x="-60.0" y="148.5" />
     </edge>
-    <edge source="com.start.Starter" target="IBookService">
+    <edge source="Starter" target="IBookService">
       <point x="30.0" y="-104.5" />
       <point x="1570.8192313345094" y="2209.0" />
       <point x="2154.5209558103074" y="2209.0" />
       <point x="-48.25" y="60.0" />
     </edge>
-    <edge source="com.start.Starter" target="OrderService">
+    <edge source="Starter" target="OrderService">
       <point x="-30.0" y="-104.5" />
       <point x="1510.8192313345094" y="2209.0" />
       <point x="1044.761770037233" y="2209.0" />

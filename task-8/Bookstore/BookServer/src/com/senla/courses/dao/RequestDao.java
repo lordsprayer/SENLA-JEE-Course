@@ -1,6 +1,7 @@
 package com.senla.courses.dao;
 
 import com.senla.courses.api.dao.IRequestDao;
+import com.senla.courses.di.api.annotation.Singleton;
 import com.senla.courses.exception.DaoException;
 import com.senla.courses.model.Request;
 import com.senla.courses.util.SerializationHandler;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Singleton
 public class RequestDao implements IRequestDao {
 
     private static final String GET_BY_ID_ERROR_MESSAGE = "Could not find an request by id: %d";

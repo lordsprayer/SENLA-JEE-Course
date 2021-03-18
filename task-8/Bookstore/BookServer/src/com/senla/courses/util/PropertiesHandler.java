@@ -1,6 +1,5 @@
 package com.senla.courses.util;
 
-import com.senla.courses.exception.DaoException;
 import com.senla.courses.exception.ServiceException;
 
 import java.io.FileInputStream;
@@ -16,7 +15,7 @@ public class PropertiesHandler {
     private static final Logger log = Logger.getLogger(PropertiesHandler.class.getName());
     private static final String FAILED_READ_PROPERTIES_ERROR_MESSAGE = "Failed to read properties";
     private static Properties properties;
-    private static final String PROPERTIES_FILE_PATCH ="BookServer/resources/application.properties";
+    private static final String PROPERTIES_FILE_PATCH ="DI/resources/application.properties";
 
     public static Optional<String> getProperties(String key){
         if(properties == null){
