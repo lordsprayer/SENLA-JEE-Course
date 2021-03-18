@@ -13,8 +13,8 @@ public interface IBookService {
     void delete(Book book);
     Book update(Book book);
     void cancelBook(Book book);
-    void addBook(Book book, Boolean permit);
-    List<Book> unsoldBook(Integer months);
+    void addBook(Book book);
+    List<Book> unsoldBook();
     String getDescription(Book book);
     List<Book> getSortBooks(Comparator<Book> comp);
     void saveAll();

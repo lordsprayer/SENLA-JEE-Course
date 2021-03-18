@@ -37,8 +37,6 @@ public class BookstoreFacade {
     private final List<Comparator<Book>> bookComp = new ArrayList<>();
     private final List<Comparator<Order>> orderComp = new ArrayList<>();
     private static final Logger log = Logger.getLogger(BookDao.class.getName());
-    @ConfigProperty(propertyName = "number_of_months", value = "Integer")
-    private Integer months;
 
     public  List<Comparator<Book>> createBookComparators(){
         bookComp.add(Book.NameComparator);
@@ -135,15 +133,15 @@ public class BookstoreFacade {
         return bookList;
     }
 
-    public List<Book> sortUnsoldBooks(Comparator<Book> bookComparator, Integer months){
-        List<Book> bookList = bookService.unsoldBook(months);
+    public List<Book> sortUnsoldBooks(Comparator<Book> bookComparator){
+        List<Book> bookList = bookService.unsoldBook();
         bookList.sort(bookComparator);
         bookList.forEach(System.out::println);
         return bookList;
     }
 
-    public void addBookToWarehouse(Book book, Boolean permit){
-        bookService.addBook(book, permit);
+    public void addBookToWarehouse(Book book){
+        bookService.addBook(book);
     }
 
     public void cancelBookToWarehouse(Book book){

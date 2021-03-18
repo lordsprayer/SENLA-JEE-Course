@@ -4,6 +4,7 @@ import com.senla.courses.api.dao.IBookDao;
 import com.senla.courses.api.dao.IRequestDao;
 import com.senla.courses.api.service.IBookService;
 import com.senla.courses.api.service.IRequestService;
+import com.senla.courses.di.api.annotation.ConfigProperty;
 import com.senla.courses.di.api.annotation.Inject;
 import com.senla.courses.di.api.annotation.Singleton;
 import com.senla.courses.exception.DaoException;
@@ -29,6 +30,10 @@ public class BookService implements IBookService {
     private IRequestDao requestDao;
     @Inject
     private IRequestService requestService;
+    @ConfigProperty(propertyName = "number_of_months", value = "Integer")
+    private Integer months;
+    @ConfigProperty(propertyName = "permit_closing_request", value = "Boolean")
+    Boolean permit;
 
     @Override
     public List<Book> getAll() {
@@ -67,7 +72,7 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public void addBook(Book book, Boolean permit) {
+    public void addBook(Book book) {
         book.setAvailability(true);
         bookDao.update(book);
         if(permit) {
@@ -80,8 +85,9 @@ public class BookService implements IBookService {
         }
     }
 
+
     @Override
-    public List<Book> unsoldBook(Integer months) {
+    public List<Book> unsoldBook() {
         List<Book> books= new ArrayList<>(getAll());
         LocalDate date = LocalDate.now().minusMonths(months);
         return books.stream().filter(book -> book.getReceiptDate().compareTo(date)<=0).collect(Collectors.toList());
