@@ -30,9 +30,9 @@ public class BookService implements IBookService {
     private IRequestDao requestDao;
     @Inject
     private IRequestService requestService;
-    @ConfigProperty(propertyName = "number_of_months", value = "Integer")
+    @ConfigProperty(propertyName = "number_of_months")
     private Integer months;
-    @ConfigProperty(propertyName = "permit_closing_request", value = "Boolean")
+    @ConfigProperty(propertyName = "permit_closing_request")
     Boolean permit;
 
     @Override
@@ -90,7 +90,8 @@ public class BookService implements IBookService {
     public List<Book> unsoldBook() {
         List<Book> books= new ArrayList<>(getAll());
         LocalDate date = LocalDate.now().minusMonths(months);
-        return books.stream().filter(book -> book.getReceiptDate().compareTo(date)<=0).collect(Collectors.toList());
+        return books.stream().filter(book -> book.getAvailability().equals(true))
+                .filter(book -> book.getReceiptDate().compareTo(date)<=0).collect(Collectors.toList());
     }
 
     @Override
