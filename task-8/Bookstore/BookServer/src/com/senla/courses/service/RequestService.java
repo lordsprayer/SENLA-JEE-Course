@@ -63,7 +63,7 @@ public class RequestService implements IRequestService {
             return requestDao.getById(id);
         } catch (DaoException e){
             log.log(Level.WARNING, "Search showed no matches");
-            throw new ServiceException ("Search showed no matches");
+            throw new ServiceException ("Search showed no matches", e);
         }
     }
 

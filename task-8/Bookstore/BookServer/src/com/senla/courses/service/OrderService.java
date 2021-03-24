@@ -35,7 +35,7 @@ public class OrderService implements IOrderService {
             return orderDao.getById (id);
         } catch (DaoException e) {
             log.log (Level.WARNING, "Search showed no matches");
-            throw new ServiceException ("Search showed no matches");
+            throw new ServiceException ("Search showed no matches", e);
         }
     }
 

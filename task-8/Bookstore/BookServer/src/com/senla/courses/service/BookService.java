@@ -47,7 +47,7 @@ public class BookService implements IBookService {
             return bookDao.getById(id);
         } catch (DaoException e){
             log.log(Level.WARNING, "Search showed no matches");
-            throw new ServiceException("Search showed no matches");
+            throw new ServiceException("Search showed no matches", e);
         }
     }
 
@@ -84,6 +84,8 @@ public class BookService implements IBookService {
                 }
             }
         }
+        else
+            log.log(Level.INFO, "Automatic closing of requests is prohibited");
     }
 
 

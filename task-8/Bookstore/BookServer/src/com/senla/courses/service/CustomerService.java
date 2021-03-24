@@ -26,7 +26,7 @@ public class CustomerService implements ICustomerService {
             customerDao.save(customer);
         } catch (DaoException e) {
             log.log(Level.WARNING, "Search showed no matches");
-            throw new ServiceException("Search showed no matches");
+            throw new ServiceException("Search showed no matches", e);
         }
     }
 
