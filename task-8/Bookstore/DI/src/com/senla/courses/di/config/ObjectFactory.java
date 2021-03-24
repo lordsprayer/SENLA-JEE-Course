@@ -6,23 +6,22 @@ import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ObjectFactory {
 
+    private static final Logger log = Logger.getLogger(ObjectFactory.class.getName());
     private final ApplicationContext context;
     private final List<ObjectConfigurator> configurators = new ArrayList<>();
 
 
-    public ObjectFactory(ApplicationContext context)  {
+    public ObjectFactory(ApplicationContext context) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 
         this.context = context;
-        try {
             for (Class<? extends ObjectConfigurator> aClass : context.getConfig().getScanner().getSubTypesOf(ObjectConfigurator.class)) {
                 configurators.add(aClass.getDeclaredConstructor().newInstance());
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public <T> T createObject(Class<T> implClass) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
@@ -35,8 +34,8 @@ public class ObjectFactory {
         configurators.forEach(objectConfigurator -> {
             try {
                 objectConfigurator.configure(t,context);
-            } catch (IllegalAccessException | NoSuchMethodException | InstantiationException | InvocationTargetException | FileNotFoundException e) {
-                e.printStackTrace();
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | InstantiationException | FileNotFoundException e) {
+                log.log(Level.WARNING, "Object configuration error");
             }
         });
     }

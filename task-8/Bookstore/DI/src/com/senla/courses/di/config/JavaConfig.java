@@ -25,14 +25,10 @@ public class JavaConfig implements Config {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public <T> Class getImplClass(Class<T> ifc) {
-        //return ifc2ImplClass.computeIfAbsent(ifc, aClass -> {
             Set<Class<? extends T>> classes = scanner.getSubTypesOf(ifc);
             if (classes.size() != 1) {
                 throw new RuntimeException(ifc + " has 0 or more than one impl");
             }
-
             return classes.iterator().next();
-       // });
-
     }
 }
