@@ -13,7 +13,4 @@ public interface IRequestDao {
     Request getById(Long id);
     List<Request> getAll();
     List<Request> getSortRequests();
-    void saveAll();
-
-
 }

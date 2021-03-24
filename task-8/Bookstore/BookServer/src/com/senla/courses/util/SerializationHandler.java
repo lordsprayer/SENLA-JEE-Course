@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 public class SerializationHandler {
 
     private static final Logger log = Logger.getLogger(SerializationHandler.class.getName());
-   // @ConfigProperty(propertyName = "server.serialization.path_to_file", value = "String")
     private static final String PATH_TO_FILE = PropertiesHandler.getProperties("server.serialization.path_to_file")
             .orElseThrow(() -> new ServiceException("Serialization file path not found"));
 

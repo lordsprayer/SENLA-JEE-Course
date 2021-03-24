@@ -7,6 +7,7 @@ import com.senla.courses.di.api.annotation.Singleton;
 import com.senla.courses.exception.DaoException;
 import com.senla.courses.exception.ServiceException;
 import com.senla.courses.model.Customer;
+import com.senla.courses.util.SerializationHandler;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -31,7 +32,7 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public void saveAll() {
-        customerDao.saveAll();
+        SerializationHandler.serialize(customerDao.getAll());
     }
 
     @Override

@@ -17,7 +17,7 @@ public class BookDao implements IBookDao {
 
     private static final String GET_BY_ID_ERROR_MESSAGE = "Could not find an book by id: %d";
     private static final Logger log = Logger.getLogger(BookDao.class.getName());
-    private List<Book> books;
+    private static List<Book> books;
 
     public BookDao() {
         try{
@@ -77,11 +77,4 @@ public class BookDao implements IBookDao {
         bookList.sort(comp);
         return bookList;
     }
-
-    @Override
-    public void saveAll() {
-        SerializationHandler.serialize(books);
-    }
-
-
 }

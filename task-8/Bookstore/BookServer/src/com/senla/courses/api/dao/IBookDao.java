@@ -13,5 +13,4 @@ public interface IBookDao {
     Book getById(Long id);
     List<Book> getAll();
     List<Book> getSortBooks(Comparator <Book> comp);
-    void saveAll();
 }

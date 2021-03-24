@@ -11,6 +11,7 @@ import com.senla.courses.exception.DaoException;
 import com.senla.courses.exception.ServiceException;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Request;
+import com.senla.courses.util.SerializationHandler;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class BookService implements IBookService {
     @ConfigProperty(propertyName = "number_of_months")
     private Integer months;
     @ConfigProperty(propertyName = "permit_closing_request")
-    Boolean permit;
+    private Boolean permit;
 
     @Override
     public List<Book> getAll() {
@@ -107,6 +108,6 @@ public class BookService implements IBookService {
 
     @Override
     public void saveAll() {
-        bookDao.saveAll();
+        SerializationHandler.serialize(bookDao.getAll());
     }
 }

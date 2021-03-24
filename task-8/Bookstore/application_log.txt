@@ -1,8 +1,8 @@
-13:09:57 / 2021-09-24 - WARNING - [com.senla.courses.util.SerializationHandler] - deserialize - Deserialization from file failed: com.senla.courses.model.Order; local class incompatible: stream classdesc serialVersionUID = 8086612845408159281, local class serialVersionUID = 792902524545484953 
+13:26:04 / 2021-26-24 - WARNING - [com.senla.courses.util.SerializationHandler] - deserialize - Deserialization from file failed: com.senla.courses.model.AId; local class incompatible: stream classdesc serialVersionUID = 4399931932814947862, local class serialVersionUID = -1878334798601977839 
    
-13:09:57 / 2021-09-24 - WARNING - [com.senla.courses.util.SerializationHandler] - deserialize - Deserialization from file failed: com.senla.courses.model.Order; local class incompatible: stream classdesc serialVersionUID = 8086612845408159281, local class serialVersionUID = 792902524545484953 
+13:26:04 / 2021-26-24 - WARNING - [com.senla.courses.util.SerializationHandler] - deserialize - Deserialization from file failed: com.senla.courses.model.AId; local class incompatible: stream classdesc serialVersionUID = 4399931932814947862, local class serialVersionUID = -1878334798601977839 
    
-13:09:58 / 2021-09-24 - WARNING - [com.senla.courses.util.SerializationHandler] - deserialize - Deserialization from file failed: com.senla.courses.model.Order; local class incompatible: stream classdesc serialVersionUID = 8086612845408159281, local class serialVersionUID = 792902524545484953 
+13:26:04 / 2021-26-24 - WARNING - [com.senla.courses.util.SerializationHandler] - deserialize - Deserialization from file failed: com.senla.courses.model.AId; local class incompatible: stream classdesc serialVersionUID = 4399931932814947862, local class serialVersionUID = -1878334798601977839 
    
-13:09:58 / 2021-09-24 - WARNING - [com.senla.courses.util.SerializationHandler] - deserialize - Deserialization from file failed: com.senla.courses.model.Order; local class incompatible: stream classdesc serialVersionUID = 8086612845408159281, local class serialVersionUID = 792902524545484953 
+13:26:04 / 2021-26-24 - WARNING - [com.senla.courses.util.SerializationHandler] - deserialize - Deserialization from file failed: com.senla.courses.model.AId; local class incompatible: stream classdesc serialVersionUID = 4399931932814947862, local class serialVersionUID = -1878334798601977839 
    

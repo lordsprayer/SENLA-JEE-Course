@@ -13,6 +13,4 @@ public interface IOrderDao {
     Order getById(Long id);
     List<Order> getAll();
     List<Order> getSortOrders(Comparator<Order> comp);
-    void saveAll();
-
 }

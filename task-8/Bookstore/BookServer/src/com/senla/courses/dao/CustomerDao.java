@@ -16,7 +16,7 @@ public class CustomerDao implements ICustomerDao {
 
     private static final String GET_BY_ID_ERROR_MESSAGE = "Could not find an customer by id: %d";
     private static final Logger log = Logger.getLogger(CustomerDao.class.getName());
-    private List<Customer> customers;
+    private static List<Customer> customers;
 
     public CustomerDao() {
         try{
@@ -63,10 +63,5 @@ public class CustomerDao implements ICustomerDao {
     @Override
     public List<Customer> getAll() {
         return new ArrayList<>(customers);
-    }
-
-    @Override
-    public void saveAll() {
-        SerializationHandler.serialize(customers);
     }
 }

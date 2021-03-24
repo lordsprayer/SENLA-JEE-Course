@@ -10,6 +10,7 @@ import com.senla.courses.exception.ServiceException;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Customer;
 import com.senla.courses.model.Order;
+import com.senla.courses.util.SerializationHandler;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -119,6 +120,6 @@ public class OrderService implements IOrderService {
 
     @Override
     public void saveAll() {
-        orderDao.saveAll();
+        SerializationHandler.serialize(orderDao.getAll());
     }
 }

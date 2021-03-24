@@ -13,6 +13,7 @@ import com.senla.courses.exception.DaoException;
 import com.senla.courses.exception.ServiceException;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Request;
+import com.senla.courses.util.SerializationHandler;
 
 @Singleton
 public class RequestService implements IRequestService {
@@ -85,6 +86,6 @@ public class RequestService implements IRequestService {
 
     @Override
     public void saveAll() {
-        requestDao.saveAll();
+        SerializationHandler.serialize(requestDao.getAll());
     }
 }

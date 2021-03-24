@@ -17,7 +17,7 @@ public class RequestDao implements IRequestDao {
 
     private static final String GET_BY_ID_ERROR_MESSAGE = "Could not find an request by id: %d";
     private static final Logger log = Logger.getLogger(BookDao.class.getName());
-    private List<Request> requests;
+    private static List<Request> requests;
 
     public RequestDao() {
         try{
@@ -71,10 +71,4 @@ public class RequestDao implements IRequestDao {
         requestList.sort(Comparator.comparing(r -> r.getBook().getTitle()));
         return requestList;
     }
-
-    @Override
-    public void saveAll() {
-        SerializationHandler.serialize(requests);
-    }
-
 }
