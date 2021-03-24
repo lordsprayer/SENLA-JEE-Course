@@ -3,8 +3,9 @@ package com.senla.courses.facade;
 import com.senla.courses.api.service.ICustomerService;
 import com.senla.courses.api.service.IOrderService;
 import com.senla.courses.api.service.IRequestService;
+import com.senla.courses.comparators.BooksComparators;
+import com.senla.courses.comparators.OrdersComparators;
 import com.senla.courses.dao.BookDao;
-import com.senla.courses.di.api.annotation.ConfigProperty;
 import com.senla.courses.di.api.annotation.Inject;
 import com.senla.courses.di.api.annotation.Singleton;
 import com.senla.courses.exception.ServiceException;
@@ -39,19 +40,19 @@ public class BookstoreFacade {
     private static final Logger log = Logger.getLogger(BookDao.class.getName());
 
     public  List<Comparator<Book>> createBookComparators(){
-        bookComp.add(Book.NameComparator);
-        bookComp.add(Book.PublicationComparator);
-        bookComp.add(Book.CostComparator);
-        bookComp.add(Book.AvailabilityComparator);
-        bookComp.add(Book.ReceiptComparator);
+        bookComp.add(BooksComparators.NameComparator);
+        bookComp.add(BooksComparators.PublicationComparator);
+        bookComp.add(BooksComparators.CostComparator);
+        bookComp.add(BooksComparators.AvailabilityComparator);
+        bookComp.add(BooksComparators.ReceiptComparator);
         return bookComp;
     }
 
 
     public  List<Comparator<Order>> createOrderComparators(){
-        orderComp.add(Order.DateComparator);
-        orderComp.add(Order.TotalCostComparator);
-        orderComp.add(Order.StatusComparator);
+        orderComp.add(OrdersComparators.DateComparator);
+        orderComp.add(OrdersComparators.TotalCostComparator);
+        orderComp.add(OrdersComparators.StatusComparator);
         return orderComp;
     }
 

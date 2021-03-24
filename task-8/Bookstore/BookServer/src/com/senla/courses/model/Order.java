@@ -1,9 +1,10 @@
 package com.senla.courses.model;
 
 
+import com.senla.courses.util.Calculator;
+
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 
 public class Order extends AId implements Comparable<Order>, Serializable {
@@ -21,20 +22,16 @@ public class Order extends AId implements Comparable<Order>, Serializable {
         COMPLETED(2),
         CANCELED(3);
 
-        private final Integer severity;
+        private final int severity;
 
-        Status(Integer severity) {
+        Status(int severity) {
             this.severity = severity;
         }
 
-    }
-
-    public Double calculateTotalCost(List<Book> bookList){
-        double totalCost=0;
-        for(Book book : bookList){
-            totalCost += book.getCost();
+        public int getSeverity() {
+            return severity;
         }
-        return totalCost;
+
     }
 
     public Order(Customer customer, List<Book> bookList, LocalDate creationDate) {
@@ -42,8 +39,7 @@ public class Order extends AId implements Comparable<Order>, Serializable {
         this.bookList = bookList;
         this.creationDate = creationDate;
         this.completionDate = LocalDate.of(1970, 1, 1);
-        this.totalCost = calculateTotalCost(bookList);
-
+        this.totalCost = Calculator.calculateTotalCost(bookList);
         this.status = Status.NEW;
     }
 
@@ -112,13 +108,4 @@ public class Order extends AId implements Comparable<Order>, Serializable {
     public int compareTo(Order order) {
         return (int)(this.id - order.id);
     }
-
-    //компаратор по дате выполнения заказа
-    public static Comparator<Order> DateComparator = Comparator.comparing(Order::getCompletionDate);
-
-    //компаратор по стоимости заказа
-    public static Comparator<Order> TotalCostComparator = Comparator.comparing(Order::getTotalCost);
-
-    //компаратор по статусу заказа
-    public static Comparator<Order> StatusComparator = Comparator.comparingInt(o -> o.getStatus().severity);
 }

@@ -39,6 +39,7 @@ public class Customer extends AId implements Serializable {
 
     @Override
     public  String toString(){
-        return "Покупатель [id = " + getId() + " имя = " + getName() + " фамилия " + getSurname() +  " номер телефона = " + getPhoneNumber() + "]";
+        return "Покупатель [id = " + getId() + " имя = " + getName() + " фамилия " + getSurname() +
+                " номер телефона = " + getPhoneNumber() + "]";
     }
 }

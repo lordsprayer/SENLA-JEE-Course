@@ -2,7 +2,6 @@ package com.senla.courses.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Comparator;
 
 public class Book extends AId implements Comparable<Book>, Serializable {
     private String title;
@@ -52,7 +51,9 @@ public class Book extends AId implements Comparable<Book>, Serializable {
         this.publicationYear = publicationYear;
     }
 
-    public Double getCost() { return cost; }
+    public Double getCost() {
+        return cost;
+    }
 
     public void setCost(Double cost) {
         this.cost = cost;
@@ -83,36 +84,16 @@ public class Book extends AId implements Comparable<Book>, Serializable {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "Книга [id " + getId() + " Название " +
                 title + " Автор " + author + " Год публикации " +
                 publicationYear +" Стоимость " + cost + " Дата поступления " +
                 receiptDate +" Доступность  " + availability + "]";
     }
 
-
     @Override
     public int compareTo(Book book) {
         return (int)(this.id - book.id);
     }
 
-    public static Comparator<Book> NameComparator = Comparator.comparing(Book::getTitle);
-
-    public static Comparator<Book> CostComparator = Comparator.comparing(Book::getCost);
-
-    public static Comparator<Book> AvailabilityComparator = (b1, b2) -> {
-        if (b1.getAvailability() == b2.getAvailability()) {
-            return 0;
-        }
-        if (b1.getAvailability() && !b2.getAvailability()) {
-            return -1;
-        }
-        else {
-            return 1;
-        }
-    };
-
-    public static Comparator<Book> PublicationComparator = Comparator.comparing(Book::getPublicationYear);
-
-    public static Comparator<Book> ReceiptComparator = Comparator.comparing(Book::getReceiptDate);
 }
