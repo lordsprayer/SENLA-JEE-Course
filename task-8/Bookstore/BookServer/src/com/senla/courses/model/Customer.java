@@ -3,9 +3,9 @@ package com.senla.courses.model;
 import java.io.Serializable;
 
 public class Customer extends AId implements Serializable {
-    String name;
-    String surname;
-    String phoneNumber;
+    private String name;
+    private String surname;
+    private String phoneNumber;
 
     public Customer(String name, String surname, String phoneNumber) {
         this.name = name;
