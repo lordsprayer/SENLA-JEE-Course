@@ -17,7 +17,7 @@ public class RequestDao implements IRequestDao {
 
     private static final String GET_BY_ID_ERROR_MESSAGE = "Could not find an request by id: %d";
     private static final Logger log = Logger.getLogger(BookDao.class.getName());
-    private static List<Request> requests;
+    private List<Request> requests;
 
     public RequestDao() {
         try{

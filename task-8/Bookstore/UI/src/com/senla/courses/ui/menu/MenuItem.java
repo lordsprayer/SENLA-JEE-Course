@@ -13,12 +13,12 @@ public class MenuItem {
         return nextMenu;
     }
 
-    public void doAction(){
-        action.execute();
-    }
-
     public String getTitle() {
         return title;
+    }
+
+    public void doAction(){
+        action.execute();
     }
 
     @SuppressWarnings("ClassEscapesDefinedScope")

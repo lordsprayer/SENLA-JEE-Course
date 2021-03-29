@@ -9,23 +9,22 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("ClassEscapesDefinedScope")
 public class ApplicationContext {
-    public void setFactory(ObjectFactory factory) {
-        this.factory = factory;
-    }
-
-    private ObjectFactory factory;
 
     @SuppressWarnings("rawtypes")
     private final Map<Class, Object> cache = new ConcurrentHashMap<>();
+    private final Config config;
+    private ObjectFactory factory;
+
+    public ApplicationContext(Config config) {
+        this.config = config;
+    }
 
     public Config getConfig() {
         return config;
     }
 
-    private final Config config;
-
-    public ApplicationContext(Config config) {
-        this.config = config;
+    public void setFactory(ObjectFactory factory) {
+        this.factory = factory;
     }
 
     @SuppressWarnings("unchecked")

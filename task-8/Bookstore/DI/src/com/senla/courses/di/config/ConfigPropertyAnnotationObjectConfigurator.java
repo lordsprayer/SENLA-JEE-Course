@@ -14,14 +14,6 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toMap;
 
 public class ConfigPropertyAnnotationObjectConfigurator implements ObjectConfigurator {
-//    private final Map<String, String> propertiesMap;
-//
-//    public ConfigPropertyAnnotationObjectConfigurator() throws FileNotFoundException {
-//        String path = Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResource("application.properties")).getPath();
-//        Stream<String> lines = new BufferedReader(new FileReader(path)).lines();
-//        propertiesMap = lines.map(line -> line.split("=")).collect(toMap(arr -> arr[0], arr -> arr[1]));
-//
-//    }
 
     private Object customTypeConverter(Field field, String variable) {
         final String variableType = field.getType().getSimpleName().toLowerCase();
@@ -62,6 +54,7 @@ public class ConfigPropertyAnnotationObjectConfigurator implements ObjectConfigu
                 Object convertValue = customTypeConverter(field, value);
                 field.setAccessible(true);
                 field.set(t,convertValue);
+                lines.close();
             }
         }
     }

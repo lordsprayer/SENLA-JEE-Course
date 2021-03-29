@@ -12,15 +12,9 @@ import com.senla.courses.ui.action.request.*;
 @Singleton
 public class Builder {
 
-    //private static Builder instance;
     private Menu rootMenu;
     @Inject
     protected BookstoreFacade facade;
-
-//    public static Builder getInstance(){
-//        instance = Objects.requireNonNullElse(instance, new Builder());
-//        return instance;
-//    }
 
     public void buildMenu(){
         rootMenu = new Menu();

@@ -9,25 +9,10 @@ import java.util.Scanner;
 @Singleton
 public class MenuController {
 
-    //private static MenuController instance;
     @Inject
     private Builder builder;
     @Inject
     private Navigator navigator;
-
-//    public MenuController(){
-//        //Builder.getInstance();
-//
-//        //Navigator.getInstance();
-//
-//    }
-
-//    public static MenuController getInstance() {
-//
-//        instance = Objects.requireNonNullElse(instance, new MenuController());
-//        return instance;
-//    }
-
 
     public void run(){
         Scanner scan = new Scanner(System.in);

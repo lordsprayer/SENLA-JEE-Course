@@ -17,7 +17,7 @@ public class OrderDao implements IOrderDao {
 
     private static final String GET_BY_ID_ERROR_MESSAGE = "Could not find an order by id: %d";
     private static final Logger log = Logger.getLogger(BookDao.class.getName());
-    private static List<Order> orders;
+    private List<Order> orders;
 
     public OrderDao() {
         try{

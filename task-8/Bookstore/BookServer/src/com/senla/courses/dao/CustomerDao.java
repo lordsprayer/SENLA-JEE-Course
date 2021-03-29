@@ -16,7 +16,7 @@ public class CustomerDao implements ICustomerDao {
 
     private static final String GET_BY_ID_ERROR_MESSAGE = "Could not find an customer by id: %d";
     private static final Logger log = Logger.getLogger(CustomerDao.class.getName());
-    private static List<Customer> customers;
+    private List<Customer> customers;
 
     public CustomerDao() {
         try{

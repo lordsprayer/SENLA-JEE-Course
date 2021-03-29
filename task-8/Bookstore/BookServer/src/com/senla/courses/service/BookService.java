@@ -93,8 +93,10 @@ public class BookService implements IBookService {
     public List<Book> unsoldBook() {
         List<Book> books= new ArrayList<>(getAll());
         LocalDate date = LocalDate.now().minusMonths(months);
-        return books.stream().filter(book -> book.getAvailability().equals(true))
-                .filter(book -> book.getReceiptDate().compareTo(date)<=0).collect(Collectors.toList());
+        return books.stream()
+                .filter(book -> book.getAvailability().equals(true))
+                .filter(book -> book.getReceiptDate().compareTo(date)<=0)
+                .collect(Collectors.toList());
     }
 
     @Override
