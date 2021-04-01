@@ -48,13 +48,13 @@ public class ConfigPropertyAnnotationObjectConfigurator implements ObjectConfigu
             ConfigProperty annotation = field.getAnnotation(ConfigProperty.class);
             if (annotation != null) {
                 String path = Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResource(annotation.configName())).getPath();
-                Stream<String> lines = new BufferedReader(new FileReader(path)).lines();
-                Map<String, String> propertiesMap = lines.map(line -> line.split("=")).collect(toMap(arr -> arr[0], arr -> arr[1]));
-                String value = annotation.propertyName().isEmpty() ? propertiesMap.get(field.getName()) : propertiesMap.get(annotation.propertyName());
-                Object convertValue = customTypeConverter(field, value);
-                field.setAccessible(true);
-                field.set(t,convertValue);
-                lines.close();
+                try(Stream<String> lines = new BufferedReader(new FileReader(path)).lines()) {
+                    Map<String, String> propertiesMap = lines.map(line -> line.split("=")).collect(toMap(arr -> arr[0], arr -> arr[1]));
+                    String value = annotation.propertyName().isEmpty() ? propertiesMap.get(field.getName()) : propertiesMap.get(annotation.propertyName());
+                    Object convertValue = customTypeConverter(field, value);
+                    field.setAccessible(true);
+                    field.set(t, convertValue);
+                }
             }
         }
     }
