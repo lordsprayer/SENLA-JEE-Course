@@ -17,8 +17,7 @@ public class JavaConfig implements Config {
 
     private final Reflections scanner;
 
-    public JavaConfig(String packageToScan/*, Map<Class, Class> ifc2ImplClass*/) {
-        //this.ifc2ImplClass = ifc2ImplClass;
+    public JavaConfig(String packageToScan) {
         this.scanner = new Reflections(packageToScan);
     }
 

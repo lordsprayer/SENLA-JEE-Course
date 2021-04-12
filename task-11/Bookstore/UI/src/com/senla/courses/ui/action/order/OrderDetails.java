@@ -18,7 +18,7 @@ public class OrderDetails extends AbstractAction implements IAction {
     public void execute() {
         int id = IntNumberValidation.validation("Введите id заказа");
         try{
-            facade.printOrder((long)id);
+            facade.printOrder(id);
         } catch (ServiceException e){
             log.log(Level.WARNING, e.getLocalizedMessage(), e);
             System.out.println("Заказа с таким id не существует");

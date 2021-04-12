@@ -14,7 +14,8 @@ public class SortOrderBy extends AbstractAction implements IAction {
 
     @Override
     public void execute() {
-        if(facade.sortOrders(facade.createOrderComparators().get(index)).isEmpty()){
+        //todo исправить сортировку
+        if(facade.sortOrders("facade.createOrderComparators().get(index)").isEmpty()){
             System.out.println("В базе пока нет заказов");
         }
     }

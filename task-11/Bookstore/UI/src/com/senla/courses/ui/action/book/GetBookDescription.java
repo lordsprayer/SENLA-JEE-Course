@@ -22,7 +22,7 @@ public class GetBookDescription extends AbstractAction implements IAction {
             facade.printAllBook();
             int id = IntNumberValidation.validation("Введите id книги");
             try{
-               if(facade.getBookDescription((long) id) == null) {
+               if(facade.getBookDescription(id) == null) {
                    System.out.println("У книги пока нет описания");
                }
             } catch (ServiceException e){

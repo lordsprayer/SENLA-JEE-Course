@@ -1,8 +1,11 @@
 package com.senla.courses.model;
 
+import com.senla.courses.api.dbdao.Identified;
+
 import java.io.Serializable;
 
-public class Customer extends AId implements Serializable {
+public class Customer implements Identified<Integer> {
+    private Integer id = null;
     private String name;
     private String surname;
     private String phoneNumber;
@@ -11,6 +14,18 @@ public class Customer extends AId implements Serializable {
         this.name = name;
         this.surname = surname;
         this.phoneNumber = phoneNumber;
+    }
+
+    public Customer(){
+
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id){
+        this.id = id;
     }
 
     public String getName() {
@@ -39,7 +54,7 @@ public class Customer extends AId implements Serializable {
 
     @Override
     public  String toString(){
-        return "Покупатель [id = " + getId() + " имя = " + getName() + " фамилия " + getSurname() +
-                " номер телефона = " + getPhoneNumber() + "]";
+        return "Покупатель [id = " + getId() + ", имя " + getName() + ", фамилия " + getSurname() +
+                ", номер телефона " + getPhoneNumber() + "]";
     }
 }

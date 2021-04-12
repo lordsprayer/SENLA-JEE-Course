@@ -1,9 +1,10 @@
 package com.senla.courses.service;
 
-import com.senla.courses.api.dao.IBookDao;
-import com.senla.courses.api.dao.IRequestDao;
+import com.senla.courses.api.dbdao.IDBBookDao;
+import com.senla.courses.api.dbdao.IDBRequestDao;
 import com.senla.courses.api.service.IBookService;
 import com.senla.courses.api.service.IRequestService;
+import com.senla.courses.dbdao.DBConnection;
 import com.senla.courses.di.api.annotation.ConfigProperty;
 import com.senla.courses.di.api.annotation.Inject;
 import com.senla.courses.di.api.annotation.Singleton;
@@ -11,30 +12,29 @@ import com.senla.courses.exception.DaoException;
 import com.senla.courses.exception.ServiceException;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Request;
-import com.senla.courses.util.SerializationHandler;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 @Singleton
 public class BookService implements IBookService {
 
     private static final Logger log = Logger.getLogger(BookService.class.getName());
     @Inject
-    private IBookDao bookDao;
+    private IDBBookDao bookDao;
     @Inject
-    private IRequestDao requestDao;
+    private IDBRequestDao requestDao;
     @Inject
     private IRequestService requestService;
     @ConfigProperty(propertyName = "number_of_months")
     private Integer months;
     @ConfigProperty(propertyName = "permit_closing_request")
     private Boolean permit;
+    @Inject
+    private DBConnection dbConnection;
 
     @Override
     public List<Book> getAll() {
@@ -42,9 +42,9 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public Book getById(Long id) {
+    public Book getById(Integer id) {
         try{
-            return bookDao.getById(id);
+            return bookDao.getByPK(id);
         } catch (DaoException e){
             log.log(Level.WARNING, "Search showed no matches");
             throw new ServiceException("Search showed no matches", e);
@@ -53,7 +53,7 @@ public class BookService implements IBookService {
 
     @Override
     public void save(Book book) {
-        bookDao.save(book);
+        bookDao.persist(book);
     }
 
     @Override
@@ -62,8 +62,8 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public Book update(Book book) {
-        return bookDao.update(book);
+    public void update(Book book) {
+        bookDao.update(book);
     }
 
     @Override
@@ -90,13 +90,9 @@ public class BookService implements IBookService {
 
 
     @Override
-    public List<Book> unsoldBook() {
-        List<Book> books= new ArrayList<>(getAll());
+    public List<Book> unsoldBook(String criterion) {
         LocalDate date = LocalDate.now().minusMonths(months);
-        return books.stream()
-                .filter(book -> book.getAvailability().equals(true))
-                .filter(book -> book.getReceiptDate().compareTo(date)<=0)
-                .collect(Collectors.toList());
+        return bookDao.getUnsoldBook(date,criterion);
     }
 
     @Override
@@ -106,12 +102,7 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public List<Book> getSortBooks(Comparator<Book> comp) {
-        return bookDao.getSortBooks(comp);
-    }
-
-    @Override
-    public void saveAll() {
-        SerializationHandler.serialize(bookDao.getAll());
+    public List<Book> getSortBooks(String criterion) {
+        return bookDao.getSortBook(criterion);
     }
 }

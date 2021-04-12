@@ -3,4 +3,5 @@ module bookstore {
     requires ui;
     requires java.logging;
     requires di;
+    requires java.sql;
 }

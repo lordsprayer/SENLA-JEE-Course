@@ -22,17 +22,20 @@ public class CreateOrder extends AbstractAction implements IAction {
             System.out.println("На складе нет книг для заказа");
         } else {
             facade.printAllBook();
-            List<Long> books = new ArrayList<>();
+            List<Integer> books = new ArrayList<>();
             int book = IntNumberValidation.validation("Введите id книги");
-            books.add((long) book);
+            books.add(book);
             while (true) {
                 System.out.println("Выберите ещё книги либо завершите выбор(нажмите 0): ");
                 book = IntNumberValidation.validation("Ведите id книги");
                 if (book == 0) {
                     break;
                 }
-                books.add((long) book);
+                books.add(book);
             }
+//            if(facade.getAllBook().isEmpty()){
+//                System.out.println("На складе нет книг для заказа");
+//            } else {
             System.out.println("Введите имя покупателя: ");
             String name = scan.next();
             System.out.println("Введите фамилию покупателя: ");

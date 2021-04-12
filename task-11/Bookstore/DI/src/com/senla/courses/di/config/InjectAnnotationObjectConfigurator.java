@@ -10,12 +10,16 @@ public class InjectAnnotationObjectConfigurator implements ObjectConfigurator {
 
     @Override
     public void configure(Object t, ApplicationContext context) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        for (Field field : t.getClass().getDeclaredFields()) {
-            if (field.isAnnotationPresent(Inject.class)) {
-                field.setAccessible(true);
-                Object object = context.getObject(field.getType());
-                field.set(t, object);
+        Class[] classes = {t.getClass(), t.getClass().getSuperclass()};
+        for(Class aClass: classes){
+            for (Field field : aClass.getDeclaredFields()) {
+                if (field.isAnnotationPresent(Inject.class)) {
+                    field.setAccessible(true);
+                    Object object = context.getObject(field.getType());
+                    field.set(t, object);
+                }
             }
         }
     }
 }
+

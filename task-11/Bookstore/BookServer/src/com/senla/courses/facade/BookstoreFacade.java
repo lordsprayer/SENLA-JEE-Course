@@ -3,9 +3,7 @@ package com.senla.courses.facade;
 import com.senla.courses.api.service.ICustomerService;
 import com.senla.courses.api.service.IOrderService;
 import com.senla.courses.api.service.IRequestService;
-import com.senla.courses.comparators.BooksComparators;
 import com.senla.courses.comparators.OrdersComparators;
-import com.senla.courses.dao.BookDao;
 import com.senla.courses.di.api.annotation.Inject;
 import com.senla.courses.di.api.annotation.Singleton;
 import com.senla.courses.exception.ServiceException;
@@ -14,7 +12,6 @@ import com.senla.courses.api.service.IBookService;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Order;
 import com.senla.courses.model.Request;
-import com.senla.courses.util.SerializationHandler;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -35,19 +32,8 @@ public class BookstoreFacade {
     private IBookService bookService;
     @Inject
     private  IOrderService orderService;
-    private final List<Comparator<Book>> bookComp = new ArrayList<>();
     private final List<Comparator<Order>> orderComp = new ArrayList<>();
-    private static final Logger log = Logger.getLogger(BookDao.class.getName());
-
-    public  List<Comparator<Book>> createBookComparators(){
-        bookComp.add(BooksComparators.NameComparator);
-        bookComp.add(BooksComparators.PublicationComparator);
-        bookComp.add(BooksComparators.CostComparator);
-        bookComp.add(BooksComparators.AvailabilityComparator);
-        bookComp.add(BooksComparators.ReceiptComparator);
-        return bookComp;
-    }
-
+    private static final Logger log = Logger.getLogger(BookstoreFacade.class.getName());
 
     public  List<Comparator<Order>> createOrderComparators(){
         orderComp.add(OrdersComparators.DateComparator);
@@ -88,16 +74,51 @@ public class BookstoreFacade {
         return new Book(title, author, publicationYear, cost, receiptDate, availability);
     }
 
+    public Customer getCustomerById(Integer id){
+        try{
+            return customerService.getById(id);
+        } catch(ServiceException e){
+            log.log(Level.WARNING, "Search showed no matches");
+            throw e;
+        }
+    }
+
+    public void saveCustomer(Customer customer){
+        customerService.save(customer);
+    }
+
+    public void deleteCustomer(Integer id){
+        customerService.delete(getCustomerById(id));
+    }
+
+    public void updateCustomer(Customer customer, Integer id){
+        customer.setId(id);
+        customerService.update(customer);
+    }
+
+    public List<Customer> getAllCustomers(){
+        return customerService.getAll();
+    }
+
+    public List<Customer> printAllCustomers(){
+        getAllCustomers().forEach(System.out::println);
+        return getAllCustomers();
+    }
+
+    public void printCustomer(Integer id){
+        System.out.println(getCustomerById(id));
+    }
+
     public void saveBook(Book book){
         bookService.save(book);
-        System.out.println(book);
+        //System.out.println(book);
     }
 
     public List<Book> getAllBook(){
         return bookService.getAll();
     }
 
-    public Book getBookById(Long id){
+    public Book getBookById(Integer id){
         try{
             return bookService.getById(id);
         } catch(ServiceException e){
@@ -110,7 +131,7 @@ public class BookstoreFacade {
         getAllBook().forEach(System.out::println);
     }
 
-    public void printBook(Long id){
+    public void printBook(Integer id){
         try{
             System.out.println(getBookById(id));
         } catch (ServiceException e){
@@ -119,24 +140,23 @@ public class BookstoreFacade {
         }
     }
 
-    public void updateBook(Book book, Long id){
+    public void updateBook(Book book, Integer id){
         book.setId(id);
         bookService.update(book);
     }
 
-    public void deleteBook(Long id){
+    public void deleteBook(Integer id){
         bookService.delete(getBookById(id));
     }
 
-    public List<Book> sortBooks(Comparator<Book> bookComparator){
-        List<Book> bookList = bookService.getSortBooks(bookComparator);
+    public List<Book> sortBooks(String criterion){
+        List<Book> bookList = bookService.getSortBooks(criterion);
         bookList.forEach(System.out::println);
         return bookList;
     }
 
-    public List<Book> sortUnsoldBooks(Comparator<Book> bookComparator){
-        List<Book> bookList = bookService.unsoldBook();
-        bookList.sort(bookComparator);
+    public List<Book> sortUnsoldBooks(String criterion){
+        List<Book> bookList = bookService.unsoldBook(criterion);
         bookList.forEach(System.out::println);
         return bookList;
     }
@@ -163,15 +183,13 @@ public class BookstoreFacade {
     }
 
     public Customer createCustomer(String name, String surname, String phoneNumber) {
-        Customer customer = new Customer(name, surname, phoneNumber);
-        customerService.save(customer);
-        return customer;
+        return new Customer(name, surname, phoneNumber);
     }
 
-    public List<Book> createBookList(List<Long> ids) {
+    public List<Book> createBookList(List<Integer> ids) {
         try {
             List<Book> bookList = new ArrayList<>();
-            for (Long id : ids) {
+            for (Integer id : ids) {
                 bookList.add(getBookById(id));
             }
             return bookList;
@@ -186,7 +204,7 @@ public class BookstoreFacade {
         bookService.update(book);
     }
 
-    public String getBookDescription(Long id){
+    public String getBookDescription(Integer id){
         try {
             return bookService.getDescription(getBookById(id));
         } catch (ServiceException e){
@@ -200,7 +218,7 @@ public class BookstoreFacade {
         return orderService.getAll();
     }
 
-    public Order getOrderById(Long id){
+    public Order getOrderById(Integer id){
         try {
             return orderService.getById(id);
         } catch (ServiceException e){
@@ -209,7 +227,7 @@ public class BookstoreFacade {
         }
     }
 
-    public void printOrder(Long id) {
+    public void printOrder(Integer id) {
         try {
             orderService.orderDetails(getOrderById(id));
         } catch (ServiceException e){
@@ -218,7 +236,7 @@ public class BookstoreFacade {
         }
     }
 
-    public void deleteOrder(Long id){
+    public void deleteOrder(Integer id){
         try{
             orderService.deleteOrder(getOrderById(id));
         }  catch (ServiceException e) {
@@ -242,7 +260,7 @@ public class BookstoreFacade {
     }
 
 
-    public void changeOrderStatus(Long id, Order.Status status){
+    public void changeOrderStatus(Integer id, Order.Status status){
         try {
             if(status.equals(Order.Status.COMPLETED)){
                 orderService.completeOrder(getOrderById(id), LocalDate.now());
@@ -255,8 +273,8 @@ public class BookstoreFacade {
         }
     }
 
-    public List<Order> sortOrders(Comparator<Order> orderComparator){
-        List<Order> orderList = orderService.getSortOrders(orderComparator);
+    public List<Order> sortOrders(String criterion){
+        List<Order> orderList = orderService.getSortOrders(criterion);
         orderList.forEach(System.out::println);
         return orderList;
     }
@@ -302,7 +320,7 @@ public class BookstoreFacade {
         return requestService.getAll();
     }
 
-    public void deleteRequest(Long id){
+    public void deleteRequest(Integer id){
         try{
             requestService.delete(requestService.getById(id));
         } catch (ServiceException e){
@@ -311,7 +329,7 @@ public class BookstoreFacade {
         }
     }
 
-    public void closeRequest(Long id){
+    public void closeRequest(Integer id){
         try{
             requestService.closeRequest(requestService.getById(id));
         } catch (ServiceException e){
@@ -321,7 +339,7 @@ public class BookstoreFacade {
     }
 
     public void sortRequestsByBookCount(){
-        List<Request> requestList = requestService.getSortRequestsByBookCount();
+        List<String> requestList = requestService.getSortRequestsByBookCount();
         if(requestList.isEmpty()){
             System.out.println("Пока в базе нет запросов");
         }
@@ -338,9 +356,5 @@ public class BookstoreFacade {
         else {
             requestList.forEach(System.out::println);
         }
-    }
-
-    public void saveAll(){
-        SerializationHandler.serialize(bookService.getAll(), customerService.getAll(), orderService.getAll(), requestService.getAll());
     }
 }

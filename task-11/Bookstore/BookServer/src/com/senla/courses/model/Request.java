@@ -1,10 +1,13 @@
 package com.senla.courses.model;
 
+import com.senla.courses.api.dbdao.Identified;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
 
-public class Request extends AId implements Comparable<Request>, Serializable {
+public class Request implements Identified<Integer>, Comparable<Request> {
+    private Integer id = null;
     private Book book;
     private LocalDate date;
     private Boolean status;
@@ -13,6 +16,19 @@ public class Request extends AId implements Comparable<Request>, Serializable {
         this.book = book;
         this.date = date;
         this.status = true;
+    }
+
+    public Request(){
+
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Book getBook() {

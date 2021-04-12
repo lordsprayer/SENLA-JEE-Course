@@ -1,9 +1,12 @@
 package com.senla.courses.model;
 
+import com.senla.courses.api.dbdao.Identified;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Book extends AId implements Comparable<Book>, Serializable {
+public class Book implements Identified<Integer>, Comparable<Book> {
+    private Integer id = null;
     private String title;
     private String author;
     private Integer publicationYear;
@@ -25,6 +28,18 @@ public class Book extends AId implements Comparable<Book>, Serializable {
         this.receiptDate = receiptDate;
         this.availability = availability;
         this.description = null;
+    }
+
+    public Book(){
+
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -93,7 +108,6 @@ public class Book extends AId implements Comparable<Book>, Serializable {
 
     @Override
     public int compareTo(Book book) {
-        return (int)(this.id - book.id);
+        return this.id - book.id;
     }
-
 }

@@ -1,8 +1,11 @@
 package com.senla.courses.service;
 
-import com.senla.courses.api.dao.IOrderDao;
+import com.senla.courses.api.dbdao.IDBBookDao;
+import com.senla.courses.api.dbdao.IDBOrderDao;
 import com.senla.courses.api.service.IOrderService;
 import com.senla.courses.api.service.IRequestService;
+import com.senla.courses.dbdao.DBConnection;
+import com.senla.courses.dbdao.DBOrderDao;
 import com.senla.courses.di.api.annotation.Inject;
 import com.senla.courses.di.api.annotation.Singleton;
 import com.senla.courses.exception.DaoException;
@@ -10,8 +13,8 @@ import com.senla.courses.exception.ServiceException;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Customer;
 import com.senla.courses.model.Order;
-import com.senla.courses.util.SerializationHandler;
 
+import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -25,14 +28,18 @@ public class OrderService implements IOrderService {
 
     private static final Logger log = Logger.getLogger(OrderService.class.getName());
     @Inject
-    private IOrderDao orderDao;
+    private IDBBookDao bookDao;
+    @Inject
+    private IDBOrderDao orderDao;
     @Inject
     private IRequestService requestService;
+    @Inject
+    private DBConnection dbConnection;
 
     @Override
-    public Order getById(Long id) {
+    public Order getById(Integer id) {
         try {
-            return orderDao.getById (id);
+            return orderDao.getByPK (id);
         } catch (DaoException e) {
             log.log (Level.WARNING, "Search showed no matches");
             throw new ServiceException ("Search showed no matches", e);
@@ -45,8 +52,8 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Order> getSortOrders(Comparator<Order> comp) {
-        return orderDao.getSortOrders(comp);
+    public List<Order> getSortOrders(String criterion) {
+        return null;//orderDao.getSortOrders(criterion);
     }
 
     @Override
@@ -57,7 +64,12 @@ public class OrderService implements IOrderService {
             }
         }
         Order order = new Order(customer, books, creationDate);
-        orderDao.save(order);
+        orderDao.persist(order);
+        int [] booksId = new int[books.size()];
+        for(int i = 0; i < books.size(); i++){
+            booksId[i] = books.get(i).getId();
+            System.out.println(booksId[i]);
+        }
         return order;
     }
 
@@ -116,10 +128,5 @@ public class OrderService implements IOrderService {
                 .filter(o -> o.getStatus().equals(Order.Status.COMPLETED))
                 .filter(o -> o.getCompletionDate().compareTo(date)>=0)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public void saveAll() {
-        SerializationHandler.serialize(orderDao.getAll());
     }
 }

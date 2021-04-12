@@ -1,2 +1,2 @@
-14:16:28 / 2021-16-24 - INFO - [com.senla.courses.service.BookService] - addBook - Automatic closing of requests is prohibited 
+23:53:11 / 2021-53-11 - INFO - [com.senla.courses.service.BookService] - addBook - Automatic closing of requests is prohibited 
    

@@ -21,7 +21,7 @@ public class DeleteRequest extends AbstractAction implements IAction {
         } else {
             try {
                 int id = IntNumberValidation.validation("Введите id запроса");
-                facade.deleteRequest((long) id);
+                facade.deleteRequest(id);
                 System.out.println("Запрос удален");
             } catch (ServiceException e) {
                 log.log(Level.WARNING, e.getLocalizedMessage(), e);

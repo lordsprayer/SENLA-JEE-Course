@@ -21,7 +21,7 @@ public class DeleteOrder extends AbstractAction implements IAction {
         } else {
             int id = IntNumberValidation.validation("Введите id заказа");
             try{
-                facade.deleteOrder((long) id);
+                facade.deleteOrder(id);
                 System.out.println("Заказ удалён");
             } catch (ServiceException e){
                 log.log(Level.WARNING, e.getLocalizedMessage(), e);

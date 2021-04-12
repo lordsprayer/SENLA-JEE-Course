@@ -21,7 +21,7 @@ public class CreateRequest extends AbstractAction implements IAction{
         } else {
             try {
                 int id = IntNumberValidation.validation("Ввведите id книги");
-                facade.createRequest(facade.getBookById((long) id));
+                facade.createRequest(facade.getBookById(id));
             } catch (ServiceException e) {
                 log.log(Level.WARNING, e.getLocalizedMessage(), e);
                 System.out.println("Запрос не был создан, так как книги с таким id не существует");

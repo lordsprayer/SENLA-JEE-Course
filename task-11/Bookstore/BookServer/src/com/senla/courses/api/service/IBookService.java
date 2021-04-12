@@ -8,14 +8,13 @@ import java.util.List;
 public interface IBookService {
 
     List<Book> getAll();
-    Book getById(Long id);
+    Book getById(Integer id);
     void save(Book book);
     void delete(Book book);
-    Book update(Book book);
+    void update(Book book);
     void cancelBook(Book book);
     void addBook(Book book);
-    List<Book> unsoldBook();
+    List<Book> unsoldBook(String criterion);
     String getDescription(Book book);
-    List<Book> getSortBooks(Comparator<Book> comp);
-    void saveAll();
+    List<Book> getSortBooks(String criterion);
 }

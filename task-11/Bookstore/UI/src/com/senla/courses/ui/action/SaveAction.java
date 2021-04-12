@@ -10,6 +10,6 @@ public class SaveAction extends AbstractAction implements IAction{
 
     @Override
     public void execute() {
-        facade.saveAll();
+        //facade.saveAll();
     }
 }

@@ -22,7 +22,7 @@ public class ChangeOrderStatus extends AbstractAction implements IAction {
             int id = IntNumberValidation.validation("Введите id заказа");
             int status = IntNumberValidation.validation("Выберите статус заказа(1 - новый, 2 - выполнен, 3 - отменён)");
             try{
-                facade.changeOrderStatus((long) id, facade.getStatus(status));
+                facade.changeOrderStatus(id, facade.getStatus(status));
                 System.out.println("Статус заказа изменён");
             } catch (ServiceException e){
                 log.log(Level.WARNING, e.getLocalizedMessage(), e);

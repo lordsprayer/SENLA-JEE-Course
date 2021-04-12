@@ -6,6 +6,10 @@ import com.senla.courses.facade.BookstoreFacade;
 import com.senla.courses.ui.action.SaveAction;
 import com.senla.courses.ui.action.TempAction;
 import com.senla.courses.ui.action.book.*;
+import com.senla.courses.ui.action.customer.AddCustomer;
+import com.senla.courses.ui.action.customer.DeleteCustomer;
+import com.senla.courses.ui.action.customer.GetAllCustomers;
+import com.senla.courses.ui.action.customer.UpdateCustomer;
 import com.senla.courses.ui.action.order.*;
 import com.senla.courses.ui.action.request.*;
 
@@ -22,6 +26,7 @@ public class Builder {
         rootMenu.addMenuItem(new MenuItem("Работа с книгами", () -> {}, createBookMenu()));
         rootMenu.addMenuItem(new MenuItem("Работа с заказами", () -> {}, createOrderMenu()));
         rootMenu.addMenuItem(new MenuItem("Работа с запросами", () -> {}, createRequestMenu()));
+        rootMenu.addMenuItem(new MenuItem("Работа с покупателями", () -> {}, createCustomerMenu()));
         rootMenu.addMenuItem(new MenuItem("Добавить книги в базу", new TempAction(facade), rootMenu));
     }
 
@@ -53,12 +58,12 @@ public class Builder {
         Menu sortingBookMenu = new Menu();
         sortingBookMenu.addMenuItem(new MenuItem("Выход", new SaveAction(facade), createExitMenu()));
         sortingBookMenu.addMenuItem(new MenuItem("Без сортировки", new PrintAllBooks(facade), rootMenu));
-        sortingBookMenu.addMenuItem(new MenuItem("Сортировка по названию", new SortBookBy(facade,0), rootMenu));
-        sortingBookMenu.addMenuItem(new MenuItem("Сортировка по дате издания", new SortBookBy(facade, 1), rootMenu));
-        sortingBookMenu.addMenuItem(new MenuItem("Сортировка по цене", new SortBookBy(facade, 2), rootMenu));
-        sortingBookMenu.addMenuItem(new MenuItem("Сортировка по наличию на складе", new SortBookBy(facade, 3), rootMenu));
-        sortingBookMenu.addMenuItem(new MenuItem("Сортировка залежавшихся книг по дате поступления", new SortUnsoldBookBy(facade, 4), rootMenu));
-        sortingBookMenu.addMenuItem(new MenuItem("Сортировка залежавшихся книг по стоимости", new SortUnsoldBookBy(facade, 2), rootMenu));
+        sortingBookMenu.addMenuItem(new MenuItem("Сортировка по названию", new SortBookBy(facade,"title"), rootMenu));
+        sortingBookMenu.addMenuItem(new MenuItem("Сортировка по дате издания", new SortBookBy(facade, "publicationYear"), rootMenu));
+        sortingBookMenu.addMenuItem(new MenuItem("Сортировка по цене", new SortBookBy(facade, "cost"), rootMenu));
+        sortingBookMenu.addMenuItem(new MenuItem("Сортировка по наличию на складе", new SortBookBy(facade, "availability"), rootMenu));
+        sortingBookMenu.addMenuItem(new MenuItem("Сортировка залежавшихся книг по дате поступления", new SortUnsoldBookBy(facade, "receiptDate"), rootMenu));
+        sortingBookMenu.addMenuItem(new MenuItem("Сортировка залежавшихся книг по стоимости", new SortUnsoldBookBy(facade, "cost"), rootMenu));
         return sortingBookMenu;
     }
 
@@ -97,6 +102,16 @@ public class Builder {
         requestMenu.addMenuItem(new MenuItem("Закрыть запрос", new CloseRequest(facade), rootMenu));
         requestMenu.addMenuItem(new MenuItem("Список запросов, отсортированный по количеству запросов", new SortRequestsByBookCount(facade), rootMenu));
         requestMenu.addMenuItem(new MenuItem("Список запросов, отсортированный по названию книги", new SortRequestsByTitle(facade), rootMenu));
+        return requestMenu;
+    }
+
+    private Menu createCustomerMenu(){
+        Menu requestMenu = new Menu();
+        requestMenu.addMenuItem(new MenuItem("Выход", new SaveAction(facade), createExitMenu()));
+        requestMenu.addMenuItem(new MenuItem("Создать покупателя", new AddCustomer(facade), rootMenu));
+        requestMenu.addMenuItem(new MenuItem("Удалить покупателя", new DeleteCustomer(facade), rootMenu));
+        requestMenu.addMenuItem(new MenuItem("Редактировать покупателя", new UpdateCustomer(facade), rootMenu));
+        requestMenu.addMenuItem(new MenuItem("Список покупателей", new GetAllCustomers(facade), rootMenu));
         return requestMenu;
     }
 

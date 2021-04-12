@@ -21,7 +21,7 @@ public class CloseRequest extends AbstractAction implements IAction {
         } else {
             try {
                 int id = IntNumberValidation.validation("Ведите id запроса");
-                facade.closeRequest((long) id);
+                facade.closeRequest(id);
                 System.out.println("Запрос закрыт");
             } catch (ServiceException e) {
                 log.log(Level.WARNING, e.getLocalizedMessage(), e);

@@ -21,9 +21,9 @@ public class AddBookToWarehouse extends AbstractAction implements IAction {
         } else {
             int id = IntNumberValidation.validation("Введите id книги");
             try {
-                facade.addBookToWarehouse(facade.getBookById((long) id));
+                facade.addBookToWarehouse(facade.getBookById(id));
                 System.out.println("Книга добавлена на склад");
-                facade.printBook((long) id);
+                facade.printBook(id);
             } catch (ServiceException e) {
                 log.log(Level.WARNING, e.getLocalizedMessage(), e);
                 System.out.println("Введён неверный id");

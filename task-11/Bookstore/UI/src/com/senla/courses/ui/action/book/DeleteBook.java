@@ -23,7 +23,7 @@ public class DeleteBook extends AbstractAction implements IAction {
             facade.printAllBook();
             int id = IntNumberValidation.validation("Введите id книги");
             try {
-                facade.deleteBook((long) id);
+                facade.deleteBook(id);
                 System.out.println("Книга удалена");
             } catch (ServiceException e){
                 log.log(Level.WARNING, e.getLocalizedMessage(), e);

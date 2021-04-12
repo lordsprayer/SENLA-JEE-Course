@@ -21,9 +21,9 @@ public class CancelBookToWarehouse extends AbstractAction implements IAction {
         } else {
             int id = IntNumberValidation.validation("Введите id книги");
             try {
-                facade.cancelBookToWarehouse(facade.getBookById((long) id));
+                facade.cancelBookToWarehouse(facade.getBookById(id));
                 System.out.println("Книга списана");
-                facade.printBook((long) id);
+                facade.printBook(id);
             } catch (ServiceException e) {
                 log.log(Level.WARNING, e.getLocalizedMessage(), e);
                 System.out.println("Введён неверный id");

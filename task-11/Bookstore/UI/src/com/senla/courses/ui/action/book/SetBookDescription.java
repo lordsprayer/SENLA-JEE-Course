@@ -24,7 +24,7 @@ public class SetBookDescription extends AbstractAction implements IAction {
             System.out.println("Введите описание");
             String description = scan.nextLine();
             try {
-                facade.setBookDescription(facade.getBookById((long) id), description);
+                facade.setBookDescription(facade.getBookById(id), description);
                 System.out.println("Описание добавлено");
             } catch (ServiceException e){
                 log.log(Level.WARNING, e.getLocalizedMessage(), e);

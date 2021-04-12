@@ -1,14 +1,16 @@
 package com.senla.courses.model;
 
 
+import com.senla.courses.api.dbdao.Identified;
 import com.senla.courses.util.Calculator;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
-public class Order extends AId implements Comparable<Order>, Serializable {
+public class Order implements Identified<Integer>, Comparable<Order>, Serializable {
 
+    private Integer id = null;
     private Customer customer;
     private List<Book> bookList;
     private LocalDate creationDate;
@@ -41,6 +43,19 @@ public class Order extends AId implements Comparable<Order>, Serializable {
         this.completionDate = LocalDate.of(1970, 1, 1);
         this.totalCost = Calculator.calculateTotalCost(bookList);
         this.status = Status.NEW;
+    }
+
+    public Order(){
+
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Customer getCustomer() {
