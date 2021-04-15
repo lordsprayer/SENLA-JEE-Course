@@ -6,6 +6,7 @@ import com.senla.courses.ui.action.AbstractAction;
 import com.senla.courses.ui.action.IAction;
 import com.senla.courses.ui.action.validation.IntNumberValidation;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -33,21 +34,21 @@ public class CreateOrder extends AbstractAction implements IAction {
                 }
                 books.add(book);
             }
-//            if(facade.getAllBook().isEmpty()){
-//                System.out.println("На складе нет книг для заказа");
-//            } else {
-            System.out.println("Введите имя покупателя: ");
-            String name = scan.next();
-            System.out.println("Введите фамилию покупателя: ");
-            String surname = scan.next();
-            System.out.println("Введите номер телефона покупателя: ");
-            String phoneNumber = scan.next();
+            int customer = 0;
+            if(facade.getAllCustomers().isEmpty()){
+                System.out.println("В базе нет покупателей");
+            } else {
+                facade.printAllCustomers();
+                customer = IntNumberValidation.validation("Введите id покупателя");
+            }
             try {
-                facade.createOrder(facade.createCustomer(name, surname, phoneNumber), facade.createBookList(books));
+                facade.createOrder(facade.getCustomerById(customer), facade.createBookList(books));
                 System.out.println("Заказ создан");
             } catch (ServiceException e){
                 log.log(Level.WARNING, e.getLocalizedMessage(), e);
-                System.out.println("Заказ не был создан, так как книги с таким id не существует");
+                System.out.println("Заказ не был создан, так как не существует книги либо покупателя с таким id ");
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
         }
     }

@@ -37,11 +37,10 @@ public abstract class AbstractDBDao<T extends Identified<PK>, PK extends Integer
     protected abstract void prepareStatementForUpdate(PreparedStatement statement, T object) throws DBException;
 
     @Override
-    public T getByPK(Integer key) throws DBException {
+    public T getByPK(Integer key, Connection connection) throws DBException {
         List<T> list;
         String sql = getSelectWhereQuery();
         try{
-            connection = dbConnection.getConnection();
             statement = connection.prepareStatement(sql);
             statement.setInt(1, key);
             rs = statement.executeQuery();
@@ -67,11 +66,10 @@ public abstract class AbstractDBDao<T extends Identified<PK>, PK extends Integer
     }
 
     @Override
-    public List<T> getAll() throws DBException {
+    public List<T> getAll(Connection connection) throws DBException {
         List<T> list;
         String sql = getSelectQuery();
         try {
-            connection = dbConnection.getConnection();
             statement = connection.prepareStatement(sql);
             rs = statement.executeQuery();
             list = parseResultSet(rs);
@@ -90,7 +88,7 @@ public abstract class AbstractDBDao<T extends Identified<PK>, PK extends Integer
     }
 
     @Override
-    public void persist(T object) throws DBException {
+    public void persist(T object, Connection connection) throws DBException {
         if (object.getId() != null) {
             throw new DBException("Object is already persist.");
         }
@@ -99,8 +97,7 @@ public abstract class AbstractDBDao<T extends Identified<PK>, PK extends Integer
         // Добавляем запись
         String sql = getCreateQuery();
         try {
-            connection = dbConnection.getConnection();
-            connection.setAutoCommit(false);
+            //connection.setAutoCommit(false);
             statement = connection.prepareStatement(sql);
             prepareStatementForInsert(statement, object);
             int count = statement.executeUpdate();
@@ -111,22 +108,23 @@ public abstract class AbstractDBDao<T extends Identified<PK>, PK extends Integer
             throw new DBException(e);
         }
          //Получаем только что вставленную запись
-        sql = getSelectLastQuery();
-        try {
-            statement = connection.prepareStatement(sql);
-            rs = statement.executeQuery();
-            connection.commit();
-            List<T> list = parseResultSet(rs);
-            if ((list == null) || (list.size() != 1)) {
-                throw new DBException("Exception on findByPK new persist data.");
-            }
-            persistInstance = list.iterator().next();
-            System.out.println(persistInstance);
-        } catch (Exception e) {
-            throw new DBException(e);
-        }finally {
+//        sql = getSelectLastQuery();
+//        try {
+//            statement = connection.prepareStatement(sql);
+//            rs = statement.executeQuery();
+//            connection.commit();
+//            List<T> list = parseResultSet(rs);
+//            if ((list == null) || (list.size() != 1)) {
+//                throw new DBException("Exception on findByPK new persist data.");
+//            }
+//            persistInstance = list.iterator().next();
+//            System.out.println(persistInstance);
+//        } catch (Exception e) {
+//            throw new DBException(e);
+//        }
+        finally {
             try {
-                rs.close();
+                //rs.close();
                 statement.close();
                 //connection.close();
             } catch (SQLException throwables) {
@@ -136,11 +134,10 @@ public abstract class AbstractDBDao<T extends Identified<PK>, PK extends Integer
     }
 
     @Override
-    public void update(T object) throws DBException {
+    public void update(T object, Connection connection) throws DBException {
 
         String sql = getUpdateQuery();
         try {
-            connection = dbConnection.getConnection();
             //connection.setAutoCommit(false);
             statement = connection.prepareStatement(sql);
             prepareStatementForUpdate(statement, object);
@@ -162,10 +159,9 @@ public abstract class AbstractDBDao<T extends Identified<PK>, PK extends Integer
     }
 
     @Override
-    public void delete(T object) throws DBException {
+    public void delete(T object, Connection connection) throws DBException {
         String sql = getDeleteQuery();
         try {
-            connection = dbConnection.getConnection();
             //connection.setAutoCommit(false);
             statement = connection.prepareStatement(sql);
             try {
@@ -191,23 +187,23 @@ public abstract class AbstractDBDao<T extends Identified<PK>, PK extends Integer
         }
     }
 
-    private GenericDao getDao(Class<? extends Identified> dtoClass, Connection connection) throws DBException{
-        if(dtoClass.equals(Book.class)){
-            return new DBBookDao();
-        } else if(dtoClass.equals(Customer.class)){
-            return new DBCustomerDao();
-        } else if(dtoClass.equals(Order.class)) {
-            return new DBOrderDao();
-        } else if(dtoClass.equals(Request.class)) {
-            return new DBRequestDao();
-        } else
-            throw new DBException("Dao object for " + dtoClass + " not found.");
+//    private GenericDao getDao(Class<? extends Identified> dtoClass, Connection connection) throws DBException{
+//        if(dtoClass.equals(Book.class)){
+//            return new DBBookDao();
+//        } else if(dtoClass.equals(Customer.class)){
+//            return new DBCustomerDao();
+//        } else if(dtoClass.equals(Order.class)) {
+//            return new DBOrderDao();
+//        } else if(dtoClass.equals(Request.class)) {
+//            return new DBRequestDao();
+//        } else
+//            throw new DBException("Dao object for " + dtoClass + " not found.");
+//
+//    }
 
-    }
-
-    protected Identified getDependence(Class<? extends Identified> dtoClass, Serializable pk) throws DBException, SQLException {
-
-        return getDao(dtoClass, dbConnection.getConnection()).getByPK(pk);
-    }
+//    protected Identified getDependence(Class<? extends Identified> dtoClass, Serializable pk) throws DBException, SQLException {
+//
+//        return getDao(dtoClass, dbConnection.getConnection()).getByPK(pk);
+//    }
 
 }

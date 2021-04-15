@@ -6,6 +6,7 @@ import com.senla.courses.exception.DBException;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Request;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -131,12 +132,11 @@ public class DBRequestDao extends AbstractDBDao<Request, Integer> implements IDB
     }
 
     @Override
-    public List<Request> getSortRequestsByTitle(){
+    public List<Request> getSortRequestsByTitle(Connection connection){
         List<Request> list;
         String sql = getSelectQuery();
         sql += " ORDER BY title";
         try {
-            connection = dbConnection.getConnection();
             statement = connection.prepareStatement(sql);
             rs = statement.executeQuery();
             list = parseResultSet(rs);
@@ -147,11 +147,10 @@ public class DBRequestDao extends AbstractDBDao<Request, Integer> implements IDB
     }
 
     @Override
-    public List<String> getSortRequestsByBookCount() {
+    public List<String> getSortRequestsByBookCount(Connection connection) {
         List<String> list;
         String sql = getSelectCountBooksQuery();
         try {
-            connection = dbConnection.getConnection();
             statement = connection.prepareStatement(sql);
             rs = statement.executeQuery();
             list = parseSortResultSet(rs);

@@ -25,6 +25,8 @@ public class DBOrderDao extends AbstractDBDao<Order, Integer> implements IDBOrde
     public String getSelectQuery() {
         return "SELECT id, idCustomer, creationDate, completionDate, totalCost, status " +
                 "FROM bookstore.Order";
+        //SELECT id.order, idCustomer.order, name, surname, phoneNumber, completionDate, totalCost, status FROM bookstore.order
+        //join bookstore.customer on idCustomer.order = id.customer;
     }
 
     @Override
@@ -62,7 +64,8 @@ public class DBOrderDao extends AbstractDBDao<Order, Integer> implements IDBOrde
             while (rs.next()) {
                 DBOrderDao.PersistOrder order = new DBOrderDao.PersistOrder();
                 order.setId(rs.getInt("id"));
-                order.setCustomer((Customer) getDependence(Customer.class, rs.getInt("idCustomer")));
+                //todo распарсить покупателя
+                //order.setCustomer((Customer) getDependence(Customer.class, rs.getInt("idCustomer")));
                 order.setCreationDate(rs.getDate("creationDate").toLocalDate());
                 order.setCompletionDate(rs.getDate("completionDate").toLocalDate());
                 order.setTotalCost(rs.getDouble("totalCost"));
@@ -119,10 +122,5 @@ public class DBOrderDao extends AbstractDBDao<Order, Integer> implements IDBOrde
             throw new DBException(e);
         }
         return list;
-    }
-
-    @Override
-    public Order getByPK(Integer key) throws DBException {
-        return null;
     }
 }

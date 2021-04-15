@@ -129,12 +129,11 @@ public class DBBookDao extends AbstractDBDao<Book, Integer> implements IDBBookDa
     }
 
     @Override
-    public List<Book> getSortBook(String criterion){
+    public List<Book> getSortBook(String criterion, Connection connection){
         List<Book> list;
         String sql = getSelectQuery();
         sql += " ORDER BY " + criterion;
         try{
-            connection = dbConnection.getConnection();
             statement = connection.prepareStatement(sql);
             rs = statement.executeQuery();
             list = parseResultSet(rs);
@@ -153,12 +152,11 @@ public class DBBookDao extends AbstractDBDao<Book, Integer> implements IDBBookDa
     }
 
     @Override
-    public List<Book> getUnsoldBook(LocalDate date, String criterion) {
+    public List<Book> getUnsoldBook(LocalDate date, String criterion, Connection connection) {
         List<Book> list;
         String sql = getSelectQuery();
         sql += " WHERE availability = 1 AND receiptDate < '" + date + "' ORDER BY " + criterion;
         try{
-            connection = dbConnection.getConnection();
             statement = connection.prepareStatement(sql);
             rs = statement.executeQuery();
             list = parseResultSet(rs);
@@ -174,5 +172,29 @@ public class DBBookDao extends AbstractDBDao<Book, Integer> implements IDBBookDa
             }
         }
         return list;
+    }
+
+    @Override
+    public void insertOrder(Book book, Integer orderId, Connection connection) {
+        String sql = getUpdateOrderQuery();
+        try{
+            statement = connection.prepareStatement(sql);
+            prepareStatementForInsertOrder(statement, book, orderId);
+            int count = statement.executeUpdate();
+            if (count != 1) {
+                throw new DBException("On update modify more then 1 record: " + count);
+            }
+        } catch (Exception e) {
+            throw new DBException(e);
+        } finally {
+            try {
+                rs.close();
+                statement.close();
+                //connection.close();
+            } catch (SQLException e) {
+                System.err.println(e.getLocalizedMessage());
+            }
+        }
+
     }
 }

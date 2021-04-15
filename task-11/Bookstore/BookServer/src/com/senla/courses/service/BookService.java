@@ -38,13 +38,13 @@ public class BookService implements IBookService {
 
     @Override
     public List<Book> getAll() {
-        return bookDao.getAll();
+        return bookDao.getAll(dbConnection.getConnection());
     }
 
     @Override
     public Book getById(Integer id) {
         try{
-            return bookDao.getByPK(id);
+            return bookDao.getByPK(id, dbConnection.getConnection());
         } catch (DaoException e){
             log.log(Level.WARNING, "Search showed no matches");
             throw new ServiceException("Search showed no matches", e);
@@ -53,31 +53,31 @@ public class BookService implements IBookService {
 
     @Override
     public void save(Book book) {
-        bookDao.persist(book);
+        bookDao.persist(book, dbConnection.getConnection());
     }
 
     @Override
     public void delete(Book book) {
-        bookDao.delete(book);
+        bookDao.delete(book, dbConnection.getConnection());
     }
 
     @Override
     public void update(Book book) {
-        bookDao.update(book);
+        bookDao.update(book, dbConnection.getConnection());
     }
 
     @Override
     public void cancelBook(Book book) {
         book.setAvailability(false);
-        bookDao.update(book);
+        bookDao.update(book, dbConnection.getConnection());
     }
 
     @Override
     public void addBook(Book book) {
         book.setAvailability(true);
-        bookDao.update(book);
+        bookDao.update(book, dbConnection.getConnection());
         if(permit) {
-            List<Request> requests = new ArrayList<>(requestDao.getAll());
+            List<Request> requests = new ArrayList<>(requestDao.getAll(dbConnection.getConnection()));
             for (Request request : requests) {
                 if (request.getBook().equals(book)) {
                     requestService.closeRequest(request);
@@ -92,7 +92,7 @@ public class BookService implements IBookService {
     @Override
     public List<Book> unsoldBook(String criterion) {
         LocalDate date = LocalDate.now().minusMonths(months);
-        return bookDao.getUnsoldBook(date,criterion);
+        return bookDao.getUnsoldBook(date,criterion, dbConnection.getConnection());
     }
 
     @Override
@@ -103,6 +103,6 @@ public class BookService implements IBookService {
 
     @Override
     public List<Book> getSortBooks(String criterion) {
-        return bookDao.getSortBook(criterion);
+        return bookDao.getSortBook(criterion, dbConnection.getConnection());
     }
 }

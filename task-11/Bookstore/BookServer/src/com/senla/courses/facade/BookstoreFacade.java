@@ -13,6 +13,7 @@ import com.senla.courses.model.Book;
 import com.senla.courses.model.Order;
 import com.senla.courses.model.Request;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -59,9 +60,21 @@ public class BookstoreFacade {
         List<Book> books = new ArrayList<>();
         books.add(book1);
         books.add(book2);
-        orderService.createOrder(customer1, books, LocalDate.of(2020, 12, 21));
-        orderService.createOrder(customer2, books, LocalDate.of(2021, 1, 12));
-        orderService.createOrder(customer3, books, LocalDate.of(2021, 2, 3));
+        try {
+            orderService.createOrder(customer1, books, LocalDate.of(2020, 12, 21));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        try {
+            orderService.createOrder(customer2, books, LocalDate.of(2021, 1, 12));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        try {
+            orderService.createOrder(customer3, books, LocalDate.of(2021, 2, 3));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
 
@@ -177,7 +190,7 @@ public class BookstoreFacade {
         return books1;
     }
 
-    public void createOrder(Customer customer, List<Book> books) {
+    public void createOrder(Customer customer, List<Book> books) throws SQLException {
         Order order = orderService.createOrder(customer, books, LocalDate.now());
         System.out.println(order);
     }
