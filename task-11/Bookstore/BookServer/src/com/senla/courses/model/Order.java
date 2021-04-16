@@ -54,7 +54,7 @@ public class Order implements Identified<Integer>, Comparable<Order>, Serializab
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

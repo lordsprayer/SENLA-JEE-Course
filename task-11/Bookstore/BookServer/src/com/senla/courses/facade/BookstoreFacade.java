@@ -192,7 +192,7 @@ public class BookstoreFacade {
 
     public void createOrder(Customer customer, List<Book> books) throws SQLException {
         Order order = orderService.createOrder(customer, books, LocalDate.now());
-        System.out.println(order);
+        //System.out.println(order);
     }
 
     public Customer createCustomer(String name, String surname, String phoneNumber) {
@@ -226,7 +226,7 @@ public class BookstoreFacade {
         }
     }
 
-    public List<Order> printAllOrders(){
+    public List<Order> printAllOrders() throws SQLException {
         orderService.getAll().forEach(System.out::println);
         return orderService.getAll();
     }

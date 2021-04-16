@@ -2,7 +2,6 @@ package com.senla.courses.model;
 
 import com.senla.courses.api.dbdao.Identified;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
 public class Book implements Identified<Integer>, Comparable<Book> {

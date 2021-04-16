@@ -2,7 +2,6 @@ package com.senla.courses.model;
 
 import com.senla.courses.api.dbdao.Identified;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
 
@@ -27,7 +26,7 @@ public class Request implements Identified<Integer>, Comparable<Request> {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

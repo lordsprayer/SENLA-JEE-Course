@@ -19,6 +19,12 @@ public class DBBookDao extends AbstractDBDao<Book, Integer> implements IDBBookDa
     }
 
     @Override
+    public String getSelectBookWhereOrder() {
+        return "SELECT id, title, author, publicationYear, cost, receiptDate, availability, description " +
+                "FROM bookstore.Book WHERE idOrder = ?";
+    }
+
+    @Override
     public String getUpdateOrderQuery() {
         return "UPDATE bookstore.Book SET idOrder = ? WHERE id= ?";
     }
@@ -39,12 +45,6 @@ public class DBBookDao extends AbstractDBDao<Book, Integer> implements IDBBookDa
     public String getSelectWhereQuery() {
         return "SELECT id, title, author, publicationYear, cost, receiptDate, availability, description " +
                 "FROM bookstore.Book WHERE id = ?";
-    }
-
-    @Override
-    public String getSelectLastQuery() {
-        return "SELECT id, title, author, publicationYear, cost, receiptDate, availability, description " +
-                "FROM bookstore.Book WHERE id = last_insert_id()";
     }
 
     @Override
@@ -169,6 +169,29 @@ public class DBBookDao extends AbstractDBDao<Book, Integer> implements IDBBookDa
                 //connection.close();
             } catch (SQLException e) {
                 System.err.println(e.getLocalizedMessage());
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public List<Book> getBookByOrder(Integer key, Connection connection) {
+        List<Book> list;
+        String sql = getSelectBookWhereOrder();
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, key);
+            rs = statement.executeQuery();
+            list = parseResultSet(rs);
+        } catch (Exception e) {
+            throw new DBException(e);
+        } finally {
+            try {
+                rs.close();
+                statement.close();
+                //connection.close();
+            } catch (SQLException throwables) {
+                System.err.println(throwables.getLocalizedMessage());
             }
         }
         return list;

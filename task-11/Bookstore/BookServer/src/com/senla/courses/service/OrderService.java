@@ -42,9 +42,8 @@ public class OrderService implements IOrderService {
         try {
             Connection connection = dbConnection.getConnection();
             connection.setAutoCommit(false);
-            Order order = orderDao.getByPK (id, dbConnection.getConnection());
-            //todo вмсето гетОлл написать метод в букдао, достающий книги из заказа
-            List<Book> books = new ArrayList<>(bookDao.getAll(connection));
+            Order order = orderDao.getByPK (id, connection);
+            List<Book> books = new ArrayList<>(bookDao.getBookByOrder(order.getId(), connection));
             connection.commit();
             connection.setAutoCommit(true);
             order.setBookList(books);
@@ -56,13 +55,42 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Order> getAll() {
-        return orderDao.getAll(dbConnection.getConnection());
+    public List<Order> getAll() throws SQLException {
+        List<Order> orders;
+        try {
+            Connection connection = dbConnection.getConnection();
+            connection.setAutoCommit(false);
+            orders = new ArrayList<>(orderDao.getAll(connection));
+            for (Order order : orders) {
+                List<Book> books = new ArrayList<>(bookDao.getBookByOrder(order.getId(), connection));
+                order.setBookList(books);
+            }
+            connection.commit();
+            connection.setAutoCommit(true);
+            return orders;
+        } catch (SQLException e){
+            System.err.println(e.getLocalizedMessage());
+            return null;
+        }
     }
 
     @Override
     public List<Order> getSortOrders(String criterion) {
-        return null;//orderDao.getSortOrders(criterion);
+        Connection connection = dbConnection.getConnection();
+        try {
+            connection.setAutoCommit(false);
+            List<Order> orders = new ArrayList<>(orderDao.getSortOrders(criterion, connection));
+            for (Order order : orders) {
+                List<Book> books = new ArrayList<>(bookDao.getBookByOrder(order.getId(), connection));
+                order.setBookList(books);
+            }
+            connection.commit();
+            connection.setAutoCommit(true);
+            return orders;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -78,20 +106,18 @@ public class OrderService implements IOrderService {
                 }
             }
             Order order = new Order(customer, books, creationDate);
-            orderDao.persist(order, connection);
-            //todo решить, будет ли персист возвращать последнее вставленное значение, либо написать отдельный метод
-            Order order1 = orderDao.getByPK(1, connection);
+            Order order1 = orderDao.persist(order, connection);
             for (Book book : books) {
                 bookDao.insertOrder(book, order1.getId(), connection);
             }
             connection.commit();
             connection.setAutoCommit(true);
-            int[] booksId = new int[books.size()];
-            for (int i = 0; i < books.size(); i++) {
-                booksId[i] = books.get(i).getId();
-                System.out.println(booksId[i]);
-            }
-        return order;
+//            int[] booksId = new int[books.size()];
+//            for (int i = 0; i < books.size(); i++) {
+//                booksId[i] = books.get(i).getId();
+//                System.out.println(booksId[i]);
+//            }
+        return order1;
         } catch (SQLException e) {
             log.log (Level.WARNING, "Search showed no matches");
             throw new ServiceException ("Search showed no matches", e);

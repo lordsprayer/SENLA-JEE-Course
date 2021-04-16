@@ -30,11 +30,6 @@ public class DBCustomerDao extends AbstractDBDao<Customer, Integer> implements I
     }
 
     @Override
-    public String getSelectLastQuery() {
-        return "SELECT * FROM bookstore.Customer WHERE id = last_insert_id()";
-    }
-
-    @Override
     public String getCreateQuery() {
         return "INSERT INTO bookstore.Customer VALUES (null,?, ?, ?)";
     }

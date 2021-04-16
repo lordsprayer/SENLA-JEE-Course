@@ -11,10 +11,7 @@ import com.senla.courses.model.Order;
 import com.senla.courses.model.Request;
 
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 @Singleton
@@ -28,7 +25,6 @@ public abstract class AbstractDBDao<T extends Identified<PK>, PK extends Integer
 
     public abstract String getSelectQuery();
     public abstract String getSelectWhereQuery();
-    public abstract String getSelectLastQuery();
     public abstract String getCreateQuery();
     public abstract String getUpdateQuery();
     public abstract String getDeleteQuery();
@@ -88,43 +84,29 @@ public abstract class AbstractDBDao<T extends Identified<PK>, PK extends Integer
     }
 
     @Override
-    public void persist(T object, Connection connection) throws DBException {
+    public T persist(T object, Connection connection) throws DBException {
         if (object.getId() != null) {
             throw new DBException("Object is already persist.");
         }
-
-        T persistInstance;
-        // Добавляем запись
         String sql = getCreateQuery();
         try {
-            //connection.setAutoCommit(false);
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             prepareStatementForInsert(statement, object);
             int count = statement.executeUpdate();
             if (count != 1) {
                 throw new DBException("On persist modify more then 1 record: " + count);
+            } else {
+                rs = statement.getGeneratedKeys();
+                rs.next();
+                object.setId(rs.getInt(1));
+                System.out.println(object);
+                return object;
             }
         } catch (Exception e) {
             throw new DBException(e);
-        }
-         //Получаем только что вставленную запись
-//        sql = getSelectLastQuery();
-//        try {
-//            statement = connection.prepareStatement(sql);
-//            rs = statement.executeQuery();
-//            connection.commit();
-//            List<T> list = parseResultSet(rs);
-//            if ((list == null) || (list.size() != 1)) {
-//                throw new DBException("Exception on findByPK new persist data.");
-//            }
-//            persistInstance = list.iterator().next();
-//            System.out.println(persistInstance);
-//        } catch (Exception e) {
-//            throw new DBException(e);
-//        }
-        finally {
+        } finally {
             try {
-                //rs.close();
+                rs.close();
                 statement.close();
                 //connection.close();
             } catch (SQLException throwables) {

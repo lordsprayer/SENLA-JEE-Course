@@ -12,7 +12,7 @@ import java.util.List;
 public interface IOrderService {
 
     Order getById(Integer id);
-    List<Order> getAll();
+    List<Order> getAll() throws SQLException;
     List<Order> getSortOrders(String criterion);
     Order createOrder(Customer customer, List<Book> books, LocalDate creationDate) throws SQLException;
     void deleteOrder(Order order);

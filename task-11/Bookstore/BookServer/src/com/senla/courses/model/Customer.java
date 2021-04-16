@@ -2,8 +2,6 @@ package com.senla.courses.model;
 
 import com.senla.courses.api.dbdao.Identified;
 
-import java.io.Serializable;
-
 public class Customer implements Identified<Integer> {
     private Integer id = null;
     private String name;
@@ -24,7 +22,7 @@ public class Customer implements Identified<Integer> {
         return id;
     }
 
-    public void setId(Integer id){
+    public void setId(int id){
         this.id = id;
     }
 

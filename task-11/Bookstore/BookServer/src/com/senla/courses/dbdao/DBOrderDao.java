@@ -6,6 +6,7 @@ import com.senla.courses.exception.DBException;
 import com.senla.courses.model.Customer;
 import com.senla.courses.model.Order;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,20 +24,15 @@ public class DBOrderDao extends AbstractDBDao<Order, Integer> implements IDBOrde
 
     @Override
     public String getSelectQuery() {
-        return "SELECT id, idCustomer, creationDate, completionDate, totalCost, status " +
-                "FROM bookstore.Order";
-        //SELECT id.order, idCustomer.order, name, surname, phoneNumber, completionDate, totalCost, status FROM bookstore.order
-        //join bookstore.customer on idCustomer.order = id.customer;
+        return "SELECT order.id, customer.id, name, surname, phoneNumber, creationDate, completionDate, totalCost, status " +
+                "FROM bookstore.order JOIN bookstore.customer on order.idCustomer = customer.id";
+
     }
 
     @Override
     public String getSelectWhereQuery() {
-        return null;
-    }
-
-    @Override
-    public String getSelectLastQuery() {
-        return null;
+        return "SELECT order.id, customer.id, name, surname, phoneNumber, creationDate, completionDate, totalCost, status " +
+                "FROM bookstore.order JOIN bookstore.customer on order.idCustomer = customer.id WHERE order.id = ?";
     }
 
     @Override
@@ -47,7 +43,7 @@ public class DBOrderDao extends AbstractDBDao<Order, Integer> implements IDBOrde
     @Override
     public String getUpdateQuery() {
         return "UPDATE bookstore.Order " +
-                "SET idCustomer = ?, creationDate = ?, completionDate = ? " +
+                "SET idCustomer = ?, creationDate = ?, completionDate = ?, " +
                 "totalCost = ?, status = ? " +
                 "WHERE id = ?;";
     }
@@ -62,10 +58,14 @@ public class DBOrderDao extends AbstractDBDao<Order, Integer> implements IDBOrde
         ArrayList<Order> result = new ArrayList<>();
         try {
             while (rs.next()) {
-                DBOrderDao.PersistOrder order = new DBOrderDao.PersistOrder();
+                PersistOrder order = new PersistOrder();
                 order.setId(rs.getInt("id"));
-                //todo распарсить покупателя
-                //order.setCustomer((Customer) getDependence(Customer.class, rs.getInt("idCustomer")));
+                Customer customer = new Customer();
+                customer.setId(rs.getInt("id"));
+                customer.setName(rs.getString("name"));
+                customer.setSurname(rs.getString("surname"));
+                customer.setPhoneNumber(rs.getString("phoneNumber"));
+                order.setCustomer(customer);
                 order.setCreationDate(rs.getDate("creationDate").toLocalDate());
                 order.setCompletionDate(rs.getDate("completionDate").toLocalDate());
                 order.setTotalCost(rs.getDouble("totalCost"));
@@ -98,23 +98,23 @@ public class DBOrderDao extends AbstractDBDao<Order, Integer> implements IDBOrde
         try {
             int customerId = (object.getCustomer() == null || object.getCustomer().getId() == null) ? -1
                     : object.getCustomer().getId();
-            statement.setInt(1, object.getId());
-            statement.setInt(2, customerId);
-            statement.setDate(3, Date.valueOf(object.getCreationDate()));
-            statement.setDate(4, Date.valueOf(object.getCompletionDate()));
-            statement.setDouble(5, object.getTotalCost());
-            statement.setString(6, object.getStatus().toString());
+            statement.setInt(1, customerId);
+            statement.setDate(2, Date.valueOf(object.getCreationDate()));
+            statement.setDate(3, Date.valueOf(object.getCompletionDate()));
+            statement.setDouble(4, object.getTotalCost());
+            statement.setString(5, object.getStatus().toString());
+            statement.setInt(6, object.getId());
         } catch (Exception e) {
             throw new DBException(e);
         }
     }
 
-    public List<Order> getSortOrders(String criterion){
+    @Override
+    public List<Order> getSortOrders(String criterion, Connection connection){
         List<Order> list;
         String sql = getSelectQuery();
         sql += " ORDER BY " + criterion;
         try {
-            connection = dbConnection.getConnection();
             statement = connection.prepareStatement(sql);
             rs = statement.executeQuery();
             list = parseResultSet(rs);

@@ -35,12 +35,6 @@ public class DBRequestDao extends AbstractDBDao<Request, Integer> implements IDB
     }
 
     @Override
-    public String getSelectLastQuery() {
-        return "SELECT request.id, book.id, title, author, publicationYear, cost, receiptDate, availability, date, status " +
-                "FROM bookstore.Book JOIN bookstore.Request ON request.idBook = book.id WHERE request.id = last_insert_id()";
-    }
-
-    @Override
     public String getSelectCountBooksQuery() {
         return "SELECT title, COUNT(book.id) FROM bookstore.book JOIN bookstore.request " +
                 "ON request.idBook = book.id GROUP BY book.id ORDER BY COUNT(book.id) DESC";

@@ -9,7 +9,7 @@ import java.util.List;
 public interface GenericDao <T extends Identified<PK>, PK extends Serializable> {
 
     /** Создает новую запись, соответствующую объекту object */
-    void persist(T object, Connection connection)  throws DBException;
+    T persist(T object, Connection connection)  throws DBException;
 
     /** Возвращает объект соответствующий записи с первичным ключом key или null */
     T getByPK(PK key, Connection connection) throws DBException;
