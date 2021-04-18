@@ -20,10 +20,9 @@ public class UpdateBook extends AbstractAction implements IAction {
                 facade.printAllBook();
                 int id = IntNumberValidation.validation("Введите id книги ");
                 System.out.println("Введите название ");
-                String title = scan.next();
+                String title = scan.nextLine();
                 System.out.println("Введите автора ");
-                String author = scan.next();
-                //System.out.println("Введите год публикации ");
+                String author = scan.nextLine();
                 Integer publicationYear = IntNumberValidation.validation("Введите год публикации");
                 System.out.println("Введите стоимость ");
                 Double cost = Double.parseDouble(scan.next());

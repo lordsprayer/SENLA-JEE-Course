@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 
 @Singleton
 public class BookstoreFacade {
+    private static final Logger log = Logger.getLogger(BookstoreFacade.class.getName());
     @Inject
     private ICustomerService customerService;
     @Inject
@@ -33,49 +34,33 @@ public class BookstoreFacade {
     private IBookService bookService;
     @Inject
     private  IOrderService orderService;
-    private final List<Comparator<Order>> orderComp = new ArrayList<>();
-    private static final Logger log = Logger.getLogger(BookstoreFacade.class.getName());
 
-    public  List<Comparator<Order>> createOrderComparators(){
-        orderComp.add(OrdersComparators.DateComparator);
-        orderComp.add(OrdersComparators.TotalCostComparator);
-        orderComp.add(OrdersComparators.StatusComparator);
-        return orderComp;
-    }
-
-    public void bookDB() {
-        Book book1 = new Book("Созерцатель", "Алексей Пехов", 2018, 12.5, LocalDate.of(2021, 1, 3), true);
-        Book book2 = new Book("Страж", "Алексей Пехов", 2019, 17.5, LocalDate.of(2020, 9, 21), true);
-        Book book3 = new Book("Бессмертный", "Кэтрин Валенте", 2018, 12.3, LocalDate.of(2020, 7, 28), false);
-        bookService.save(book1);
-        bookService.save(book2);
-        bookService.save(book3);
-        bookService.save(new Book("Черные крылья", "Эд Макдональд", 2018, 14.3, LocalDate.of(2020, 12, 12), false));
-        Customer customer1 = new Customer("Иван", "Иванов", "+375297746363");
-        Customer customer2 = new Customer("Петр",  "Петров", "+375445878745");
-        Customer customer3 = new Customer("Дмитрий", "Сидоров ", "+375443698521");
-        customerService.save(customer1);
-        customerService.save(customer2);
-        customerService.save(customer3);
-        List<Book> books = new ArrayList<>();
-        books.add(book1);
-        books.add(book2);
-        try {
-            orderService.createOrder(customer1, books, LocalDate.of(2020, 12, 21));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        try {
-            orderService.createOrder(customer2, books, LocalDate.of(2021, 1, 12));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        try {
-            orderService.createOrder(customer3, books, LocalDate.of(2021, 2, 3));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
+//    public void bookDB() {
+//        Book book1 = new Book("Созерцатель", "Алексей Пехов", 2018, 12.5, LocalDate.of(2021, 1, 3), true);
+//        Book book2 = new Book("Страж", "Алексей Пехов", 2019, 17.5, LocalDate.of(2020, 9, 21), true);
+//        Book book3 = new Book("Бессмертный", "Кэтрин Валенте", 2018, 12.3, LocalDate.of(2020, 7, 28), false);
+//        Customer customer1 = new Customer("Иван", "Иванов", "+375297746363");
+//        Customer customer2 = new Customer("Петр",  "Петров", "+375445878745");
+//        Customer customer3 = new Customer("Дмитрий", "Сидоров ", "+375443698521");
+//        List<Book> books = new ArrayList<>();
+//        books.add(book1);
+//        books.add(book2);
+//        try {
+//            bookService.save(book1);
+//            bookService.save(book2);
+//            bookService.save(book3);
+//            bookService.save(new Book("Черные крылья", "Эд Макдональд", 2018, 14.3, LocalDate.of(2020, 12, 12), false));
+//            customerService.save(customer1);
+//            customerService.save(customer2);
+//            customerService.save(customer3);
+//            orderService.createOrder(customer1, books, LocalDate.of(2020, 12, 21));
+//            orderService.createOrder(customer2, books, LocalDate.of(2021, 1, 12));
+//            orderService.createOrder(customer3, books, LocalDate.of(2021, 2, 3));
+//        } catch (ServiceException e) {
+//            log.log(Level.WARNING, "Error when saving an objects");
+//            throw e;
+//        }
+//    }
 
 
     public Book createBook(String title,
@@ -97,38 +82,77 @@ public class BookstoreFacade {
     }
 
     public void saveCustomer(Customer customer){
-        customerService.save(customer);
+        try {
+            customerService.save(customer);
+        } catch(ServiceException e){
+            log.log(Level.WARNING, "Error when saving an object");
+            throw e;
+        }
     }
 
     public void deleteCustomer(Integer id){
-        customerService.delete(getCustomerById(id));
+        try {
+            customerService.delete(getCustomerById(id));
+        } catch(ServiceException e){
+            log.log(Level.WARNING, "Error when deleting an object");
+            throw e;
+        }
     }
 
     public void updateCustomer(Customer customer, Integer id){
         customer.setId(id);
-        customerService.update(customer);
+        try {
+            customerService.update(customer);
+        } catch(ServiceException e){
+            log.log(Level.WARNING, "Search showed no matches");
+            throw e;
+        }
     }
 
     public List<Customer> getAllCustomers(){
-        return customerService.getAll();
+        try {
+            return customerService.getAll();
+        } catch(ServiceException e){
+            log.log(Level.WARNING, "Search showed no matches");
+            throw e;
+        }
     }
 
     public List<Customer> printAllCustomers(){
-        getAllCustomers().forEach(System.out::println);
-        return getAllCustomers();
+        try {
+            getAllCustomers().forEach(System.out::println);
+            return getAllCustomers();
+        } catch(ServiceException e){
+            log.log(Level.WARNING, "Search showed no matches");
+            throw e;
+        }
     }
 
     public void printCustomer(Integer id){
-        System.out.println(getCustomerById(id));
+        try {
+            System.out.println(getCustomerById(id));
+        } catch(ServiceException e){
+            log.log(Level.WARNING, "Search showed no matches");
+            throw e;
+        }
     }
 
     public void saveBook(Book book){
-        bookService.save(book);
-        //System.out.println(book);
+        try {
+            bookService.save(book);
+        } catch(ServiceException e){
+            log.log(Level.WARNING, "Error when saving an object");
+            throw e;
+        }
     }
 
     public List<Book> getAllBook(){
-        return bookService.getAll();
+        try {
+            return bookService.getAll();
+        } catch(ServiceException e){
+            log.log(Level.WARNING, "Search showed no matches");
+            throw e;
+        }
     }
 
     public Book getBookById(Integer id){
@@ -141,7 +165,12 @@ public class BookstoreFacade {
     }
 
     public void printAllBook(){
-        getAllBook().forEach(System.out::println);
+        try {
+            getAllBook().forEach(System.out::println);
+        } catch(ServiceException e){
+            log.log(Level.WARNING, "Search showed no matches");
+            throw e;
+        }
     }
 
     public void printBook(Integer id){
@@ -155,44 +184,83 @@ public class BookstoreFacade {
 
     public void updateBook(Book book, Integer id){
         book.setId(id);
-        bookService.update(book);
+        try {
+            bookService.update(book);
+        } catch(ServiceException e){
+            log.log(Level.WARNING, "Error when updating an object");
+            throw e;
+        }
     }
 
     public void deleteBook(Integer id){
-        bookService.delete(getBookById(id));
+        try {
+            bookService.delete(getBookById(id));
+        } catch(ServiceException e){
+            log.log(Level.WARNING, "Error when deleting an object");
+            throw e;
+        }
     }
 
     public List<Book> sortBooks(String criterion){
-        List<Book> bookList = bookService.getSortBooks(criterion);
-        bookList.forEach(System.out::println);
-        return bookList;
+        try {
+            List<Book> bookList = bookService.getSortBooks(criterion);
+            bookList.forEach(System.out::println);
+            return bookList;
+        } catch(ServiceException e){
+            log.log(Level.WARNING, "Search showed no matches");
+            throw e;
+        }
     }
 
     public List<Book> sortUnsoldBooks(String criterion){
-        List<Book> bookList = bookService.unsoldBook(criterion);
-        bookList.forEach(System.out::println);
-        return bookList;
+        try {
+            List<Book> bookList = bookService.unsoldBook(criterion);
+            bookList.forEach(System.out::println);
+            return bookList;
+        } catch(ServiceException e){
+            log.log(Level.WARNING, "Search showed no matches");
+            throw e;
+        }
     }
 
     public void addBookToWarehouse(Book book){
-        bookService.addBook(book);
+        try {
+            bookService.addBook(book);
+        } catch(ServiceException e){
+            log.log(Level.WARNING, "Error when updating an object");
+            throw e;
+        }
     }
 
     public void cancelBookToWarehouse(Book book){
-        bookService.cancelBook(book);
+        try {
+            bookService.cancelBook(book);
+        } catch(ServiceException e){
+            log.log(Level.WARNING, "Error when updating an object");
+            throw e;
+        }
     }
 
     public List<Book> printBooksByAvailability(Boolean availability) {
-        List<Book> books= new ArrayList<>(bookService.getAll());
-        List<Book> books1 = books.stream().filter(book -> book.getAvailability().equals(availability))
-                .collect(Collectors.toList());
-        books1.forEach(System.out::println);
-        return books1;
+        try {
+            List<Book> books = new ArrayList<>(bookService.getAll());
+            List<Book> books1 = books.stream().filter(book -> book.getAvailability().equals(availability))
+                    .collect(Collectors.toList());
+            books1.forEach(System.out::println);
+            return books1;
+        } catch(ServiceException e){
+            log.log(Level.WARNING, "Search showed no matches");
+            throw e;
+        }
     }
 
-    public void createOrder(Customer customer, List<Book> books) throws SQLException {
-        Order order = orderService.createOrder(customer, books, LocalDate.now());
-        //System.out.println(order);
+    public void createOrder(Customer customer, List<Book> books) {
+        try {
+            orderService.createOrder(customer, books, LocalDate.now());
+        } catch(ServiceException e){
+            log.log(Level.WARNING, "Error when saving an object");
+            throw e;
+        }
     }
 
     public Customer createCustomer(String name, String surname, String phoneNumber) {
@@ -214,7 +282,12 @@ public class BookstoreFacade {
 
     public void setBookDescription(Book book, String description){
         book.setDescription(description);
-        bookService.update(book);
+        try{
+            bookService.update(book);
+        } catch(ServiceException e){
+            log.log(Level.WARNING, "Error when updating an object");
+            throw e;
+        }
     }
 
     public String getBookDescription(Integer id){
@@ -226,9 +299,14 @@ public class BookstoreFacade {
         }
     }
 
-    public List<Order> printAllOrders() throws SQLException {
-        orderService.getAll().forEach(System.out::println);
-        return orderService.getAll();
+    public List<Order> printAllOrders() {
+        try {
+            orderService.getAll().forEach(System.out::println);
+            return orderService.getAll();
+        } catch (ServiceException e){
+            log.log(Level.WARNING, "Search showed no matches");
+            throw e;
+        }
     }
 
     public Order getOrderById(Integer id){
@@ -275,9 +353,9 @@ public class BookstoreFacade {
 
     public void changeOrderStatus(Integer id, Order.Status status){
         try {
-            if(status.equals(Order.Status.COMPLETED)){
+            if (status.equals(Order.Status.COMPLETED)){
                 orderService.completeOrder(getOrderById(id), LocalDate.now());
-            }else {
+            } else {
                 orderService.changeStatus(getOrderById(id), status);
             }
         } catch (ServiceException e) {
@@ -287,23 +365,43 @@ public class BookstoreFacade {
     }
 
     public List<Order> sortOrders(String criterion){
-        List<Order> orderList = orderService.getSortOrders(criterion);
-        orderList.forEach(System.out::println);
-        return orderList;
+        try {
+            List<Order> orderList = orderService.getSortOrders(criterion);
+            orderList.forEach(System.out::println);
+            return orderList;
+        } catch (ServiceException e){
+            log.log(Level.WARNING, "Search showed no matches");
+            throw e;
+        }
     }
 
-    public List<Order> sortCompleteOrders(Comparator<Order> orderComparator,LocalDate date){
-        List<Order> orderList = orderService.getSortCompletedOrders(orderComparator, date);
-        orderList.forEach(System.out::println);
-        return orderList;
+    public List<Order> sortCompleteOrders(String criterion,LocalDate date){
+        try {
+            List<Order> orderList = orderService.getSortCompletedOrders(date, criterion);
+            orderList.forEach(System.out::println);
+            return orderList;
+        } catch (ServiceException e){
+            log.log(Level.WARNING, "Search showed no matches");
+            throw e;
+        }
     }
 
     public Double countIncome(LocalDate date){
-        return orderService.countIncome(date);
+        try {
+            return orderService.countIncome(date);
+        } catch (ServiceException e){
+            log.log(Level.WARNING, "Search showed no matches");
+            throw e;
+        }
     }
 
     public Integer countCompleteOrders(LocalDate date){
-        return orderService.countCompleteOrders(date);
+        try {
+            return orderService.countCompleteOrders(date);
+        } catch (ServiceException e){
+            log.log(Level.WARNING, "Search showed no matches");
+            throw e;
+        }
     }
 
     public LocalDate createDate(){
@@ -324,13 +422,23 @@ public class BookstoreFacade {
     }
 
     public void createRequest(Book book) {
-        requestService.createRequest(book);
+        try {
+            requestService.createRequest(book);
+        } catch (ServiceException e){
+            log.log(Level.WARNING, "Error when saving an object");
+            throw e;
+        }
     }
 
 
     public List<Request> printAllRequests(){
-        requestService.getAll().forEach(System.out::println);
-        return requestService.getAll();
+        try {
+            requestService.getAll().forEach(System.out::println);
+            return requestService.getAll();
+        } catch (ServiceException e){
+            log.log(Level.WARNING, "Search showed no matches");
+            throw e;
+        }
     }
 
     public void deleteRequest(Integer id){
@@ -355,8 +463,7 @@ public class BookstoreFacade {
         List<String> requestList = requestService.getSortRequestsByBookCount();
         if(requestList.isEmpty()){
             System.out.println("Пока в базе нет запросов");
-        }
-        else {
+        } else {
             requestList.forEach(System.out::println);
         }
     }
@@ -365,8 +472,7 @@ public class BookstoreFacade {
         List<Request> requestList = requestService.getSortRequests();
         if(requestList.isEmpty()){
             System.out.println("Пока в базе нет запросов");
-        }
-        else {
+        } else {
             requestList.forEach(System.out::println);
         }
     }

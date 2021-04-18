@@ -47,7 +47,7 @@ public class DBCustomerDao extends AbstractDBDao<Customer, Integer> implements I
     }
 
     @Override
-    protected List<Customer> parseResultSet(ResultSet rs) throws DBException {
+    protected List<Customer> parseResultSet(ResultSet rs) {
         ArrayList<Customer> result = new ArrayList<>();
         try {
             while (rs.next()) {
@@ -66,7 +66,7 @@ public class DBCustomerDao extends AbstractDBDao<Customer, Integer> implements I
     }
 
     @Override
-    protected void prepareStatementForInsert(PreparedStatement statement, Customer object) throws DBException {
+    protected void prepareStatementForInsert(PreparedStatement statement, Customer object) {
         try {
             statement.setString(1, object.getName());
             statement.setString(2, object.getSurname());
@@ -77,7 +77,7 @@ public class DBCustomerDao extends AbstractDBDao<Customer, Integer> implements I
     }
 
     @Override
-    protected void prepareStatementForUpdate(PreparedStatement statement, Customer object) throws DBException {
+    protected void prepareStatementForUpdate(PreparedStatement statement, Customer object) {
         try {
             statement.setString(1, object.getName());
             statement.setString(2, object.getSurname());

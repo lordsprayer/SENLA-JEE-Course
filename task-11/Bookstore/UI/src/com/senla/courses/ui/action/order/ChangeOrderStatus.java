@@ -35,8 +35,9 @@ public class ChangeOrderStatus extends AbstractAction implements IAction {
                 }
 
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (ServiceException e) {
+            log.log(Level.WARNING, e.getLocalizedMessage(), e);
+            System.out.println("Ошибка БД");
         }
     }
 }

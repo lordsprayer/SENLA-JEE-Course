@@ -49,7 +49,6 @@ public class DBBookDao extends AbstractDBDao<Book, Integer> implements IDBBookDa
 
     @Override
     public String getCreateQuery() {
-
         return "INSERT INTO bookstore.Book VALUES (null,?, ?, ?, ?, ?, ?, null, null)";
     }
 
@@ -67,7 +66,7 @@ public class DBBookDao extends AbstractDBDao<Book, Integer> implements IDBBookDa
     }
 
     @Override
-    protected List<Book> parseResultSet(ResultSet rs) throws DBException {
+    protected List<Book> parseResultSet(ResultSet rs) {
         ArrayList<Book> result = new ArrayList<>();
         try {
             while (rs.next()) {
@@ -89,7 +88,7 @@ public class DBBookDao extends AbstractDBDao<Book, Integer> implements IDBBookDa
     }
 
     @Override
-    protected void prepareStatementForInsert(PreparedStatement statement, Book object) throws DBException {
+    protected void prepareStatementForInsert(PreparedStatement statement, Book object) {
         try {
             statement.setString(1, object.getTitle());
             statement.setString(2, object.getAuthor());
@@ -103,7 +102,7 @@ public class DBBookDao extends AbstractDBDao<Book, Integer> implements IDBBookDa
     }
 
     @Override
-    protected void prepareStatementForUpdate(PreparedStatement statement, Book object) throws DBException {
+    protected void prepareStatementForUpdate(PreparedStatement statement, Book object) {
         try {
             statement.setString(1, object.getTitle());
             statement.setString(2, object.getAuthor());
@@ -119,7 +118,7 @@ public class DBBookDao extends AbstractDBDao<Book, Integer> implements IDBBookDa
     }
 
     @Override
-    public void prepareStatementForInsertOrder(PreparedStatement statement, Book object, Integer orderNumber) throws DBException{
+    public void prepareStatementForInsertOrder(PreparedStatement statement, Book object, Integer orderNumber) {
         try {
             statement.setInt(1, orderNumber);
             statement.setInt(2, object.getId());
@@ -133,20 +132,12 @@ public class DBBookDao extends AbstractDBDao<Book, Integer> implements IDBBookDa
         List<Book> list;
         String sql = getSelectQuery();
         sql += " ORDER BY " + criterion;
-        try{
-            statement = connection.prepareStatement(sql);
-            rs = statement.executeQuery();
-            list = parseResultSet(rs);
+        try (PreparedStatement statement = connection.prepareStatement(sql)){
+            try ( ResultSet rs = statement.executeQuery()) {
+                list = parseResultSet(rs);
+            }
         } catch (Exception e) {
             throw new DBException(e);
-        } finally {
-            try {
-                rs.close();
-                statement.close();
-                //connection.close();
-            } catch (SQLException e) {
-                System.err.println(e.getLocalizedMessage());
-            }
         }
         return list;
     }
@@ -156,20 +147,12 @@ public class DBBookDao extends AbstractDBDao<Book, Integer> implements IDBBookDa
         List<Book> list;
         String sql = getSelectQuery();
         sql += " WHERE availability = 1 AND receiptDate < '" + date + "' ORDER BY " + criterion;
-        try{
-            statement = connection.prepareStatement(sql);
-            rs = statement.executeQuery();
-            list = parseResultSet(rs);
+        try (PreparedStatement statement = connection.prepareStatement(sql)){
+            try (ResultSet rs = statement.executeQuery()) {
+                list = parseResultSet(rs);
+            }
         } catch (Exception e) {
             throw new DBException(e);
-        } finally {
-            try {
-                rs.close();
-                statement.close();
-                //connection.close();
-            } catch (SQLException e) {
-                System.err.println(e.getLocalizedMessage());
-            }
         }
         return list;
     }
@@ -178,21 +161,13 @@ public class DBBookDao extends AbstractDBDao<Book, Integer> implements IDBBookDa
     public List<Book> getBookByOrder(Integer key, Connection connection) {
         List<Book> list;
         String sql = getSelectBookWhereOrder();
-        try {
-            statement = connection.prepareStatement(sql);
+        try (PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setInt(1, key);
-            rs = statement.executeQuery();
-            list = parseResultSet(rs);
+            try (ResultSet rs = statement.executeQuery()) {
+                list = parseResultSet(rs);
+            }
         } catch (Exception e) {
             throw new DBException(e);
-        } finally {
-            try {
-                rs.close();
-                statement.close();
-                //connection.close();
-            } catch (SQLException throwables) {
-                System.err.println(throwables.getLocalizedMessage());
-            }
         }
         return list;
     }
@@ -200,8 +175,7 @@ public class DBBookDao extends AbstractDBDao<Book, Integer> implements IDBBookDa
     @Override
     public void insertOrder(Book book, Integer orderId, Connection connection) {
         String sql = getUpdateOrderQuery();
-        try{
-            statement = connection.prepareStatement(sql);
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             prepareStatementForInsertOrder(statement, book, orderId);
             int count = statement.executeUpdate();
             if (count != 1) {
@@ -209,15 +183,6 @@ public class DBBookDao extends AbstractDBDao<Book, Integer> implements IDBBookDa
             }
         } catch (Exception e) {
             throw new DBException(e);
-        } finally {
-            try {
-                rs.close();
-                statement.close();
-                //connection.close();
-            } catch (SQLException e) {
-                System.err.println(e.getLocalizedMessage());
-            }
         }
-
     }
 }

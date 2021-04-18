@@ -1,10 +1,12 @@
 package com.senla.courses.ui.action.book;
 
+import com.senla.courses.exception.ServiceException;
 import com.senla.courses.facade.BookstoreFacade;
 import com.senla.courses.ui.action.AbstractAction;
 import com.senla.courses.ui.action.IAction;
 
 import java.util.Scanner;
+import java.util.logging.Level;
 
 public class AddBook extends AbstractAction implements IAction {
 
@@ -25,7 +27,12 @@ public class AddBook extends AbstractAction implements IAction {
             System.out.println("Введите стоимость");
             Double cost = Double.parseDouble(scan.next());
             System.out.println("Введите дату поступления");
-            facade.saveBook(facade.createBook(title, author, publicationYear, cost, facade.createDate(), true));
+            try{
+                facade.saveBook(facade.createBook(title, author, publicationYear, cost, facade.createDate(), true));
+            } catch (ServiceException e) {
+                log.log(Level.WARNING, e.getLocalizedMessage(), e);
+                System.out.println("Ошибка БД");
+            }
             System.out.println("Книга добавлена");
         } catch (Exception e){
             System.out.println("Ошибка ввода данных");

@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class DBOrderDao extends AbstractDBDao<Order, Integer> implements IDBOrde
     }
 
     @Override
-    protected List<Order> parseResultSet(ResultSet rs) throws DBException {
+    protected List<Order> parseResultSet(ResultSet rs) {
         ArrayList<Order> result = new ArrayList<>();
         try {
             while (rs.next()) {
@@ -79,7 +80,7 @@ public class DBOrderDao extends AbstractDBDao<Order, Integer> implements IDBOrde
     }
 
     @Override
-    protected void prepareStatementForInsert(PreparedStatement statement, Order object) throws DBException {
+    protected void prepareStatementForInsert(PreparedStatement statement, Order object) {
         try {
             int customerId = (object.getCustomer() == null || object.getCustomer().getId() == null) ? -1
                     : object.getCustomer().getId();
@@ -94,7 +95,7 @@ public class DBOrderDao extends AbstractDBDao<Order, Integer> implements IDBOrde
     }
 
     @Override
-    protected void prepareStatementForUpdate(PreparedStatement statement, Order object) throws DBException {
+    protected void prepareStatementForUpdate(PreparedStatement statement, Order object) {
         try {
             int customerId = (object.getCustomer() == null || object.getCustomer().getId() == null) ? -1
                     : object.getCustomer().getId();
@@ -114,10 +115,25 @@ public class DBOrderDao extends AbstractDBDao<Order, Integer> implements IDBOrde
         List<Order> list;
         String sql = getSelectQuery();
         sql += " ORDER BY " + criterion;
-        try {
-            statement = connection.prepareStatement(sql);
-            rs = statement.executeQuery();
-            list = parseResultSet(rs);
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            try ( ResultSet rs = statement.executeQuery()) {
+                list = parseResultSet(rs);
+            }
+        } catch (Exception e) {
+            throw new DBException(e);
+        }
+        return list;
+    }
+
+    @Override
+    public List<Order> getSortCompleteOrders(String criterion, LocalDate date, Connection connection) {
+        List<Order> list;
+        String sql = getSelectQuery();
+        sql += " WHERE status = 'COMPLETED' AND completionDate > '" + Date.valueOf(date) + "' ORDER BY " + criterion;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            try (ResultSet rs = statement.executeQuery()) {
+                list = parseResultSet(rs);
+            }
         } catch (Exception e) {
             throw new DBException(e);
         }

@@ -1,7 +1,5 @@
 package com.senla.courses.ui.action.validation;
 
-import com.senla.courses.ui.action.AbstractAction;
-
 import java.util.Scanner;
 
 public class IntNumberValidation {

@@ -4,7 +4,6 @@ import com.senla.courses.di.api.annotation.Inject;
 import com.senla.courses.di.api.annotation.Singleton;
 import com.senla.courses.facade.BookstoreFacade;
 import com.senla.courses.ui.action.SaveAction;
-import com.senla.courses.ui.action.TempAction;
 import com.senla.courses.ui.action.book.*;
 import com.senla.courses.ui.action.customer.AddCustomer;
 import com.senla.courses.ui.action.customer.DeleteCustomer;
@@ -27,7 +26,7 @@ public class Builder {
         rootMenu.addMenuItem(new MenuItem("Работа с заказами", () -> {}, createOrderMenu()));
         rootMenu.addMenuItem(new MenuItem("Работа с запросами", () -> {}, createRequestMenu()));
         rootMenu.addMenuItem(new MenuItem("Работа с покупателями", () -> {}, createCustomerMenu()));
-        rootMenu.addMenuItem(new MenuItem("Добавить книги в базу", new TempAction(facade), rootMenu));
+        //rootMenu.addMenuItem(new MenuItem("Добавить книги в базу", new TempAction(facade), rootMenu));
     }
 
     public Menu getRootMenu() {
@@ -86,11 +85,11 @@ public class Builder {
         Menu sortingOrderMenu = new Menu();
         sortingOrderMenu.addMenuItem(new MenuItem("Выход", new SaveAction(facade), createExitMenu()));
         sortingOrderMenu.addMenuItem(new MenuItem("Без сортировки", new PrintAllOrders(facade), rootMenu));
-        sortingOrderMenu.addMenuItem(new MenuItem("Сортировка по дате исполнения", new SortOrderBy(facade, 0), rootMenu));
-        sortingOrderMenu.addMenuItem(new MenuItem("Сортировка по цене", new SortOrderBy(facade, 1), rootMenu));
-        sortingOrderMenu.addMenuItem(new MenuItem("Сортировка по статусу", new SortOrderBy(facade, 2), rootMenu));
-        sortingOrderMenu.addMenuItem(new MenuItem("Сортировка выполненных заказов за период времени по дате исполнения", new SortCompleteOrderBy(facade, 0), rootMenu));
-        sortingOrderMenu.addMenuItem(new MenuItem("Сортировка выполненных заказов за период времени по цене", new SortCompleteOrderBy(facade, 1), rootMenu));
+        sortingOrderMenu.addMenuItem(new MenuItem("Сортировка по дате исполнения", new SortOrderBy(facade, "completionDate"), rootMenu));
+        sortingOrderMenu.addMenuItem(new MenuItem("Сортировка по цене", new SortOrderBy(facade, "totalCost"), rootMenu));
+        sortingOrderMenu.addMenuItem(new MenuItem("Сортировка по статусу", new SortOrderBy(facade, "status"), rootMenu));
+        sortingOrderMenu.addMenuItem(new MenuItem("Сортировка выполненных заказов за период времени по дате исполнения", new SortCompleteOrderBy(facade, "completionDate"), rootMenu));
+        sortingOrderMenu.addMenuItem(new MenuItem("Сортировка выполненных заказов за период времени по цене", new SortCompleteOrderBy(facade, "totalCost"), rootMenu));
         return sortingOrderMenu;
     }
 

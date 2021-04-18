@@ -58,7 +58,7 @@ public class DBRequestDao extends AbstractDBDao<Request, Integer> implements IDB
     }
 
     @Override
-    protected List<Request> parseResultSet(ResultSet rs) throws DBException {
+    protected List<Request> parseResultSet(ResultSet rs) {
         ArrayList<Request> result = new ArrayList<>();
         try {
             while (rs.next()) {
@@ -99,7 +99,7 @@ public class DBRequestDao extends AbstractDBDao<Request, Integer> implements IDB
     }
 
     @Override
-    protected void prepareStatementForInsert(PreparedStatement statement, Request object) throws DBException {
+    protected void prepareStatementForInsert(PreparedStatement statement, Request object) {
         try {
             int bookId = (object.getBook() == null || object.getBook().getId() == null) ? -1
                     : object.getBook().getId();
@@ -112,7 +112,7 @@ public class DBRequestDao extends AbstractDBDao<Request, Integer> implements IDB
     }
 
     @Override
-    protected void prepareStatementForUpdate(PreparedStatement statement, Request object) throws DBException {
+    protected void prepareStatementForUpdate(PreparedStatement statement, Request object) {
         try {
             int bookId = (object.getBook() == null || object.getBook().getId() == null) ? -1
                     : object.getBook().getId();
@@ -130,10 +130,10 @@ public class DBRequestDao extends AbstractDBDao<Request, Integer> implements IDB
         List<Request> list;
         String sql = getSelectQuery();
         sql += " ORDER BY title";
-        try {
-            statement = connection.prepareStatement(sql);
-            rs = statement.executeQuery();
-            list = parseResultSet(rs);
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            try (ResultSet rs = statement.executeQuery()) {
+                list = parseResultSet(rs);
+            }
         } catch (Exception e) {
             throw new DBException(e);
         }
@@ -144,14 +144,13 @@ public class DBRequestDao extends AbstractDBDao<Request, Integer> implements IDB
     public List<String> getSortRequestsByBookCount(Connection connection) {
         List<String> list;
         String sql = getSelectCountBooksQuery();
-        try {
-            statement = connection.prepareStatement(sql);
-            rs = statement.executeQuery();
-            list = parseSortResultSet(rs);
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            try (ResultSet rs = statement.executeQuery()) {
+                list = parseSortResultSet(rs);
+            }
         } catch (Exception e) {
             throw new DBException(e);
         }
         return list;
     }
-
 }

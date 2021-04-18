@@ -30,8 +30,9 @@ public class DeleteOrder extends AbstractAction implements IAction {
                     System.out.println("Заказа с таким id не существует");
                 }
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        }  catch (ServiceException e) {
+            log.log(Level.WARNING, e.getLocalizedMessage(), e);
+            System.out.println("Ошибка БД");
         }
     }
 }

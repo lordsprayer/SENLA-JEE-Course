@@ -47,8 +47,6 @@ public class CreateOrder extends AbstractAction implements IAction {
             } catch (ServiceException e){
                 log.log(Level.WARNING, e.getLocalizedMessage(), e);
                 System.out.println("Заказ не был создан, так как не существует книги либо покупателя с таким id ");
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
             }
         }
     }

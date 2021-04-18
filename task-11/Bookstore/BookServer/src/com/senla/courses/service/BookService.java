@@ -8,11 +8,13 @@ import com.senla.courses.dbdao.DBConnection;
 import com.senla.courses.di.api.annotation.ConfigProperty;
 import com.senla.courses.di.api.annotation.Inject;
 import com.senla.courses.di.api.annotation.Singleton;
-import com.senla.courses.exception.DaoException;
+import com.senla.courses.exception.DBException;
 import com.senla.courses.exception.ServiceException;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Request;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +29,6 @@ public class BookService implements IBookService {
     private IDBBookDao bookDao;
     @Inject
     private IDBRequestDao requestDao;
-    @Inject
-    private IRequestService requestService;
     @ConfigProperty(propertyName = "number_of_months")
     private Integer months;
     @ConfigProperty(propertyName = "permit_closing_request")
@@ -38,14 +38,19 @@ public class BookService implements IBookService {
 
     @Override
     public List<Book> getAll() {
-        return bookDao.getAll(dbConnection.getConnection());
+        try {
+            return bookDao.getAll(dbConnection.getConnection());
+        } catch (DBException e) {
+            log.log(Level.WARNING, "Search showed no matches");
+            throw new ServiceException("Search showed no matches", e);
+        }
     }
 
     @Override
     public Book getById(Integer id) {
         try{
             return bookDao.getByPK(id, dbConnection.getConnection());
-        } catch (DaoException e){
+        } catch (DBException e){
             log.log(Level.WARNING, "Search showed no matches");
             throw new ServiceException("Search showed no matches", e);
         }
@@ -53,46 +58,80 @@ public class BookService implements IBookService {
 
     @Override
     public void save(Book book) {
-        bookDao.persist(book, dbConnection.getConnection());
+        try {
+            bookDao.persist(book, dbConnection.getConnection());
+        } catch (DBException e){
+            log.log(Level.WARNING, "Error when saving an object");
+            throw new ServiceException("Error when saving an object", e);
+        }
     }
 
     @Override
     public void delete(Book book) {
-        bookDao.delete(book, dbConnection.getConnection());
+        try {
+            bookDao.delete(book, dbConnection.getConnection());
+        }  catch (DBException e){
+            log.log(Level.WARNING, "Error when deleting an object");
+            throw new ServiceException("Error when deleting an object", e);
+        }
     }
 
     @Override
     public void update(Book book) {
-        bookDao.update(book, dbConnection.getConnection());
+        try {
+            bookDao.update(book, dbConnection.getConnection());
+        } catch (DBException e){
+            log.log(Level.WARNING, "Error when updating an object");
+            throw new ServiceException("Error when updating an object", e);
+        }
     }
 
     @Override
     public void cancelBook(Book book) {
         book.setAvailability(false);
-        bookDao.update(book, dbConnection.getConnection());
+        try {
+            bookDao.update(book, dbConnection.getConnection());
+        } catch (DBException e){
+            log.log(Level.WARNING, "Error when updating an object");
+            throw new ServiceException("Error when updating an object", e);
+        }
     }
 
     @Override
     public void addBook(Book book) {
         book.setAvailability(true);
-        bookDao.update(book, dbConnection.getConnection());
-        if(permit) {
-            List<Request> requests = new ArrayList<>(requestDao.getAll(dbConnection.getConnection()));
-            for (Request request : requests) {
-                if (request.getBook().equals(book)) {
-                    requestService.closeRequest(request);
+        try (Connection connection = dbConnection.getConnection()) {
+            connection.setAutoCommit(false);
+            bookDao.update(book, connection);
+            if (permit) {
+                List<Request> requests = new ArrayList<>(requestDao.getAll(connection));
+                for (Request request : requests) {
+                    if (request.getBook().equals(book)) {
+                        request.setStatus(false);
+                        requestDao.update(request, connection);
+                    }
                 }
+            } else {
+                log.log(Level.INFO, "Automatic closing of requests is prohibited");
             }
+            connection.commit();
+            connection.setAutoCommit(true);
+        } catch (DBException | SQLException e) {
+            log.log(Level.WARNING, "Error when saving an object");
+            throw new ServiceException("Error when saving an object", e);
         }
-        else
-            log.log(Level.INFO, "Automatic closing of requests is prohibited");
     }
 
 
     @Override
     public List<Book> unsoldBook(String criterion) {
         LocalDate date = LocalDate.now().minusMonths(months);
-        return bookDao.getUnsoldBook(date,criterion, dbConnection.getConnection());
+        try {
+            return bookDao.getUnsoldBook(date,criterion, dbConnection.getConnection());
+        } catch (DBException e) {
+            log.log(Level.WARNING, "Search showed no matches");
+            throw new ServiceException("Search showed no matches", e);
+        }
     }
 
     @Override
@@ -103,6 +142,11 @@ public class BookService implements IBookService {
 
     @Override
     public List<Book> getSortBooks(String criterion) {
-        return bookDao.getSortBook(criterion, dbConnection.getConnection());
+        try {
+            return bookDao.getSortBook(criterion, dbConnection.getConnection());
+        } catch (DBException e) {
+            log.log(Level.WARNING, "Search showed no matches");
+            throw new ServiceException("Search showed no matches", e);
+        }
     }
 }
