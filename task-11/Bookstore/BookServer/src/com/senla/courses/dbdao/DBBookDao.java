@@ -29,31 +29,25 @@ public class DBBookDao extends AbstractDBDao<Book, Integer> implements IDBBookDa
         return "UPDATE bookstore.Book SET idOrder = ? WHERE id= ?";
     }
 
-    private static class PersistBook extends Book {
-        public void setId(int id) {
-            super.setId(id);
-        }
-    }
-
     @Override
-    public String getSelectQuery() {
+    protected String getSelectQuery() {
         return "SELECT id, title, author, publicationYear, cost, receiptDate, availability, description " +
                 "FROM bookstore.Book";
     }
 
     @Override
-    public String getSelectWhereQuery() {
+    protected String getSelectWhereQuery() {
         return "SELECT id, title, author, publicationYear, cost, receiptDate, availability, description " +
                 "FROM bookstore.Book WHERE id = ?";
     }
 
     @Override
-    public String getCreateQuery() {
+    protected String getCreateQuery() {
         return "INSERT INTO bookstore.Book VALUES (null,?, ?, ?, ?, ?, ?, null, null)";
     }
 
     @Override
-    public String getUpdateQuery() {
+    protected String getUpdateQuery() {
         return "UPDATE bookstore.Book " +
                 "SET title = ?, author = ?, publicationYear = ?, cost = ?, " +
                 "receiptDate = ?, availability = ?, description = ? " +
@@ -61,7 +55,7 @@ public class DBBookDao extends AbstractDBDao<Book, Integer> implements IDBBookDa
     }
 
     @Override
-    public String getDeleteQuery() {
+    protected String getDeleteQuery() {
         return "DELETE FROM bookstore.Book WHERE id= ?";
     }
 
@@ -70,7 +64,7 @@ public class DBBookDao extends AbstractDBDao<Book, Integer> implements IDBBookDa
         ArrayList<Book> result = new ArrayList<>();
         try {
             while (rs.next()) {
-                PersistBook book = new PersistBook();
+                Book book = new Book();
                 book.setId(rs.getInt("id"));
                 book.setTitle(rs.getString("title"));
                 book.setAuthor(rs.getString("author"));

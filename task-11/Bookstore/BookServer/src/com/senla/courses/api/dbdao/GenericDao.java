@@ -6,18 +6,18 @@ import java.util.List;
 
 public interface GenericDao <T extends Identified<PK>, PK extends Serializable> {
 
-    /** Создает новую запись, соответствующую объекту object */
+    /** Creates a new record corresponding to the object 'object' */
     T persist(T object, Connection connection);
 
-    /** Возвращает объект соответствующий записи с первичным ключом key или null */
+    /** Returns an object corresponding to a record with the primary key 'key' or null */
     T getByPK(PK key, Connection connection);
 
-    /** Сохраняет состояние объекта в базе данных */
+    /** Saves the state of the object in the database */
     void update(T object, Connection connection);
 
-    /** Удаляет запись об объекте из базы данных */
+    /** Deletes an object record from the database */
     void delete(T object, Connection connection);
 
-    /** Возвращает список объектов соответствующих всем записям в базе данных */
+    /** Returns a list of objects corresponding to all records in the database*/
     List<T> getAll(Connection connection);
 }

@@ -36,7 +36,7 @@ public class RequestService implements IRequestService {
                 log.log(Level.WARNING, "Error when saving an object");
                 throw new ServiceException("Error when saving an object", e);
             }
-            System.out.println("Запрос создан");
+            log.log(Level.INFO, "Request created");
         } else {
             System.out.println("Запрос не может быть создан, т.к. книга всё ещё в наличии");
         }

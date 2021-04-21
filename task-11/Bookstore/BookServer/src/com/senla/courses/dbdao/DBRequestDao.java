@@ -16,20 +16,14 @@ import java.util.List;
 @Singleton
 public class DBRequestDao extends AbstractDBDao<Request, Integer> implements IDBRequestDao {
 
-    private static class PersistRequest extends Request {
-        public void setId(int id) {
-            super.setId(id);
-        }
-    }
-
     @Override
-    public String getSelectQuery() {
+    protected String getSelectQuery() {
         return "SELECT request.id, book.id, title, author, publicationYear, cost, receiptDate, availability, date, status " +
                 "FROM bookstore.Book JOIN bookstore.Request ON request.idBook = book.id";
     }
 
     @Override
-    public String getSelectWhereQuery() {
+    protected String getSelectWhereQuery() {
         return "SELECT request.id, book.id, title, author, publicationYear, cost, receiptDate, availability, date, status " +
                 "FROM bookstore.Book JOIN bookstore.Request ON request.idBook = book.id WHERE request.id = ?";
     }
@@ -41,19 +35,19 @@ public class DBRequestDao extends AbstractDBDao<Request, Integer> implements IDB
     }
 
     @Override
-    public String getCreateQuery() {
+    protected String getCreateQuery() {
         return "INSERT INTO bookstore.Request VALUES (null,?, ?, ?)";
     }
 
     @Override
-    public String getUpdateQuery() {
+    protected String getUpdateQuery() {
         return "UPDATE bookstore.Request " +
                 "SET idBook = ?, date = ?, status = ? " +
                 "WHERE id = ?;";
     }
 
     @Override
-    public String getDeleteQuery() {
+    protected String getDeleteQuery() {
         return "DELETE FROM bookstore.Request WHERE id = ?;";
     }
 
@@ -62,7 +56,7 @@ public class DBRequestDao extends AbstractDBDao<Request, Integer> implements IDB
         ArrayList<Request> result = new ArrayList<>();
         try {
             while (rs.next()) {
-                DBRequestDao.PersistRequest request = new DBRequestDao.PersistRequest();
+                Request request = new Request();
                 request.setId(rs.getInt("id"));
                 Book book = new Book();
                 book.setId(rs.getInt("id"));

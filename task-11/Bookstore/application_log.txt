@@ -1,2 +1,2 @@
-23:50:12 / 2021-50-18 - INFO - [com.senla.courses.service.BookService] - addBook - Automatic closing of requests is prohibited 
+01:52:29 / 2021-52-22 - WARNING - [com.senla.courses.facade.BookstoreFacade] - getStatus - Wrong order status 
    

@@ -6,7 +6,6 @@ import com.senla.courses.ui.action.AbstractAction;
 import com.senla.courses.ui.action.IAction;
 import com.senla.courses.ui.action.validation.IntNumberValidation;
 
-import java.sql.SQLException;
 import java.util.logging.Level;
 
 public class ChangeOrderStatus extends AbstractAction implements IAction {
@@ -24,14 +23,15 @@ public class ChangeOrderStatus extends AbstractAction implements IAction {
                 int id = IntNumberValidation.validation("Введите id заказа");
                 int status = IntNumberValidation.validation("Выберите статус заказа(1 - новый, 2 - выполнен, 3 - отменён)");
                 try{
-                    facade.changeOrderStatus(id, facade.getStatus(status));
-                    System.out.println("Статус заказа изменён");
+                    if(facade.getStatus(status)==(null)) {
+                        System.out.println("Введён неверный статус заказа");
+                    } else {
+                        facade.changeOrderStatus(id, facade.getStatus(status));
+                        System.out.println("Статус заказа изменён");
+                    }
                 } catch (ServiceException e){
                     log.log(Level.WARNING, e.getLocalizedMessage(), e);
                     System.out.println("Заказа с таким id не существует");
-                } catch (NullPointerException e){
-                    log.log(Level.WARNING, e.getLocalizedMessage(), e);
-                    System.out.println("Введён неверный статус заказа");
                 }
 
             }

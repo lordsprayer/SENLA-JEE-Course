@@ -72,12 +72,12 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Order> getSortOrders(String criterion) {
+        List<Order> orders;
         try (Connection connection = dbConnection.getConnection()) {
             connection.setAutoCommit(false);
-            List<Order> orders = new ArrayList<>(orderDao.getSortOrders(criterion, connection));
+            orders = new ArrayList<>(orderDao.getSortOrders(criterion, connection));
             for (Order order : orders) {
-                List<Book> books = new ArrayList<>(bookDao.getBookByOrder(order.getId(), connection));
-                order.setBookList(books);
+                order.setBookList(bookDao.getBookByOrder(order.getId(), connection));
             }
             connection.commit();
             connection.setAutoCommit(true);

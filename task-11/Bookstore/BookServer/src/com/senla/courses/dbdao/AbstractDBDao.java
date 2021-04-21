@@ -11,11 +11,11 @@ import java.util.List;
 @Singleton
 public abstract class AbstractDBDao<T extends Identified<PK>, PK extends Integer> implements GenericDao<T, PK> {
 
-    public abstract String getSelectQuery();
-    public abstract String getSelectWhereQuery();
-    public abstract String getCreateQuery();
-    public abstract String getUpdateQuery();
-    public abstract String getDeleteQuery();
+    protected abstract String getSelectQuery();
+    protected abstract String getSelectWhereQuery();
+    protected abstract String getCreateQuery();
+    protected abstract String getUpdateQuery();
+    protected abstract String getDeleteQuery();
     protected abstract List<T> parseResultSet(ResultSet rs);
     protected abstract void prepareStatementForInsert(PreparedStatement statement, T object);
     protected abstract void prepareStatementForUpdate(PreparedStatement statement, T object);
@@ -29,7 +29,7 @@ public abstract class AbstractDBDao<T extends Identified<PK>, PK extends Integer
             try (ResultSet rs = statement.executeQuery()) {
                 list = parseResultSet(rs);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new DBException(e);
         }
         if (list == null || list.size() == 0) {
@@ -49,7 +49,7 @@ public abstract class AbstractDBDao<T extends Identified<PK>, PK extends Integer
             try ( ResultSet rs = statement.executeQuery()) {
                 list = parseResultSet(rs);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new DBException(e);
         }
         return list;
@@ -74,7 +74,7 @@ public abstract class AbstractDBDao<T extends Identified<PK>, PK extends Integer
                 System.out.println(object);
                 return object;
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new DBException(e);
         }
     }
@@ -88,7 +88,7 @@ public abstract class AbstractDBDao<T extends Identified<PK>, PK extends Integer
             if (count != 1) {
                 throw new DBException("On update modify more then 1 record: " + count);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new DBException(e);
         }
     }
@@ -102,7 +102,7 @@ public abstract class AbstractDBDao<T extends Identified<PK>, PK extends Integer
             if (count != 1) {
                 throw new DBException("On delete modify more then 1 record: " + count);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new DBException(e);
         }
     }

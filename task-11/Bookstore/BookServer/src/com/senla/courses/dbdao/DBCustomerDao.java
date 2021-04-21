@@ -13,36 +13,30 @@ import java.util.List;
 @Singleton
 public class DBCustomerDao extends AbstractDBDao<Customer, Integer> implements IDBCustomerDao {
 
-    private static class PersistCustomer extends Customer {
-        public void setId(int id) {
-            super.setId(id);
-        }
-    }
-
     @Override
-    public String getSelectQuery() {
+    protected String getSelectQuery() {
         return "SELECT * FROM bookstore.Customer";
     }
 
     @Override
-    public String getSelectWhereQuery() {
+    protected String getSelectWhereQuery() {
         return "SELECT * FROM bookstore.Customer WHERE id = ?";
     }
 
     @Override
-    public String getCreateQuery() {
+    protected String getCreateQuery() {
         return "INSERT INTO bookstore.Customer VALUES (null,?, ?, ?)";
     }
 
     @Override
-    public String getUpdateQuery() {
+    protected String getUpdateQuery() {
         return "UPDATE bookstore.Customer " +
                 "SET name = ?, surname = ?, phoneNumber = ? " +
                 "WHERE id = ?;";
     }
 
     @Override
-    public String getDeleteQuery() {
+    protected String getDeleteQuery() {
         return "DELETE FROM bookstore.Customer WHERE id = ?;";
     }
 
@@ -51,7 +45,7 @@ public class DBCustomerDao extends AbstractDBDao<Customer, Integer> implements I
         ArrayList<Customer> result = new ArrayList<>();
         try {
             while (rs.next()) {
-                DBCustomerDao.PersistCustomer customer = new DBCustomerDao.PersistCustomer();
+                Customer customer = new Customer();
                 customer.setId(rs.getInt("id"));
                 customer.setName(rs.getString("name"));
                 customer.setSurname(rs.getString("surname"));

@@ -17,32 +17,26 @@ import java.util.List;
 @Singleton
 public class DBOrderDao extends AbstractDBDao<Order, Integer> implements IDBOrderDao {
 
-    private static class PersistOrder extends Order {
-        public void setId(int id) {
-            super.setId(id);
-        }
-    }
-
     @Override
-    public String getSelectQuery() {
+    protected String getSelectQuery() {
         return "SELECT order.id, customer.id, name, surname, phoneNumber, creationDate, completionDate, totalCost, status " +
                 "FROM bookstore.order JOIN bookstore.customer on order.idCustomer = customer.id";
 
     }
 
     @Override
-    public String getSelectWhereQuery() {
+    protected String getSelectWhereQuery() {
         return "SELECT order.id, customer.id, name, surname, phoneNumber, creationDate, completionDate, totalCost, status " +
                 "FROM bookstore.order JOIN bookstore.customer on order.idCustomer = customer.id WHERE order.id = ?";
     }
 
     @Override
-    public String getCreateQuery() {
+    protected String getCreateQuery() {
         return "INSERT INTO bookstore.Order VALUES (null,?, ?, ?, ?, ?)";
     }
 
     @Override
-    public String getUpdateQuery() {
+    protected String getUpdateQuery() {
         return "UPDATE bookstore.Order " +
                 "SET idCustomer = ?, creationDate = ?, completionDate = ?, " +
                 "totalCost = ?, status = ? " +
@@ -50,7 +44,7 @@ public class DBOrderDao extends AbstractDBDao<Order, Integer> implements IDBOrde
     }
 
     @Override
-    public String getDeleteQuery() {
+    protected String getDeleteQuery() {
         return "DELETE FROM bookstore.Order WHERE id = ?;";
     }
 
@@ -59,7 +53,7 @@ public class DBOrderDao extends AbstractDBDao<Order, Integer> implements IDBOrde
         ArrayList<Order> result = new ArrayList<>();
         try {
             while (rs.next()) {
-                PersistOrder order = new PersistOrder();
+                Order order = new Order();
                 order.setId(rs.getInt("id"));
                 Customer customer = new Customer();
                 customer.setId(rs.getInt("id"));

@@ -3,7 +3,6 @@ package com.senla.courses.facade;
 import com.senla.courses.api.service.ICustomerService;
 import com.senla.courses.api.service.IOrderService;
 import com.senla.courses.api.service.IRequestService;
-import com.senla.courses.comparators.OrdersComparators;
 import com.senla.courses.di.api.annotation.Inject;
 import com.senla.courses.di.api.annotation.Singleton;
 import com.senla.courses.exception.ServiceException;
@@ -13,10 +12,8 @@ import com.senla.courses.model.Book;
 import com.senla.courses.model.Order;
 import com.senla.courses.model.Request;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -34,34 +31,6 @@ public class BookstoreFacade {
     private IBookService bookService;
     @Inject
     private  IOrderService orderService;
-
-//    public void bookDB() {
-//        Book book1 = new Book("Созерцатель", "Алексей Пехов", 2018, 12.5, LocalDate.of(2021, 1, 3), true);
-//        Book book2 = new Book("Страж", "Алексей Пехов", 2019, 17.5, LocalDate.of(2020, 9, 21), true);
-//        Book book3 = new Book("Бессмертный", "Кэтрин Валенте", 2018, 12.3, LocalDate.of(2020, 7, 28), false);
-//        Customer customer1 = new Customer("Иван", "Иванов", "+375297746363");
-//        Customer customer2 = new Customer("Петр",  "Петров", "+375445878745");
-//        Customer customer3 = new Customer("Дмитрий", "Сидоров ", "+375443698521");
-//        List<Book> books = new ArrayList<>();
-//        books.add(book1);
-//        books.add(book2);
-//        try {
-//            bookService.save(book1);
-//            bookService.save(book2);
-//            bookService.save(book3);
-//            bookService.save(new Book("Черные крылья", "Эд Макдональд", 2018, 14.3, LocalDate.of(2020, 12, 12), false));
-//            customerService.save(customer1);
-//            customerService.save(customer2);
-//            customerService.save(customer3);
-//            orderService.createOrder(customer1, books, LocalDate.of(2020, 12, 21));
-//            orderService.createOrder(customer2, books, LocalDate.of(2021, 1, 12));
-//            orderService.createOrder(customer3, books, LocalDate.of(2021, 2, 3));
-//        } catch (ServiceException e) {
-//            log.log(Level.WARNING, "Error when saving an objects");
-//            throw e;
-//        }
-//    }
-
 
     public Book createBook(String title,
                         String author,
@@ -347,7 +316,7 @@ public class BookstoreFacade {
             return Order.Status.CANCELED;
         } else
             log.log(Level.WARNING, "Wrong order status");
-            throw new NullPointerException();
+            return null;
     }
 
 
