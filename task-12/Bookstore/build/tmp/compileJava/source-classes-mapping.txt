@@ -1,0 +1,2 @@
+com/senla/courses/Starter.java
+ com.senla.courses.Starter

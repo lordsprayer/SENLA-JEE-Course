@@ -1,0 +1,13 @@
+com/senla/courses/Customer.java
+ com.senla.courses.Customer
+com/senla/courses/Identified.java
+ com.senla.courses.Identified
+com/senla/courses/Book.java
+ com.senla.courses.Book
+com/senla/courses/Calculator.java
+ com.senla.courses.Calculator
+com/senla/courses/Request.java
+ com.senla.courses.Request
+com/senla/courses/Order.java
+ com.senla.courses.Order
+ com.senla.courses.Order$Status
