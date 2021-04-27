@@ -12,8 +12,8 @@ com/senla/courses/api/annotation/Inject.java
  com.senla.courses.api.annotation.Inject
 com/senla/courses/config/JavaConfig.java
  com.senla.courses.config.JavaConfig
-com/senla/courses/config/Application.java
- com.senla.courses.config.Application
+com/senla/courses/config/ConfigPropertyAnnotationObjectConfigurator.java
+ com.senla.courses.config.ConfigPropertyAnnotationObjectConfigurator
 com/senla/courses/config/ApplicationContext.java
  com.senla.courses.config.ApplicationContext
 com/senla/courses/api/annotation/InjectConstructor.java
@@ -22,5 +22,5 @@ com/senla/courses/api/annotation/ConfigProperty.java
  com.senla.courses.api.annotation.ConfigProperty
 com/senla/courses/config/ObjectFactory.java
  com.senla.courses.config.ObjectFactory
-com/senla/courses/config/ConfigPropertyAnnotationObjectConfigurator.java
- com.senla.courses.config.ConfigPropertyAnnotationObjectConfigurator
+com/senla/courses/config/Application.java
+ com.senla.courses.config.Application

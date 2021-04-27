@@ -1,28 +1,19 @@
-14:20:42 / 2021-20-27 - WARNING - [com.senla.courses.DBConnection] - loadProperties - Failed to read connection propertiesdao\resources\connection.properties (Системе не удается найти указанный путь) 
+01:32:42 / 2021-32-28 - WARNING - [com.senla.courses.BookstoreFacade] - deleteBook - Error when deleting an object 
    
-14:20:43 / 2021-20-27 - WARNING - [com.senla.courses.BookService] - getAll - Search showed no matches 
-   
-14:20:43 / 2021-20-27 - WARNING - [com.senla.courses.BookstoreFacade] - getAllBook - Search showed no matches 
-   
-14:20:43 / 2021-20-27 - WARNING - [com.senla.courses.action.book.PrintAllBooks] - execute - Search showed no matches 
- com.senla.courses.exception.ServiceException: Search showed no matches
-	at com.senla.courses.BookService.getAll(BookService.java:41)
-	at com.senla.courses.BookstoreFacade.getAllBook(BookstoreFacade.java:116)
-	at com.senla.courses.action.book.PrintAllBooks.execute(PrintAllBooks.java:19)
+01:32:42 / 2021-32-28 - WARNING - [com.senla.courses.action.book.DeleteBook] - execute - Error when deleting an object 
+ com.senla.courses.exception.ServiceException: Error when deleting an object
+	at com.senla.courses.BookService.delete(BookService.java:73)
+	at com.senla.courses.BookstoreFacade.deleteBook(BookstoreFacade.java:162)
+	at com.senla.courses.action.book.DeleteBook.execute(DeleteBook.java:25)
 	at com.senla.courses.menu.MenuItem.doAction(MenuItem.java:21)
 	at com.senla.courses.menu.Navigator.navigate(Navigator.java:24)
 	at com.senla.courses.menu.MenuController.run(MenuController.java:24)
 	at com.senla.courses.Starter.main(Starter.java:21)
-Caused by: com.senla.courses.exception.DBException: Failed to read connection properties
-	at com.senla.courses.DBConnection.loadProperties(DBConnection.java:32)
-	at com.senla.courses.DBConnection.getConnection(DBConnection.java:46)
-	at com.senla.courses.BookService.getAll(BookService.java:38)
+Caused by: com.senla.courses.exception.DBException: Search showed no matches
+	at com.senla.courses.AbstractDBDao.delete(AbstractDBDao.java:112)
+	at com.senla.courses.BookService.delete(BookService.java:70)
 	... 6 more
-Caused by: java.io.FileNotFoundException: dao\resources\connection.properties (Системе не удается найти указанный путь)
-	at java.base/java.io.FileInputStream.open0(Native Method)
-	at java.base/java.io.FileInputStream.open(FileInputStream.java:219)
-	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:157)
-	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:112)
-	at com.senla.courses.DBConnection.loadProperties(DBConnection.java:25)
-	... 8 more
+Caused by: java.lang.NullPointerException
+	at com.senla.courses.AbstractDBDao.delete(AbstractDBDao.java:104)
+	... 7 more
  

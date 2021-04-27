@@ -3,12 +3,17 @@ package com.senla.courses;
 import com.senla.courses.dbdao.GenericDao;
 import com.senla.courses.api.annotation.Singleton;
 import com.senla.courses.exception.DBException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.List;
 
 @Singleton
 public abstract class AbstractDBDao<T extends Identified<PK>, PK extends Integer> implements GenericDao<T, PK> {
+
+    private static final Logger log = LogManager.getLogger(AbstractDBDao.class);
 
     protected abstract String getSelectQuery();
     protected abstract String getSelectWhereQuery();
@@ -99,10 +104,12 @@ public abstract class AbstractDBDao<T extends Identified<PK>, PK extends Integer
             statement.setObject(1, object.getId());
             int count = statement.executeUpdate();
             if (count != 1) {
+                log.log(Level.WARN, "On delete modify more then 1 record: " + count);
                 throw new DBException("On delete modify more then 1 record: " + count);
             }
-        } catch (SQLException e) {
-            throw new DBException(e);
+        } catch (SQLException | NullPointerException e) {
+            log.log(Level.INFO, "Search showed no matches");
+            throw new DBException("Search showed no matches", e);
         }
     }
 }

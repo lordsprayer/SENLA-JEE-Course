@@ -1,7 +1,11 @@
 package com.senla.courses;
 
-import java.time.LocalDate;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.time.LocalDate;
+@Getter
+@Setter
 public class Book implements Identified<Integer>, Comparable<Book> {
     private Integer id = null;
     private String title;
@@ -38,62 +42,62 @@ public class Book implements Identified<Integer>, Comparable<Book> {
     public void setId(int id) {
         this.id = id;
     }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public Integer getPublicationYear() {
-        return publicationYear;
-    }
-
-    public void setPublicationYear(Integer publicationYear) {
-        this.publicationYear = publicationYear;
-    }
-
+//
+//    public String getTitle() {
+//        return title;
+//    }
+//
+//    public void setTitle(String title) {
+//        this.title = title;
+//    }
+//
+//    public String getAuthor() {
+//        return author;
+//    }
+//
+//    public void setAuthor(String author) {
+//        this.author = author;
+//    }
+//
+//    public Integer getPublicationYear() {
+//        return publicationYear;
+//    }
+//
+//    public void setPublicationYear(Integer publicationYear) {
+//        this.publicationYear = publicationYear;
+//    }
+//
     public Double getCost() {
         return cost;
     }
-
-    public void setCost(Double cost) {
-        this.cost = cost;
-    }
-
-    public LocalDate getReceiptDate() {
-        return receiptDate;
-    }
-
-    public void setReceiptDate(LocalDate receiptDate) {
-        this.receiptDate = receiptDate;
-    }
-
-    public Boolean getAvailability() {
-        return availability;
-    }
-
-    public void setAvailability(Boolean availability) {
-        this.availability = availability;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+//
+//    public void setCost(Double cost) {
+//        this.cost = cost;
+//    }
+//
+//    public LocalDate getReceiptDate() {
+//        return receiptDate;
+//    }
+//
+//    public void setReceiptDate(LocalDate receiptDate) {
+//        this.receiptDate = receiptDate;
+//    }
+//
+//    public Boolean getAvailability() {
+//        return availability;
+//    }
+//
+//    public void setAvailability(Boolean availability) {
+//        this.availability = availability;
+//    }
+//
+//    public String getDescription() {
+//        return description;
+//    }
+//
+//    public void setDescription(String description) {
+//        this.description = description;
+//    }
 
     @Override
     public String toString() {

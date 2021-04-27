@@ -2,12 +2,12 @@ com/senla/courses/action/order/ChangeOrderStatus.java
  com.senla.courses.action.order.ChangeOrderStatus
 com/senla/courses/action/order/SortCompleteOrderBy.java
  com.senla.courses.action.order.SortCompleteOrderBy
-com/senla/courses/action/order/DeleteOrder.java
- com.senla.courses.action.order.DeleteOrder
+com/senla/courses/menu/Builder.java
+ com.senla.courses.menu.Builder
 com/senla/courses/action/book/SortUnsoldBookBy.java
  com.senla.courses.action.book.SortUnsoldBookBy
-com/senla/courses/action/order/CreateOrder.java
- com.senla.courses.action.order.CreateOrder
+com/senla/courses/menu/Navigator.java
+ com.senla.courses.menu.Navigator
 com/senla/courses/action/validation/IntNumberValidation.java
  com.senla.courses.action.validation.IntNumberValidation
 com/senla/courses/action/SaveAction.java
@@ -16,10 +16,10 @@ com/senla/courses/action/book/SetBookDescription.java
  com.senla.courses.action.book.SetBookDescription
 com/senla/courses/action/customer/AddCustomer.java
  com.senla.courses.action.customer.AddCustomer
-com/senla/courses/action/request/SortRequestsByBookCount.java
- com.senla.courses.action.request.SortRequestsByBookCount
-com/senla/courses/action/book/SortBookBy.java
- com.senla.courses.action.book.SortBookBy
+com/senla/courses/menu/Menu.java
+ com.senla.courses.menu.Menu
+com/senla/courses/menu/MenuItem.java
+ com.senla.courses.menu.MenuItem
 com/senla/courses/action/request/DeleteRequest.java
  com.senla.courses.action.request.DeleteRequest
 com/senla/courses/menu/MenuController.java
@@ -64,11 +64,11 @@ com/senla/courses/action/book/DeleteBook.java
  com.senla.courses.action.book.DeleteBook
 com/senla/courses/action/customer/UpdateCustomer.java
  com.senla.courses.action.customer.UpdateCustomer
-com/senla/courses/menu/Builder.java
- com.senla.courses.menu.Builder
-com/senla/courses/menu/Navigator.java
- com.senla.courses.menu.Navigator
-com/senla/courses/menu/Menu.java
- com.senla.courses.menu.Menu
-com/senla/courses/menu/MenuItem.java
- com.senla.courses.menu.MenuItem
+com/senla/courses/action/book/SortBookBy.java
+ com.senla.courses.action.book.SortBookBy
+com/senla/courses/action/request/SortRequestsByBookCount.java
+ com.senla.courses.action.request.SortRequestsByBookCount
+com/senla/courses/action/order/CreateOrder.java
+ com.senla.courses.action.order.CreateOrder
+com/senla/courses/action/order/DeleteOrder.java
+ com.senla.courses.action.order.DeleteOrder

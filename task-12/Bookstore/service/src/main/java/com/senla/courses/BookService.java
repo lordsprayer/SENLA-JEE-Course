@@ -1,26 +1,28 @@
 package com.senla.courses;
 
-import com.senla.courses.dbdao.IDBBookDao;
-import com.senla.courses.dbdao.IDBRequestDao;
 import com.senla.courses.api.annotation.ConfigProperty;
 import com.senla.courses.api.annotation.Inject;
 import com.senla.courses.api.annotation.Singleton;
+import com.senla.courses.dbdao.IDBBookDao;
+import com.senla.courses.dbdao.IDBRequestDao;
 import com.senla.courses.exception.DBException;
 import com.senla.courses.exception.ServiceException;
 import com.senla.courses.service.IBookService;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Singleton
 public class BookService implements IBookService {
 
-    private static final Logger log = Logger.getLogger(BookService.class.getName());
+    //private static final Logger log = Logger.getLogger(BookService.class.getName());
+    private static final Logger log = LogManager.getLogger(BookService.class);
     @Inject
     private IDBBookDao bookDao;
     @Inject
@@ -37,7 +39,7 @@ public class BookService implements IBookService {
         try {
             return bookDao.getAll(dbConnection.getConnection());
         } catch (DBException e) {
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw new ServiceException("Search showed no matches", e);
         }
     }
@@ -47,7 +49,7 @@ public class BookService implements IBookService {
         try{
             return bookDao.getByPK(id, dbConnection.getConnection());
         } catch (DBException e){
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw new ServiceException("Search showed no matches", e);
         }
     }
@@ -57,7 +59,7 @@ public class BookService implements IBookService {
         try {
             bookDao.persist(book, dbConnection.getConnection());
         } catch (DBException e){
-            log.log(Level.WARNING, "Error when saving an object");
+            log.log(Level.WARN, "Error when saving an object");
             throw new ServiceException("Error when saving an object", e);
         }
     }
@@ -67,7 +69,7 @@ public class BookService implements IBookService {
         try {
             bookDao.delete(book, dbConnection.getConnection());
         }  catch (DBException e){
-            log.log(Level.WARNING, "Error when deleting an object");
+            log.log(Level.WARN, "Error when deleting an object");
             throw new ServiceException("Error when deleting an object", e);
         }
     }
@@ -77,7 +79,7 @@ public class BookService implements IBookService {
         try {
             bookDao.update(book, dbConnection.getConnection());
         } catch (DBException e){
-            log.log(Level.WARNING, "Error when updating an object");
+            log.log(Level.WARN, "Error when updating an object");
             throw new ServiceException("Error when updating an object", e);
         }
     }
@@ -88,7 +90,7 @@ public class BookService implements IBookService {
         try {
             bookDao.update(book, dbConnection.getConnection());
         } catch (DBException e){
-            log.log(Level.WARNING, "Error when updating an object");
+            log.log(Level.WARN, "Error when updating an object");
             throw new ServiceException("Error when updating an object", e);
         }
     }
@@ -113,7 +115,7 @@ public class BookService implements IBookService {
             connection.commit();
             connection.setAutoCommit(true);
         } catch (DBException | SQLException e) {
-            log.log(Level.WARNING, "Error when saving an object");
+            log.log(Level.WARN, "Error when saving an object");
             throw new ServiceException("Error when saving an object", e);
         }
     }
@@ -125,7 +127,7 @@ public class BookService implements IBookService {
         try {
             return bookDao.getUnsoldBook(date,criterion, dbConnection.getConnection());
         } catch (DBException e) {
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw new ServiceException("Search showed no matches", e);
         }
     }
@@ -141,7 +143,7 @@ public class BookService implements IBookService {
         try {
             return bookDao.getSortBook(criterion, dbConnection.getConnection());
         } catch (DBException e) {
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw new ServiceException("Search showed no matches", e);
         }
     }
