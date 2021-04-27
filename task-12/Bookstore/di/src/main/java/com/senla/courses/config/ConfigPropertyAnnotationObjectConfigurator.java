@@ -8,7 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Field;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toMap;
@@ -47,7 +46,7 @@ public class ConfigPropertyAnnotationObjectConfigurator implements ObjectConfigu
         for (Field field : implClass.getDeclaredFields()) {
             ConfigProperty annotation = field.getAnnotation(ConfigProperty.class);
             if (annotation != null) {
-                String path = Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResource(annotation.configName())).getPath();
+                String path = "di/src/main/resources/application.properties";//Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResource(annotation.configName())).getPath();
                 try(Stream<String> lines = new BufferedReader(new FileReader(path)).lines()) {
                     Map<String, String> propertiesMap = lines.map(line -> line.split("=")).collect(toMap(arr -> arr[0], arr -> arr[1]));
                     String value = annotation.propertyName().isEmpty() ? propertiesMap.get(field.getName()) : propertiesMap.get(annotation.propertyName());

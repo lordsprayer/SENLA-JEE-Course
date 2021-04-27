@@ -16,7 +16,7 @@ public class DBConnection {
     private static final Logger LOGGER = Logger.getLogger(DBConnection.class.getName());
     private static final String FAILED_READ_PROPERTIES_ERROR_MESSAGE = "Failed to read connection properties";
     private static final String FAILED_GET_CONNECTION_ERROR_MESSAGE = "Failed to get connection";
-    private static final String PROPERTIES_FILE_PATCH ="dao/resources/connection.properties";
+    private static final String PROPERTIES_FILE_PATCH ="dao/src/main/resources/connection.properties";
     private static Properties properties;
     private Connection connection;
     private static String url;
