@@ -1,13 +1,24 @@
 package com.senla.courses;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDate;
+
 @Getter
 @Setter
-public class Book implements Identified<Integer>, Comparable<Book> {
+@NoArgsConstructor
+@Entity
+@Table
+public class Book implements Identified<Integer>{
+    @Id
     private Integer id = null;
+    @Column
     private String title;
     private String author;
     private Integer publicationYear;
@@ -31,9 +42,9 @@ public class Book implements Identified<Integer>, Comparable<Book> {
         this.description = null;
     }
 
-    public Book(){
-
-    }
+//    public Book(){
+//
+//    }
 
     public Integer getId() {
         return id;
@@ -42,62 +53,6 @@ public class Book implements Identified<Integer>, Comparable<Book> {
     public void setId(int id) {
         this.id = id;
     }
-//
-//    public String getTitle() {
-//        return title;
-//    }
-//
-//    public void setTitle(String title) {
-//        this.title = title;
-//    }
-//
-//    public String getAuthor() {
-//        return author;
-//    }
-//
-//    public void setAuthor(String author) {
-//        this.author = author;
-//    }
-//
-//    public Integer getPublicationYear() {
-//        return publicationYear;
-//    }
-//
-//    public void setPublicationYear(Integer publicationYear) {
-//        this.publicationYear = publicationYear;
-//    }
-//
-    public Double getCost() {
-        return cost;
-    }
-//
-//    public void setCost(Double cost) {
-//        this.cost = cost;
-//    }
-//
-//    public LocalDate getReceiptDate() {
-//        return receiptDate;
-//    }
-//
-//    public void setReceiptDate(LocalDate receiptDate) {
-//        this.receiptDate = receiptDate;
-//    }
-//
-//    public Boolean getAvailability() {
-//        return availability;
-//    }
-//
-//    public void setAvailability(Boolean availability) {
-//        this.availability = availability;
-//    }
-//
-//    public String getDescription() {
-//        return description;
-//    }
-//
-//    public void setDescription(String description) {
-//        this.description = description;
-//    }
 
     @Override
     public String toString() {
@@ -106,9 +61,9 @@ public class Book implements Identified<Integer>, Comparable<Book> {
                 publicationYear +" Стоимость " + cost + " Дата поступления " +
                 receiptDate +" Доступность  " + availability + "]";
     }
-
-    @Override
-    public int compareTo(Book book) {
-        return this.id - book.id;
-    }
+//
+//    @Override
+//    public int compareTo(Book book) {
+//        return this.id - book.id;
+//    }
 }

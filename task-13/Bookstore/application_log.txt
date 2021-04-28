@@ -1,19 +1,24 @@
-01:32:42 / 2021-32-28 - WARNING - [com.senla.courses.BookstoreFacade] - deleteBook - Error when deleting an object 
+14:31:55 / 2021-31-28 - WARNING - [com.senla.courses.DBConnection] - openConnection - Failed to get connectionNo suitable driver found for jdbc:mysql://localhost:3306/bookstore?useUnicode=true&serverTimezone=UTC 
    
-01:32:42 / 2021-32-28 - WARNING - [com.senla.courses.action.book.DeleteBook] - execute - Error when deleting an object 
- com.senla.courses.exception.ServiceException: Error when deleting an object
-	at com.senla.courses.BookService.delete(BookService.java:73)
-	at com.senla.courses.BookstoreFacade.deleteBook(BookstoreFacade.java:162)
-	at com.senla.courses.action.book.DeleteBook.execute(DeleteBook.java:25)
+14:31:56 / 2021-31-28 - WARNING - [com.senla.courses.BookstoreFacade] - getAllBook - Search showed no matches 
+   
+14:31:56 / 2021-31-28 - WARNING - [com.senla.courses.action.book.PrintAllBooks] - execute - Search showed no matches 
+ com.senla.courses.exception.ServiceException: Search showed no matches
+	at com.senla.courses.BookService.getAll(BookService.java:43)
+	at com.senla.courses.BookstoreFacade.getAllBook(BookstoreFacade.java:116)
+	at com.senla.courses.action.book.PrintAllBooks.execute(PrintAllBooks.java:19)
 	at com.senla.courses.menu.MenuItem.doAction(MenuItem.java:21)
 	at com.senla.courses.menu.Navigator.navigate(Navigator.java:24)
 	at com.senla.courses.menu.MenuController.run(MenuController.java:24)
 	at com.senla.courses.Starter.main(Starter.java:21)
-Caused by: com.senla.courses.exception.DBException: Search showed no matches
-	at com.senla.courses.AbstractDBDao.delete(AbstractDBDao.java:112)
-	at com.senla.courses.BookService.delete(BookService.java:70)
+Caused by: com.senla.courses.exception.DBException: Failed to get connection
+	at com.senla.courses.DBConnection.openConnection(DBConnection.java:41)
+	at com.senla.courses.DBConnection.getConnection(DBConnection.java:47)
+	at com.senla.courses.BookService.getAll(BookService.java:40)
 	... 6 more
-Caused by: java.lang.NullPointerException
-	at com.senla.courses.AbstractDBDao.delete(AbstractDBDao.java:104)
-	... 7 more
+Caused by: java.sql.SQLException: No suitable driver found for jdbc:mysql://localhost:3306/bookstore?useUnicode=true&serverTimezone=UTC
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:702)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:189)
+	at com.senla.courses.DBConnection.openConnection(DBConnection.java:38)
+	... 8 more
  
