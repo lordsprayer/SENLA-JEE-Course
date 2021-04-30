@@ -38,6 +38,7 @@ public class Request implements Identified<Integer> {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }

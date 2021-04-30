@@ -1,18 +1,34 @@
 package com.senla.courses;
 
 
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-public class Order implements Identified<Integer>, Comparable<Order>, Serializable {
-
+@Getter
+@Setter
+@NoArgsConstructor
+@Entity
+@Table
+public class Order implements Identified<Integer>  {
+    @Id
     private Integer id = null;
+    @OneToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
+    @OneToMany(mappedBy = "order")
     private List<Book> bookList;
+    @Column
     private LocalDate creationDate;
+    @Column
     private LocalDate completionDate;
+    @Column
     private Double totalCost;
+    @Column
     private Status status;
 
     public enum Status
@@ -42,66 +58,67 @@ public class Order implements Identified<Integer>, Comparable<Order>, Serializab
         this.status = Status.NEW;
     }
 
-    public Order(){
-
-    }
+//    public Order(){
+//
+//    }
 
     @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public List<Book> getBookList() {
-        return bookList;
-    }
-
-    public void setBookList(List<Book> bookList) {
-        this.bookList = bookList;
-    }
-
-    public LocalDate getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public LocalDate getCompletionDate() {
-        return completionDate;
-    }
-
-    public void setCompletionDate(LocalDate completionDate) {
-        this.completionDate = completionDate;
-    }
-
-    public Double getTotalCost() {
-        return totalCost;
-    }
-
-    public void setTotalCost(Double totalCost) {
-        this.totalCost = totalCost;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+//
+//    public Customer getCustomer() {
+//        return customer;
+//    }
+//
+//    public void setCustomer(Customer customer) {
+//        this.customer = customer;
+//    }
+//
+//    public List<Book> getBookList() {
+//        return bookList;
+//    }
+//
+//    public void setBookList(List<Book> bookList) {
+//        this.bookList = bookList;
+//    }
+//
+//    public LocalDate getCreationDate() {
+//        return creationDate;
+//    }
+//
+//    public void setCreationDate(LocalDate creationDate) {
+//        this.creationDate = creationDate;
+//    }
+//
+//    public LocalDate getCompletionDate() {
+//        return completionDate;
+//    }
+//
+//    public void setCompletionDate(LocalDate completionDate) {
+//        this.completionDate = completionDate;
+//    }
+//
+//    public Double getTotalCost() {
+//        return totalCost;
+//    }
+//
+//    public void setTotalCost(Double totalCost) {
+//        this.totalCost = totalCost;
+//    }
+//
+//    public Status getStatus() {
+//        return status;
+//    }
+//
+//    public void setStatus(Status status) {
+//        this.status = status;
+//    }
 
     @Override
     public String toString() {
@@ -115,9 +132,9 @@ public class Order implements Identified<Integer>, Comparable<Order>, Serializab
         str.append("\nОбщая стоимость заказа ").append(totalCost).append(" статус = ").append(status);
         return str.toString();
     }
-
-    @Override
-    public int compareTo(Order order) {
-        return this.id - order.id;
-    }
+//
+//    @Override
+//    public int compareTo(Order order) {
+//        return this.id - order.id;
+//    }
 }

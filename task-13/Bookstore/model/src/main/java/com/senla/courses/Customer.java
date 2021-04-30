@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -16,9 +14,14 @@ import javax.persistence.Table;
 public class Customer implements Identified<Integer> {
     @Id
     private Integer id = null;
+    @Column
     private String name;
+    @Column
     private String surname;
+    @Column
     private String phoneNumber;
+    @OneToOne(mappedBy = "customer")
+    private Order order;
 
     public Customer(String name, String surname, String phoneNumber) {
         this.name = name;
@@ -30,10 +33,12 @@ public class Customer implements Identified<Integer> {
 //
 //    }
 
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(int id){
         this.id = id;
     }

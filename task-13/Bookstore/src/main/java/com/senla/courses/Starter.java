@@ -14,6 +14,7 @@ public class Starter {
 
     public static void main(String[] args) {
         new CustomLogger();
+        new HibernateBookDao();
         final Logger log = Logger.getLogger(Starter.class.getName());
         try{
             ApplicationContext context = Application.run("com.senla.courses");

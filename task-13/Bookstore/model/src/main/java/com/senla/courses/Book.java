@@ -4,12 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,15 +13,27 @@ import java.time.LocalDate;
 @Table
 public class Book implements Identified<Integer>{
     @Id
-    private Integer id = null;
+    @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
+    private Integer id;
     @Column
     private String title;
+    @Column
     private String author;
+    @Column
     private Integer publicationYear;
+    @Column
     private Double cost;
+    @Column
     private LocalDate receiptDate;
+    @Column
     private Boolean availability;
+    @Column
     private String description;
+    @OneToOne(mappedBy = "book")
+    private Request request;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     public Book(String title,
                 String author,
@@ -45,11 +53,12 @@ public class Book implements Identified<Integer>{
 //    public Book(){
 //
 //    }
-
+    @Override
     public Integer getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }

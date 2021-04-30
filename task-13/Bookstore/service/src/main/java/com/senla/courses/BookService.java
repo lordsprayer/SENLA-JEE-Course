@@ -3,8 +3,8 @@ package com.senla.courses;
 import com.senla.courses.api.annotation.ConfigProperty;
 import com.senla.courses.api.annotation.Inject;
 import com.senla.courses.api.annotation.Singleton;
-import com.senla.courses.dbdao.IDBBookDao;
 import com.senla.courses.dbdao.IDBRequestDao;
+import com.senla.courses.dbdao.IHibernateBookDao;
 import com.senla.courses.exception.DBException;
 import com.senla.courses.exception.ServiceException;
 import com.senla.courses.service.IBookService;
@@ -21,12 +21,11 @@ import java.util.List;
 @Singleton
 public class BookService implements IBookService {
 
-    //private static final Logger log = Logger.getLogger(BookService.class.getName());
     private static final Logger log = LogManager.getLogger(BookService.class);
     @Inject
-    private IDBBookDao bookDao;
-    @Inject
     private IDBRequestDao requestDao;
+    @Inject
+    private IHibernateBookDao bookDao;
     @ConfigProperty(propertyName = "number_of_months")
     private Integer months;
     @ConfigProperty(propertyName = "permit_closing_request")
@@ -37,7 +36,7 @@ public class BookService implements IBookService {
     @Override
     public List<Book> getAll() {
         try {
-            return bookDao.getAll(dbConnection.getConnection());
+            return bookDao.getAll();
         } catch (DBException e) {
             log.log(Level.WARN, "Search showed no matches");
             throw new ServiceException("Search showed no matches", e);
@@ -47,7 +46,7 @@ public class BookService implements IBookService {
     @Override
     public Book getById(Integer id) {
         try{
-            return bookDao.getByPK(id, dbConnection.getConnection());
+            return bookDao.getByPK(id);
         } catch (DBException e){
             log.log(Level.WARN, "Search showed no matches");
             throw new ServiceException("Search showed no matches", e);
@@ -57,7 +56,7 @@ public class BookService implements IBookService {
     @Override
     public void save(Book book) {
         try {
-            bookDao.persist(book, dbConnection.getConnection());
+            bookDao.persist(book);
         } catch (DBException e){
             log.log(Level.WARN, "Error when saving an object");
             throw new ServiceException("Error when saving an object", e);
@@ -67,7 +66,7 @@ public class BookService implements IBookService {
     @Override
     public void delete(Book book) {
         try {
-            bookDao.delete(book, dbConnection.getConnection());
+            bookDao.delete(book);
         }  catch (DBException e){
             log.log(Level.WARN, "Error when deleting an object");
             throw new ServiceException("Error when deleting an object", e);
@@ -77,7 +76,7 @@ public class BookService implements IBookService {
     @Override
     public void update(Book book) {
         try {
-            bookDao.update(book, dbConnection.getConnection());
+            bookDao.update(book);
         } catch (DBException e){
             log.log(Level.WARN, "Error when updating an object");
             throw new ServiceException("Error when updating an object", e);
@@ -88,7 +87,7 @@ public class BookService implements IBookService {
     public void cancelBook(Book book) {
         book.setAvailability(false);
         try {
-            bookDao.update(book, dbConnection.getConnection());
+            bookDao.update(book);
         } catch (DBException e){
             log.log(Level.WARN, "Error when updating an object");
             throw new ServiceException("Error when updating an object", e);
@@ -100,7 +99,7 @@ public class BookService implements IBookService {
         book.setAvailability(true);
         try (Connection connection = dbConnection.getConnection()) {
             connection.setAutoCommit(false);
-            bookDao.update(book, connection);
+            bookDao.update(book);
             if (permit) {
                 List<Request> requests = new ArrayList<>(requestDao.getAll(connection));
                 for (Request request : requests) {
@@ -125,7 +124,7 @@ public class BookService implements IBookService {
     public List<Book> unsoldBook(String criterion) {
         LocalDate date = LocalDate.now().minusMonths(months);
         try {
-            return bookDao.getUnsoldBook(date,criterion, dbConnection.getConnection());
+            return bookDao.getUnsoldBook(date,criterion);
         } catch (DBException e) {
             log.log(Level.WARN, "Search showed no matches");
             throw new ServiceException("Search showed no matches", e);
@@ -141,7 +140,7 @@ public class BookService implements IBookService {
     @Override
     public List<Book> getSortBooks(String criterion) {
         try {
-            return bookDao.getSortBook(criterion, dbConnection.getConnection());
+            return bookDao.getSortBook(criterion);
         } catch (DBException e) {
             log.log(Level.WARN, "Search showed no matches");
             throw new ServiceException("Search showed no matches", e);
