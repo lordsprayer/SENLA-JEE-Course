@@ -1,21 +1,39 @@
 package com.senla.courses;
 
-import org.hibernate.HibernateException;
+import com.senla.courses.api.annotation.Singleton;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+@Singleton
 public class HibernateUtil {
-    private static final EntityManagerFactory emf;
-    static {
+
+    private  EntityManager entityManager;
+
+    public  EntityManager getEntityManager() {
+        init();
+        return entityManager;
+    }
+
+    private void init() {
         try {
-            emf = Persistence.createEntityManagerFactory("Bookstore");
+            EntityManagerFactory factory = Persistence.createEntityManagerFactory("Bookstore");
+            entityManager = factory.createEntityManager();
         } catch (Throwable ex) {
             throw new ExceptionInInitializerError(ex);
         }
     }
-    public static EntityManager getEntityManager () throws HibernateException {
-        return emf.createEntityManager();
+
+    public void begin() {
+        getEntityManager().getTransaction().begin();
+    }
+
+    public void commit() {
+        getEntityManager().getTransaction().commit();
+    }
+
+    public void rollback() {
+        getEntityManager().getTransaction().rollback();
     }
 }

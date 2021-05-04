@@ -20,19 +20,14 @@ import java.util.List;
 public class HibernateBookDao extends HibernateAbstractDao<Book, Integer> implements IHibernateBookDao {
 
     private static final Logger log = LogManager.getLogger(HibernateBookDao.class);
-    private EntityManager em;
 
-    public HibernateBookDao() {
-        super();
-    }
-
-    public List<Book> getSortBook(String criterion){
+    public List<Book> getSortBook(String criterion, EntityManager entityManager){
         try {
-            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
             CriteriaQuery<Book> cq = cb.createQuery(Book.class);
             Root<Book> rootEntry = cq.from(Book.class);
             cq.orderBy(cb.asc(rootEntry.get(criterion)));
-            TypedQuery<Book> sortQuery = em.createQuery(cq);
+            TypedQuery<Book> sortQuery = entityManager.createQuery(cq);
             return sortQuery.getResultList();
         } catch (Exception e) {
             log.log(Level.WARN, "Search showed no matches ");
@@ -40,21 +35,26 @@ public class HibernateBookDao extends HibernateAbstractDao<Book, Integer> implem
         }
     }
 
-    public List<Book> getUnsoldBook(LocalDate date, String criterion) {
+    public List<Book> getUnsoldBook(LocalDate date, String criterion, EntityManager entityManager) {
         try {
-            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
             CriteriaQuery<Book> cq = cb.createQuery(Book.class);
             Root<Book> rootEntry = cq.from(Book.class);
             Predicate availabilityPredicate = cb.equal(rootEntry.get("availability"), 1);
             Predicate datePredicate = cb.lessThan(rootEntry.get("receiptDate"), date);
             Predicate finalPredicate = cb.and(availabilityPredicate, datePredicate);
             cq.select(rootEntry).where(finalPredicate).orderBy(cb.asc(rootEntry.get(criterion)));
-            TypedQuery<Book> unsoldSortQuery = em.createQuery(cq);
+            TypedQuery<Book> unsoldSortQuery = entityManager.createQuery(cq);
             return unsoldSortQuery.getResultList();
         } catch (Exception e) {
             log.log(Level.WARN, "Search showed no matches ");
             throw new DaoException("Search showed no matches", e);
         }
+    }
+
+    @Override
+    protected Class<Book> getClazz() {
+        return Book.class;
     }
 //
 //    @Override

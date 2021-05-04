@@ -12,8 +12,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +30,19 @@ public class BookService implements IBookService {
     @ConfigProperty(propertyName = "permit_closing_request")
     private Boolean permit;
     @Inject
-    private DBConnection dbConnection;
+    private HibernateUtil util;
 
     @Override
     public List<Book> getAll() {
+        EntityManager entityManager = util.getEntityManager();
         try {
-            return bookDao.getAll();
+            entityManager.getTransaction().begin();
+            List<Book> books = bookDao.getAll(entityManager);
+            entityManager.getTransaction().commit();
+            entityManager.close();
+            return books;
         } catch (DBException e) {
+            entityManager.getTransaction().rollback();
             log.log(Level.WARN, "Search showed no matches");
             throw new ServiceException("Search showed no matches", e);
         }
@@ -45,9 +50,15 @@ public class BookService implements IBookService {
 
     @Override
     public Book getById(Integer id) {
+        EntityManager entityManager = util.getEntityManager();
         try{
-            return bookDao.getByPK(id);
+            entityManager.getTransaction().begin();
+            Book book = bookDao.getByPK(id, entityManager);
+            entityManager.getTransaction().commit();
+            entityManager.close();
+            return book;
         } catch (DBException e){
+            entityManager.getTransaction().rollback();
             log.log(Level.WARN, "Search showed no matches");
             throw new ServiceException("Search showed no matches", e);
         }
@@ -55,9 +66,14 @@ public class BookService implements IBookService {
 
     @Override
     public void save(Book book) {
+        EntityManager entityManager = util.getEntityManager();
         try {
-            bookDao.persist(book);
+            entityManager.getTransaction().begin();
+            bookDao.persist(book, entityManager);
+            entityManager.getTransaction().commit();
+            entityManager.close();
         } catch (DBException e){
+            entityManager.getTransaction().rollback();
             log.log(Level.WARN, "Error when saving an object");
             throw new ServiceException("Error when saving an object", e);
         }
@@ -65,9 +81,14 @@ public class BookService implements IBookService {
 
     @Override
     public void delete(Book book) {
+        EntityManager entityManager = util.getEntityManager();
         try {
-            bookDao.delete(book);
+            entityManager.getTransaction().begin();
+            bookDao.delete(book, entityManager);
+            entityManager.getTransaction().commit();
+            entityManager.close();
         }  catch (DBException e){
+            entityManager.getTransaction().rollback();
             log.log(Level.WARN, "Error when deleting an object");
             throw new ServiceException("Error when deleting an object", e);
         }
@@ -75,9 +96,14 @@ public class BookService implements IBookService {
 
     @Override
     public void update(Book book) {
+        EntityManager entityManager = util.getEntityManager();
         try {
-            bookDao.update(book);
+            entityManager.getTransaction().begin();
+            bookDao.update(book, entityManager);
+            entityManager.getTransaction().commit();
+            entityManager.close();
         } catch (DBException e){
+            entityManager.getTransaction().rollback();
             log.log(Level.WARN, "Error when updating an object");
             throw new ServiceException("Error when updating an object", e);
         }
@@ -86,9 +112,14 @@ public class BookService implements IBookService {
     @Override
     public void cancelBook(Book book) {
         book.setAvailability(false);
+        EntityManager entityManager = util.getEntityManager();
         try {
-            bookDao.update(book);
+            entityManager.getTransaction().begin();
+            bookDao.update(book, entityManager);
+            entityManager.getTransaction().commit();
+            entityManager.close();
         } catch (DBException e){
+            entityManager.getTransaction().rollback();
             log.log(Level.WARN, "Error when updating an object");
             throw new ServiceException("Error when updating an object", e);
         }
@@ -97,23 +128,25 @@ public class BookService implements IBookService {
     @Override
     public void addBook(Book book) {
         book.setAvailability(true);
-        try (Connection connection = dbConnection.getConnection()) {
-            connection.setAutoCommit(false);
-            bookDao.update(book);
+        EntityManager entityManager = util.getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            bookDao.update(book, util.getEntityManager());
             if (permit) {
-                List<Request> requests = new ArrayList<>(requestDao.getAll(connection));
+                List<Request> requests = new ArrayList<>();//(requestDao.getAll(entityManager));
                 for (Request request : requests) {
                     if (request.getBook().equals(book)) {
                         request.setStatus(false);
-                        requestDao.update(request, connection);
+                        //requestDao.update(request, util.getEntityManager());
                     }
                 }
             } else {
                 log.log(Level.INFO, "Automatic closing of requests is prohibited");
             }
-            connection.commit();
-            connection.setAutoCommit(true);
-        } catch (DBException | SQLException e) {
+            entityManager.getTransaction().commit();
+            entityManager.close();
+        } catch (DBException e) {
+            entityManager.getTransaction().rollback();
             log.log(Level.WARN, "Error when saving an object");
             throw new ServiceException("Error when saving an object", e);
         }
@@ -123,9 +156,15 @@ public class BookService implements IBookService {
     @Override
     public List<Book> unsoldBook(String criterion) {
         LocalDate date = LocalDate.now().minusMonths(months);
+        EntityManager entityManager = util.getEntityManager();
         try {
-            return bookDao.getUnsoldBook(date,criterion);
+            entityManager.getTransaction().begin();
+            List<Book> books =  bookDao.getUnsoldBook(date,criterion,entityManager);
+            entityManager.getTransaction().commit();
+            entityManager.close();
+            return books;
         } catch (DBException e) {
+            entityManager.getTransaction().rollback();
             log.log(Level.WARN, "Search showed no matches");
             throw new ServiceException("Search showed no matches", e);
         }
@@ -139,9 +178,15 @@ public class BookService implements IBookService {
 
     @Override
     public List<Book> getSortBooks(String criterion) {
+        EntityManager entityManager = util.getEntityManager();
         try {
-            return bookDao.getSortBook(criterion);
+            entityManager.getTransaction().begin();
+            List<Book> books = bookDao.getSortBook(criterion, entityManager);
+            entityManager.getTransaction().commit();
+            entityManager.close();
+            return books;
         } catch (DBException e) {
+            entityManager.getTransaction().rollback();
             log.log(Level.WARN, "Search showed no matches");
             throw new ServiceException("Search showed no matches", e);
         }

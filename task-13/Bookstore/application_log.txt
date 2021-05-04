@@ -1,2 +1,2 @@
-16:00:44 / 2021-00-30 - WARNING - [com.senla.courses.config.ObjectFactory] - lambda$configure$0 - Object configuration error 
+00:56:37 / 2021-56-05 - INFO - [com.senla.courses.RequestService] - createRequest - Request created 
    

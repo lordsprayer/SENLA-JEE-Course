@@ -16,20 +16,14 @@ import java.io.Serializable;
 import java.util.List;
 
 @Singleton
-public class HibernateAbstractDao <T extends Identified<PK>, PK extends Serializable> implements HibernateGenericDao <T, PK> {
+public abstract class HibernateAbstractDao <T extends Identified<PK>, PK extends Serializable> implements HibernateGenericDao <T, PK> {
 
     private static final Logger log = LogManager.getLogger(HibernateAbstractDao.class);
-    private final EntityManager em;
-    private Class<T> type;
-
-    public HibernateAbstractDao () {
-        this.em = HibernateUtil.getEntityManager();
-    }
 
     @Override
-    public void persist(T object) {
+    public void persist(T object, EntityManager entityManager) {
         try {
-            em.persist(object);
+            entityManager.persist(object);
         } catch (Exception e) {
             log.log(Level.WARN, "Error when saving an object " + object.toString());
             throw new DaoException("Error when saving an object", e);
@@ -37,9 +31,9 @@ public class HibernateAbstractDao <T extends Identified<PK>, PK extends Serializ
     }
 
     @Override
-    public T getByPK(PK key) {
+    public T getByPK(PK key, EntityManager entityManager) {
         try {
-            return em.find(type, key);
+            return entityManager.find(getClazz(), key);
         } catch (Exception e) {
             log.log(Level.WARN, "Search showed no matches ");
             throw new DaoException("Search showed no matches", e);
@@ -47,9 +41,9 @@ public class HibernateAbstractDao <T extends Identified<PK>, PK extends Serializ
     }
 
     @Override
-    public void update(T object) {
+    public void update(T object, EntityManager entityManager) {
         try {
-            em.merge(object);
+            entityManager.merge(object);
         } catch (Exception e) {
             log.log(Level.WARN, "Error when updating an object " + object.toString());
             throw new DaoException("Error when updating an object", e);
@@ -57,9 +51,9 @@ public class HibernateAbstractDao <T extends Identified<PK>, PK extends Serializ
     }
 
     @Override
-    public void delete(T object) {
+    public void delete(T object, EntityManager entityManager) {
         try {
-            em.remove(object);
+            entityManager.remove(object);
         } catch (Exception e) {
             log.log(Level.WARN, "Error when deleting an object " + object.toString());
             throw new DaoException("Error when deleting an object", e);
@@ -67,17 +61,19 @@ public class HibernateAbstractDao <T extends Identified<PK>, PK extends Serializ
     }
 
     @Override
-    public List<T> getAll() {
+    public List<T> getAll(EntityManager entityManager) {
         try {
-            CriteriaBuilder cb = em.getCriteriaBuilder();
-            CriteriaQuery<T> cq = cb.createQuery(type);
-            Root<T> rootEntry = cq.from(type);
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<T> cq = cb.createQuery(getClazz());
+            Root<T> rootEntry = cq.from(getClazz());
             CriteriaQuery<T> all = cq.select(rootEntry);
-            TypedQuery<T> allQuery = em.createQuery(all);
+            TypedQuery<T> allQuery = entityManager.createQuery(all);
             return allQuery.getResultList();
         } catch (Exception e) {
             log.log(Level.WARN, "Search showed no matches ");
             throw new DaoException("Search showed no matches", e);
         }
     }
+
+    protected abstract Class<T> getClazz();
 }

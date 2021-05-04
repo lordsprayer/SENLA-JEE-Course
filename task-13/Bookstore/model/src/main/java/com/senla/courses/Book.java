@@ -10,28 +10,28 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table
+@Table (name = "books")
 public class Book implements Identified<Integer>{
     @Id
-    @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     private Integer id;
-    @Column
+    @Column (name = "title")
     private String title;
-    @Column
+    @Column (name = "author")
     private String author;
-    @Column
+    @Column (name = "publication_year")
     private Integer publicationYear;
-    @Column
+    @Column (name = "cost")
     private Double cost;
-    @Column
+    @Column (name = "receipt_date")
     private LocalDate receiptDate;
-    @Column
+    @Column (name = "availability")
     private Boolean availability;
-    @Column
+    @Column (name = "description")
     private String description;
     @OneToOne(mappedBy = "book")
     private Request request;
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
 

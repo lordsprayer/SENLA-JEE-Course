@@ -13,22 +13,23 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table
+@Table (name = "orders")
 public class Order implements Identified<Integer>  {
     @Id
-    private Integer id = null;
-    @OneToOne
+    @GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+    private Integer id;
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
     @OneToMany(mappedBy = "order")
     private List<Book> bookList;
-    @Column
+    @Column (name = "creation_date")
     private LocalDate creationDate;
-    @Column
+    @Column (name = "completion_date")
     private LocalDate completionDate;
-    @Column
+    @Column (name = "total_cost")
     private Double totalCost;
-    @Column
+    @Column (name = "status")
     private Status status;
 
     public enum Status

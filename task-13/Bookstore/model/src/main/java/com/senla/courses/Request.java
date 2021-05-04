@@ -11,16 +11,17 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table
+@Table (name = "requests")
 public class Request implements Identified<Integer> {
     @Id
-    private Integer id = null;
-    @OneToOne
+    @GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+    private Integer id;
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private Book book;
-    @Column
+    @Column (name = "date")
     private LocalDate date;
-    @Column
+    @Column (name = "status")
     private Boolean status;
 
     public Request(Book book, LocalDate date) {

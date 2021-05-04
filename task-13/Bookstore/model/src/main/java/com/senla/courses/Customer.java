@@ -10,15 +10,16 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table
+@Table (name = "customers")
 public class Customer implements Identified<Integer> {
     @Id
-    private Integer id = null;
-    @Column
+    @GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+    private Integer id;
+    @Column (name = "name")
     private String name;
-    @Column
+    @Column (name  = "surname")
     private String surname;
-    @Column
+    @Column (name = "phone_number")
     private String phoneNumber;
     @OneToOne(mappedBy = "customer")
     private Order order;
