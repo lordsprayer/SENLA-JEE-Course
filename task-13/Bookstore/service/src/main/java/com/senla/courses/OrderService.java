@@ -1,18 +1,16 @@
 package com.senla.courses;
 
-import com.senla.courses.dbdao.IDBBookDao;
-import com.senla.courses.dbdao.IDBOrderDao;
-import com.senla.courses.dbdao.IDBRequestDao;
 import com.senla.courses.api.annotation.Inject;
 import com.senla.courses.api.annotation.Singleton;
+import com.senla.courses.dbdao.IHibernateBookDao;
+import com.senla.courses.dbdao.IHibernateOrderDao;
+import com.senla.courses.dbdao.IHibernateRequestDao;
 import com.senla.courses.exception.DBException;
 import com.senla.courses.exception.ServiceException;
 import com.senla.courses.service.IOrderService;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,25 +20,25 @@ public class OrderService implements IOrderService {
 
     private static final Logger log = Logger.getLogger(OrderService.class.getName());
     @Inject
-    private IDBBookDao bookDao;
+    private IHibernateBookDao bookDao;
     @Inject
-    private IDBOrderDao orderDao;
+    private IHibernateOrderDao orderDao;
     @Inject
-    private IDBRequestDao requestDao;
+    private IHibernateRequestDao requestDao;
     @Inject
-    private DBConnection dbConnection;
+    private HibernateUtil util;
 
     @Override
     public Order getById(Integer id) {
-        try (Connection connection = dbConnection.getConnection()) {
-            connection.setAutoCommit(false);
-            Order order = orderDao.getByPK (id, connection);
-            List<Book> books = new ArrayList<>(bookDao.getBookByOrder(order.getId(), connection));
-            connection.commit();
-            connection.setAutoCommit(true);
-            order.setBookList(books);
+        EntityManager entityManager = util.getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            Order order = orderDao.getByPK (id, entityManager);
+            entityManager.getTransaction().commit();
+            entityManager.close();
             return order;
-        } catch (DBException | SQLException e) {
+        } catch (DBException e) {
+            entityManager.getTransaction().rollback();
             log.log (Level.WARNING, "Search showed no matches");
             throw new ServiceException ("Search showed no matches", e);
         }
@@ -48,18 +46,15 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Order> getAll() {
-        List<Order> orders;
-        try (Connection connection = dbConnection.getConnection()) {
-            connection.setAutoCommit(false);
-            orders = new ArrayList<>(orderDao.getAll(connection));
-            for (Order order : orders) {
-                List<Book> books = new ArrayList<>(bookDao.getBookByOrder(order.getId(), connection));
-                order.setBookList(books);
-            }
-            connection.commit();
-            connection.setAutoCommit(true);
+        EntityManager entityManager = util.getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            List<Order> orders = orderDao.getAll(entityManager);
+            entityManager.getTransaction().commit();
+            entityManager.close();
             return orders;
-        } catch (DBException | SQLException e) {
+        } catch (DBException e) {
+            entityManager.getTransaction().rollback();
             log.log (Level.WARNING, "Search showed no matches");
             throw new ServiceException ("Search showed no matches", e);
         }
@@ -67,17 +62,15 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Order> getSortOrders(String criterion) {
-        List<Order> orders;
-        try (Connection connection = dbConnection.getConnection()) {
-            connection.setAutoCommit(false);
-            orders = new ArrayList<>(orderDao.getSortOrders(criterion, connection));
-            for (Order order : orders) {
-                order.setBookList(bookDao.getBookByOrder(order.getId(), connection));
-            }
-            connection.commit();
-            connection.setAutoCommit(true);
+        EntityManager entityManager = util.getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            List<Order> orders = orderDao.getSortOrders(criterion, entityManager);
+            entityManager.getTransaction().commit();
+            entityManager.close();
             return orders;
-        } catch (DBException | SQLException e) {
+        } catch (DBException e) {
+            entityManager.getTransaction().rollback();
             log.log (Level.WARNING, "Search showed no matches");
             throw new ServiceException ("Search showed no matches", e);
         }
@@ -85,23 +78,22 @@ public class OrderService implements IOrderService {
 
     @Override
     public void createOrder(Customer customer, List<Book> books, LocalDate creationDate){
-        try (Connection connection = dbConnection.getConnection()) {
-            connection.setAutoCommit(false);
+        EntityManager entityManager = util.getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
             for (Book book : books) {
                 if (!book.getAvailability()) {
                     LocalDate date = LocalDate.now();
                     Request request = new Request(book, date);
-                    requestDao.persist(request, connection);
+                    requestDao.persist(request, entityManager);
                 }
             }
             Order order = new Order(customer, books, creationDate);
-            Order order1 = orderDao.persist(order, connection);
-            for (Book book : books) {
-                bookDao.insertOrder(book, order1.getId(), connection);
-            }
-            connection.commit();
-            connection.setAutoCommit(true);
-        } catch (DBException | SQLException e) {
+            orderDao.persist(order, entityManager);
+            entityManager.getTransaction().commit();
+            entityManager.close();
+        } catch (DBException e) {
+            entityManager.getTransaction().rollback();
             log.log(Level.WARNING, "Error when saving an object");
             throw new ServiceException("Error when saving an object", e);
         }
@@ -109,9 +101,14 @@ public class OrderService implements IOrderService {
 
     @Override
     public void deleteOrder(Order order){
+        EntityManager entityManager = util.getEntityManager();
         try{
-            orderDao.delete(order, dbConnection.getConnection());
+            entityManager.getTransaction().begin();
+            orderDao.delete(order, entityManager);
+            entityManager.getTransaction().commit();
+            entityManager.close();
         } catch (DBException e) {
+            entityManager.getTransaction().rollback();
             log.log(Level.WARNING, "Error when deleting an object");
             throw new ServiceException("Error when deleting an object", e);
         }
@@ -120,9 +117,14 @@ public class OrderService implements IOrderService {
     @Override
     public void changeStatus(Order order, Order.Status status) {
         order.setStatus(status);
+        EntityManager entityManager = util.getEntityManager();
         try {
-            orderDao.update(order, dbConnection.getConnection());
+            entityManager.getTransaction().begin();
+            orderDao.update(order, entityManager);
+            entityManager.getTransaction().commit();
+            entityManager.close();
         } catch (DBException e) {
+            entityManager.getTransaction().rollback();
             log.log(Level.WARNING, "Error when updating an object");
             throw new ServiceException("Error when updating an object", e);
         }
@@ -130,8 +132,12 @@ public class OrderService implements IOrderService {
 
     @Override
     public Double countIncome(LocalDate date) {
+        EntityManager entityManager = util.getEntityManager();
         try {
-            List<Order> orders = new ArrayList<>(orderDao.getAll(dbConnection.getConnection()));
+            entityManager.getTransaction().begin();
+            List<Order> orders = orderDao.getAll(entityManager);
+            entityManager.getTransaction().commit();
+            entityManager.close();
             double income = 0;
             for (Order order : orders) {
                 if (order.getCompletionDate().compareTo(date) >= 0) {
@@ -140,6 +146,7 @@ public class OrderService implements IOrderService {
             }
             return income;
         } catch (DBException e) {
+            entityManager.getTransaction().rollback();
             log.log (Level.WARNING, "Search showed no matches");
             throw new ServiceException ("Search showed no matches", e);
         }
@@ -147,8 +154,12 @@ public class OrderService implements IOrderService {
 
     @Override
     public Integer countCompleteOrders(LocalDate date) {
+        EntityManager entityManager = util.getEntityManager();
         try {
-            List<Order> orders = new ArrayList<>(orderDao.getAll(dbConnection.getConnection()));
+            entityManager.getTransaction().begin();
+            List<Order> orders = orderDao.getAll(entityManager);
+            entityManager.getTransaction().commit();
+            entityManager.close();
             int count = 0;
             for (Order order : orders) {
                 if (order.getCompletionDate().compareTo(date) >= 0) {
@@ -157,6 +168,7 @@ public class OrderService implements IOrderService {
             }
             return count;
         } catch (DBException e) {
+            entityManager.getTransaction().rollback();
             log.log (Level.WARNING, "Search showed no matches");
             throw new ServiceException ("Search showed no matches", e);
         }
@@ -171,9 +183,14 @@ public class OrderService implements IOrderService {
     public void completeOrder(Order order, LocalDate date) {
         order.setStatus(Order.Status.COMPLETED);
         order.setCompletionDate(date);
+        EntityManager entityManager = util.getEntityManager();
         try {
-            orderDao.update(order, dbConnection.getConnection());
+            entityManager.getTransaction().begin();
+            orderDao.update(order, entityManager);
+            entityManager.getTransaction().commit();
+            entityManager.close();
         } catch (DBException e) {
+            entityManager.getTransaction().rollback();
             log.log(Level.WARNING, "Error when updating an object");
             throw new ServiceException("Error when updating an object", e);
         }
@@ -181,17 +198,15 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Order> getSortCompletedOrders(LocalDate date, String criterion) {
-        try (Connection connection = dbConnection.getConnection()) {
-            connection.setAutoCommit(false);
-            List<Order> orders = new ArrayList<>(orderDao.getSortCompleteOrders(criterion, date, connection));
-            for (Order order : orders) {
-                List<Book> books = new ArrayList<>(bookDao.getBookByOrder(order.getId(), connection));
-                order.setBookList(books);
-            }
-            connection.commit();
-            connection.setAutoCommit(true);
+        EntityManager entityManager = util.getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            List<Order> orders = orderDao.getSortCompleteOrders(criterion, date, entityManager);
+            entityManager.getTransaction().commit();
+            entityManager.close();
             return orders;
-        } catch (DBException | SQLException e) {
+        } catch (DBException e) {
+            entityManager.getTransaction().rollback();
             log.log (Level.WARNING, "Search showed no matches");
             throw new ServiceException ("Search showed no matches", e);
         }

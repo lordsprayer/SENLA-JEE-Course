@@ -124,11 +124,11 @@ public class RequestService implements IRequestService {
     }
 
     @Override
-    public List<String> getSortRequestsByBookCount() {
+    public List<Request> getSortRequestsByBookCount() {
         EntityManager entityManager = util.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            List<String> list = requestDao.getSortRequestsByBookCount(entityManager);
+            List<Request> list = requestDao.getSortRequestsByBookCount(entityManager);
             entityManager.getTransaction().commit();
             entityManager.close();
             return list;

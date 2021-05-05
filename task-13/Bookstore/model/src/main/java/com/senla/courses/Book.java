@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,8 +31,8 @@ public class Book implements Identified<Integer>{
     private Boolean availability;
     @Column (name = "description")
     private String description;
-    @OneToOne(mappedBy = "book")
-    private Request request;
+    @OneToMany(mappedBy = "book")
+    private Set<Request> request;
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;

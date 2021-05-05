@@ -16,7 +16,7 @@ public class Request implements Identified<Integer> {
     @Id
     @GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     private Integer id;
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private Book book;
     @Column (name = "date")

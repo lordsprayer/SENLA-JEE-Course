@@ -425,7 +425,7 @@ public class BookstoreFacade {
     }
 
     public void sortRequestsByBookCount(){
-        List<String> requestList = requestService.getSortRequestsByBookCount();
+        List<Request> requestList = requestService.getSortRequestsByBookCount();
         if(requestList.isEmpty()){
             System.out.println("Пока в базе нет запросов");
         } else {

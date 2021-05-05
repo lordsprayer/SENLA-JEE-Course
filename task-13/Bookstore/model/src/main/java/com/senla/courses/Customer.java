@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,8 +22,8 @@ public class Customer implements Identified<Integer> {
     private String surname;
     @Column (name = "phone_number")
     private String phoneNumber;
-    @OneToOne(mappedBy = "customer")
-    private Order order;
+    @OneToMany(mappedBy = "customer")
+    private Set<Order> order;
 
     public Customer(String name, String surname, String phoneNumber) {
         this.name = name;

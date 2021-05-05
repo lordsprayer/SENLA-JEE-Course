@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface IHibernateRequestDao extends HibernateGenericDao<Request, Integer>{
     List<Request> getSortRequestsByTitle(EntityManager entityManager);
-    List<String> getSortRequestsByBookCount(EntityManager entityManager);
+    List<Request> getSortRequestsByBookCount(EntityManager entityManager);
 }

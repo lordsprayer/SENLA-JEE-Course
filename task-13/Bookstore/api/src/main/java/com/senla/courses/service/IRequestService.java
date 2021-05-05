@@ -13,6 +13,6 @@ public interface IRequestService {
     Request getById(Integer id);
     List<Request> getAll();
     List<Request> getSortRequests();
-    List<String> getSortRequestsByBookCount();
+    List<Request> getSortRequestsByBookCount();
 
 }

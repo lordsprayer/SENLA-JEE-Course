@@ -18,7 +18,7 @@ public class Order implements Identified<Integer>  {
     @Id
     @GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     private Integer id;
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
     @OneToMany(mappedBy = "order")
@@ -30,6 +30,7 @@ public class Order implements Identified<Integer>  {
     @Column (name = "total_cost")
     private Double totalCost;
     @Column (name = "status")
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     public enum Status

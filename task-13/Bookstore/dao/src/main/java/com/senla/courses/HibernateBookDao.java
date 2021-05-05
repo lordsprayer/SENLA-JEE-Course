@@ -23,11 +23,11 @@ public class HibernateBookDao extends HibernateAbstractDao<Book, Integer> implem
 
     public List<Book> getSortBook(String criterion, EntityManager entityManager){
         try {
-            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-            CriteriaQuery<Book> cq = cb.createQuery(Book.class);
-            Root<Book> rootEntry = cq.from(Book.class);
-            cq.orderBy(cb.asc(rootEntry.get(criterion)));
-            TypedQuery<Book> sortQuery = entityManager.createQuery(cq);
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Book> query = builder.createQuery(Book.class);
+            Root<Book> root = query.from(Book.class);
+            query.orderBy(builder.asc(root.get(criterion)));
+            TypedQuery<Book> sortQuery = entityManager.createQuery(query);
             return sortQuery.getResultList();
         } catch (Exception e) {
             log.log(Level.WARN, "Search showed no matches ");
@@ -37,14 +37,14 @@ public class HibernateBookDao extends HibernateAbstractDao<Book, Integer> implem
 
     public List<Book> getUnsoldBook(LocalDate date, String criterion, EntityManager entityManager) {
         try {
-            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-            CriteriaQuery<Book> cq = cb.createQuery(Book.class);
-            Root<Book> rootEntry = cq.from(Book.class);
-            Predicate availabilityPredicate = cb.equal(rootEntry.get("availability"), 1);
-            Predicate datePredicate = cb.lessThan(rootEntry.get("receiptDate"), date);
-            Predicate finalPredicate = cb.and(availabilityPredicate, datePredicate);
-            cq.select(rootEntry).where(finalPredicate).orderBy(cb.asc(rootEntry.get(criterion)));
-            TypedQuery<Book> unsoldSortQuery = entityManager.createQuery(cq);
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Book> query = builder.createQuery(Book.class);
+            Root<Book> root = query.from(Book.class);
+            Predicate availabilityPredicate = builder.equal(root.get("availability"), 1);
+            Predicate datePredicate = builder.lessThan(root.get("receiptDate"), date);
+            Predicate finalPredicate = builder.and(availabilityPredicate, datePredicate);
+            query.select(root).where(finalPredicate).orderBy(builder.asc(root.get(criterion)));
+            TypedQuery<Book> unsoldSortQuery = entityManager.createQuery(query);
             return unsoldSortQuery.getResultList();
         } catch (Exception e) {
             log.log(Level.WARN, "Search showed no matches ");

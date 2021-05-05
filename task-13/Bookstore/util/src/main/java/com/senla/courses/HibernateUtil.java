@@ -24,16 +24,4 @@ public class HibernateUtil {
             throw new ExceptionInInitializerError(ex);
         }
     }
-
-    public void begin() {
-        getEntityManager().getTransaction().begin();
-    }
-
-    public void commit() {
-        getEntityManager().getTransaction().commit();
-    }
-
-    public void rollback() {
-        getEntityManager().getTransaction().rollback();
-    }
 }
