@@ -6,7 +6,7 @@ import com.senla.courses.action.AbstractAction;
 import com.senla.courses.action.IAction;
 import com.senla.courses.action.validation.IntNumberValidation;
 
-import java.util.logging.Level;
+import org.apache.logging.log4j.Level;
 
 public class GetBookDescription extends AbstractAction implements IAction {
 
@@ -26,7 +26,7 @@ public class GetBookDescription extends AbstractAction implements IAction {
                    System.out.println("У книги пока нет описания");
                }
             } catch (ServiceException e){
-                log.log(Level.WARNING, e.getLocalizedMessage(), e);
+                log.log(Level.WARN, e.getLocalizedMessage(), e);
                 System.out.println("Введён неверный id");
             }
         }

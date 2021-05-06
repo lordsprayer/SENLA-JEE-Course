@@ -1,9 +1,10 @@
 package com.senla.courses.action;
 
 
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public interface IAction {
-    Logger log = Logger.getLogger(IAction.class.getName());
+    Logger log = LogManager.getLogger(IAction.class.getName());
     void execute();
 }

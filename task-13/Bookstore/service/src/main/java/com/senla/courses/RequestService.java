@@ -3,20 +3,22 @@ package com.senla.courses;
 import com.senla.courses.api.annotation.Inject;
 import com.senla.courses.api.annotation.Singleton;
 import com.senla.courses.dbdao.IHibernateRequestDao;
-import com.senla.courses.exception.DBException;
+import com.senla.courses.exception.DaoException;
 import com.senla.courses.exception.ServiceException;
 import com.senla.courses.service.IRequestService;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Singleton
 public class RequestService implements IRequestService {
 
-    private static final Logger log = Logger.getLogger(RequestService.class.getName());
+    private static final Logger log = LogManager.getLogger(RequestService.class.getName());
     @Inject
     private IHibernateRequestDao requestDao;
     @Inject
@@ -33,9 +35,9 @@ public class RequestService implements IRequestService {
                 requestDao.persist(request, entityManager);
                 entityManager.getTransaction().commit();
                 entityManager.close();
-            } catch (DBException e) {
+            } catch (DaoException e) {
                 entityManager.getTransaction().rollback();
-                log.log(Level.WARNING, "Error when saving an object");
+                log.log(Level.WARN, "Error when saving an object");
                 throw new ServiceException("Error when saving an object", e);
             }
             log.log(Level.INFO, "Request created");
@@ -52,9 +54,9 @@ public class RequestService implements IRequestService {
             requestDao.delete(request, entityManager);
             entityManager.getTransaction().commit();
             entityManager.close();
-        } catch (DBException e) {
+        } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log(Level.WARNING, "Error when deleting an object");
+            log.log(Level.WARN, "Error when deleting an object");
             throw new ServiceException("Error when deleting an object", e);
         }
     }
@@ -68,9 +70,9 @@ public class RequestService implements IRequestService {
             requestDao.update(request, entityManager);
             entityManager.getTransaction().commit();
             entityManager.close();
-        } catch (DBException e) {
+        } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log(Level.WARNING, "Error when updating an object");
+            log.log(Level.WARN, "Error when updating an object");
             throw new ServiceException("Error when updating an object", e);
         }
     }
@@ -84,9 +86,9 @@ public class RequestService implements IRequestService {
             entityManager.getTransaction().commit();
             entityManager.close();
             return request;
-        } catch (DBException e){
+        } catch (DaoException e){
             entityManager.getTransaction().rollback();
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw new ServiceException ("Search showed no matches", e);
         }
     }
@@ -100,9 +102,9 @@ public class RequestService implements IRequestService {
             entityManager.getTransaction().commit();
             entityManager.close();
             return requests;
-        } catch (DBException e){
+        } catch (DaoException e){
             entityManager.getTransaction().rollback();
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw new ServiceException ("Search showed no matches", e);
         }
     }
@@ -116,9 +118,9 @@ public class RequestService implements IRequestService {
             entityManager.getTransaction().commit();
             entityManager.close();
             return requests;
-        } catch (DBException e){
+        } catch (DaoException e){
             entityManager.getTransaction().rollback();
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw new ServiceException ("Search showed no matches", e);
         }
     }
@@ -132,9 +134,9 @@ public class RequestService implements IRequestService {
             entityManager.getTransaction().commit();
             entityManager.close();
             return list;
-        } catch (DBException e){
+        } catch (DaoException e){
             entityManager.getTransaction().rollback();
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw new ServiceException ("Search showed no matches", e);
         }
     }

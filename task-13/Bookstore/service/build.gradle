@@ -13,11 +13,6 @@ dependencies {
     implementation group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
 
     compile project (":api")
-    compile project (":di")
     compile project (":util")
 
-}
-
-test {
-    useJUnitPlatform()
 }

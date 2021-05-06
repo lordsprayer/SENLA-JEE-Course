@@ -5,7 +5,7 @@ import com.senla.courses.BookstoreFacade;
 import com.senla.courses.action.AbstractAction;
 import com.senla.courses.action.IAction;
 
-import java.util.logging.Level;
+import org.apache.logging.log4j.Level;
 
 public class GetCountCompleteOrders extends AbstractAction implements IAction {
 
@@ -18,7 +18,7 @@ public class GetCountCompleteOrders extends AbstractAction implements IAction {
         try {
             System.out.println("Количество выполненных заказов, удовлетворяющих условиям = " + facade.countCompleteOrders(facade.createDate()));
         }  catch (ServiceException e) {
-            log.log(Level.WARNING, e.getLocalizedMessage(), e);
+            log.log(Level.WARN, e.getLocalizedMessage(), e);
             System.out.println("Ошибка БД");
         }
     }

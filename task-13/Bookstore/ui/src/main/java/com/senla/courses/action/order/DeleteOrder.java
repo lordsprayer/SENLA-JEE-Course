@@ -6,7 +6,7 @@ import com.senla.courses.action.IAction;
 import com.senla.courses.action.validation.IntNumberValidation;
 import com.senla.courses.exception.ServiceException;
 
-import java.util.logging.Level;
+import org.apache.logging.log4j.Level;
 
 public class DeleteOrder extends AbstractAction implements IAction {
 
@@ -25,12 +25,12 @@ public class DeleteOrder extends AbstractAction implements IAction {
                     facade.deleteOrder(id);
                     System.out.println("Заказ удалён");
                 } catch (ServiceException e){
-                    log.log(Level.WARNING, e.getLocalizedMessage(), e);
+                    log.log(Level.WARN, e.getLocalizedMessage(), e);
                     System.out.println("Заказа с таким id не существует");
                 }
             }
         }  catch (ServiceException e) {
-            log.log(Level.WARNING, e.getLocalizedMessage(), e);
+            log.log(Level.WARN, e.getLocalizedMessage(), e);
             System.out.println("Ошибка БД");
         }
     }

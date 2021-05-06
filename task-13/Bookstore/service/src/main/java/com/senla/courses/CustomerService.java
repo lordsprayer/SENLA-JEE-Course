@@ -3,19 +3,21 @@ package com.senla.courses;
 import com.senla.courses.api.annotation.Inject;
 import com.senla.courses.api.annotation.Singleton;
 import com.senla.courses.dbdao.IHibernateCustomerDao;
-import com.senla.courses.exception.DBException;
+import com.senla.courses.exception.DaoException;
 import com.senla.courses.exception.ServiceException;
 import com.senla.courses.service.ICustomerService;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Singleton
 public class CustomerService implements ICustomerService {
 
-    private static final Logger log = Logger.getLogger (CustomerService.class.getName ());
+    private static final Logger log = LogManager.getLogger (CustomerService.class.getName ());
     @Inject
     private IHibernateCustomerDao customerDao;
     @Inject
@@ -29,9 +31,9 @@ public class CustomerService implements ICustomerService {
             customerDao.persist(customer, entityManager);
             entityManager.getTransaction().commit();
             entityManager.close();
-        } catch (DBException e) {
+        } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log(Level.WARNING, "Error when saving an object");
+            log.log(Level.WARN, "Error when saving an object");
             throw new ServiceException("Error when saving an object", e);
         }
     }
@@ -44,9 +46,9 @@ public class CustomerService implements ICustomerService {
             customerDao.delete(customer, entityManager);
             entityManager.getTransaction().commit();
             entityManager.close();
-        } catch (DBException e) {
+        } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log(Level.WARNING, "Error when deleting an object");
+            log.log(Level.WARN, "Error when deleting an object");
             throw new ServiceException("Error when deleting an object", e);
         }
     }
@@ -59,9 +61,9 @@ public class CustomerService implements ICustomerService {
             customerDao.update(customer, entityManager);
             entityManager.getTransaction().commit();
             entityManager.close();
-        } catch (DBException e) {
+        } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log(Level.WARNING, "Error when updating an object");
+            log.log(Level.WARN, "Error when updating an object");
             throw new ServiceException("Error when updating an object", e);
         }
     }
@@ -75,9 +77,9 @@ public class CustomerService implements ICustomerService {
             entityManager.getTransaction().commit();
             entityManager.close();
             return customers;
-        } catch (DBException e) {
+        } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw new ServiceException("Search showed no matches", e);
         }
     }
@@ -91,9 +93,9 @@ public class CustomerService implements ICustomerService {
             entityManager.getTransaction().commit();
             entityManager.close();
             return customer;
-        } catch (DBException e){
+        } catch (DaoException e){
             entityManager.getTransaction().rollback();
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw new ServiceException("Search showed no matches", e);
         }
     }

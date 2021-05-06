@@ -56,33 +56,15 @@ public class HibernateBookDao extends HibernateAbstractDao<Book, Integer> implem
     protected Class<Book> getClazz() {
         return Book.class;
     }
-//
-//    @Override
-//    public List<Book> getBookByOrder(Integer key, Connection connection) {
-//        List<Book> list;
-//        String sql = getSelectBookWhereOrder();
-//        try (PreparedStatement statement = connection.prepareStatement(sql)){
-//            statement.setInt(1, key);
-//            try (ResultSet rs = statement.executeQuery()) {
-//                list = parseResultSet(rs);
-//            }
-//        } catch (Exception e) {
-//            throw new DBException(e);
-//        }
-//        return list;
-//    }
-//
-//    @Override
-//    public void insertOrder(Book book, Integer orderId, Connection connection) {
-//        String sql = getUpdateOrderQuery();
-//        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-//            prepareStatementForInsertOrder(statement, book, orderId);
-//            int count = statement.executeUpdate();
-//            if (count != 1) {
-//                throw new DBException("On update modify more then 1 record: " + count);
-//            }
-//        } catch (Exception e) {
-//            throw new DBException(e);
-//        }
-//    }
+
+    @Override
+    public void insertOrder(Book book, Order order, EntityManager entityManager) {
+        try {
+            book.setOrder(order);
+            entityManager.merge(book);
+        } catch (Exception e) {
+            log.log(Level.WARN, "Error when updating an object ");
+            throw new DaoException("Error when updating an object", e);
+        }
+    }
 }

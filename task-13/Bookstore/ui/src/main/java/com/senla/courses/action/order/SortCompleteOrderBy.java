@@ -5,7 +5,7 @@ import com.senla.courses.BookstoreFacade;
 import com.senla.courses.action.AbstractAction;
 import com.senla.courses.action.IAction;
 
-import java.util.logging.Level;
+import org.apache.logging.log4j.Level;
 
 public class SortCompleteOrderBy extends AbstractAction implements IAction {
     private final String index;
@@ -22,7 +22,7 @@ public class SortCompleteOrderBy extends AbstractAction implements IAction {
                 System.out.println("В базе пока нет заказов");
             }
         }  catch (ServiceException e) {
-            log.log(Level.WARNING, e.getLocalizedMessage(), e);
+            log.log(Level.WARN, e.getLocalizedMessage(), e);
             System.out.println("Ошибка БД");
         }
     }

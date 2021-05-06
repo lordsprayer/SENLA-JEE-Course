@@ -5,7 +5,7 @@ import com.senla.courses.BookstoreFacade;
 import com.senla.courses.action.IAction;
 import com.senla.courses.action.AbstractAction;
 
-import java.util.logging.Level;
+import org.apache.logging.log4j.Level;
 
 public class SortUnsoldBookBy extends AbstractAction implements IAction {
     private final String index;
@@ -21,7 +21,7 @@ public class SortUnsoldBookBy extends AbstractAction implements IAction {
                 System.out.println("В базе нет залежавшихся книг");
             }
         } catch (ServiceException e) {
-            log.log(Level.WARNING, e.getLocalizedMessage(), e);
+            log.log(Level.WARN, e.getLocalizedMessage(), e);
             System.out.println("Ошибка БД");
         }
     }

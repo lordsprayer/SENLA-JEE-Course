@@ -1,6 +1,7 @@
 package com.senla.courses.dbdao;
 
 import com.senla.courses.Book;
+import com.senla.courses.Order;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
@@ -10,4 +11,5 @@ public interface IHibernateBookDao extends HibernateGenericDao<Book, Integer>{
 
     List<Book> getSortBook(String criterion, EntityManager entityManager);
     List<Book> getUnsoldBook(LocalDate date, String criterion, EntityManager entityManager);
+    void insertOrder(Book book, Order order, EntityManager entityManager);
 }

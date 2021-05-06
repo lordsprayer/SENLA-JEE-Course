@@ -21,7 +21,7 @@ public class Order implements Identified<Integer>  {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order")//, cascade = CascadeType.ALL)
     private List<Book> bookList;
     @Column (name = "creation_date")
     private LocalDate creationDate;

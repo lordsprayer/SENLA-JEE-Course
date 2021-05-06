@@ -8,17 +8,19 @@ import com.senla.courses.service.ICustomerService;
 import com.senla.courses.service.IOrderService;
 import com.senla.courses.service.IRequestService;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Singleton
 public class BookstoreFacade {
-    private static final Logger log = Logger.getLogger(BookstoreFacade.class.getName());
+    private static final Logger log = LogManager.getLogger(BookstoreFacade.class.getName());
     @Inject
     private IBookService bookService;
     @Inject
@@ -26,7 +28,7 @@ public class BookstoreFacade {
     @Inject
     private IRequestService requestService;
     @Inject
-    private  IOrderService orderService;
+    private IOrderService orderService;
 
     public Book createBook(String title,
                         String author,
@@ -41,7 +43,7 @@ public class BookstoreFacade {
         try{
             return customerService.getById(id);
         } catch(ServiceException e){
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
     }
@@ -50,7 +52,7 @@ public class BookstoreFacade {
         try {
             customerService.save(customer);
         } catch(ServiceException e){
-            log.log(Level.WARNING, "Error when saving an object");
+            log.log(Level.WARN, "Error when saving an object");
             throw e;
         }
     }
@@ -59,7 +61,7 @@ public class BookstoreFacade {
         try {
             customerService.delete(getCustomerById(id));
         } catch(ServiceException e){
-            log.log(Level.WARNING, "Error when deleting an object");
+            log.log(Level.WARN, "Error when deleting an object");
             throw e;
         }
     }
@@ -69,7 +71,7 @@ public class BookstoreFacade {
         try {
             customerService.update(customer);
         } catch(ServiceException e){
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
     }
@@ -78,7 +80,7 @@ public class BookstoreFacade {
         try {
             return customerService.getAll();
         } catch(ServiceException e){
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
     }
@@ -88,7 +90,7 @@ public class BookstoreFacade {
             getAllCustomers().forEach(System.out::println);
             return getAllCustomers();
         } catch(ServiceException e){
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
     }
@@ -97,7 +99,7 @@ public class BookstoreFacade {
         try {
             System.out.println(getCustomerById(id));
         } catch(ServiceException e){
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
     }
@@ -106,7 +108,7 @@ public class BookstoreFacade {
         try {
             bookService.save(book);
         } catch(ServiceException e){
-            log.log(Level.WARNING, "Error when saving an object");
+            log.log(Level.WARN, "Error when saving an object");
             throw e;
         }
     }
@@ -115,7 +117,7 @@ public class BookstoreFacade {
         try {
             return bookService.getAll();
         } catch(ServiceException e){
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
     }
@@ -124,7 +126,7 @@ public class BookstoreFacade {
         try{
             return bookService.getById(id);
         } catch(ServiceException e){
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
     }
@@ -133,7 +135,7 @@ public class BookstoreFacade {
         try {
             getAllBook().forEach(System.out::println);
         } catch(ServiceException e){
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
     }
@@ -142,7 +144,7 @@ public class BookstoreFacade {
         try{
             System.out.println(getBookById(id));
         } catch (ServiceException e){
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
     }
@@ -152,7 +154,7 @@ public class BookstoreFacade {
         try {
             bookService.update(book);
         } catch(ServiceException e){
-            log.log(Level.WARNING, "Error when updating an object");
+            log.log(Level.WARN, "Error when updating an object");
             throw e;
         }
     }
@@ -161,7 +163,7 @@ public class BookstoreFacade {
         try {
             bookService.delete(getBookById(id));
         } catch(ServiceException e){
-            log.log(Level.WARNING, "Error when deleting an object");
+            log.log(Level.WARN, "Error when deleting an object");
             throw e;
         }
     }
@@ -172,7 +174,7 @@ public class BookstoreFacade {
             bookList.forEach(System.out::println);
             return bookList;
         } catch(ServiceException e){
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
     }
@@ -183,7 +185,7 @@ public class BookstoreFacade {
             bookList.forEach(System.out::println);
             return bookList;
         } catch(ServiceException e){
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
     }
@@ -192,7 +194,7 @@ public class BookstoreFacade {
         try {
             bookService.addBook(book);
         } catch(ServiceException e){
-            log.log(Level.WARNING, "Error when updating an object");
+            log.log(Level.WARN, "Error when updating an object");
             throw e;
         }
     }
@@ -201,7 +203,7 @@ public class BookstoreFacade {
         try {
             bookService.cancelBook(book);
         } catch(ServiceException e){
-            log.log(Level.WARNING, "Error when updating an object");
+            log.log(Level.WARN, "Error when updating an object");
             throw e;
         }
     }
@@ -214,7 +216,7 @@ public class BookstoreFacade {
             books1.forEach(System.out::println);
             return books1;
         } catch(ServiceException e){
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
     }
@@ -223,7 +225,7 @@ public class BookstoreFacade {
         try {
             orderService.createOrder(customer, books, LocalDate.now());
         } catch(ServiceException e){
-            log.log(Level.WARNING, "Error when saving an object");
+            log.log(Level.WARN, "Error when saving an object");
             throw e;
         }
     }
@@ -240,7 +242,7 @@ public class BookstoreFacade {
             }
             return bookList;
         } catch (ServiceException e) {
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
     }
@@ -250,7 +252,7 @@ public class BookstoreFacade {
         try{
             bookService.update(book);
         } catch(ServiceException e){
-            log.log(Level.WARNING, "Error when updating an object");
+            log.log(Level.WARN, "Error when updating an object");
             throw e;
         }
     }
@@ -259,7 +261,7 @@ public class BookstoreFacade {
         try {
             return bookService.getDescription(getBookById(id));
         } catch (ServiceException e){
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
     }
@@ -269,7 +271,7 @@ public class BookstoreFacade {
             orderService.getAll().forEach(System.out::println);
             return orderService.getAll();
         } catch (ServiceException e){
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
     }
@@ -278,7 +280,7 @@ public class BookstoreFacade {
         try {
             return orderService.getById(id);
         } catch (ServiceException e){
-            log.log(Level.WARNING, "An order with this id was not found");
+            log.log(Level.WARN, "An order with this id was not found");
             throw e;
         }
     }
@@ -287,7 +289,7 @@ public class BookstoreFacade {
         try {
             orderService.orderDetails(getOrderById(id));
         } catch (ServiceException e){
-            log.log(Level.WARNING, "An order with this id was not found");
+            log.log(Level.WARN, "An order with this id was not found");
             throw e;
         }
     }
@@ -296,7 +298,7 @@ public class BookstoreFacade {
         try{
             orderService.deleteOrder(getOrderById(id));
         }  catch (ServiceException e) {
-            log.log(Level.WARNING, "An order with this id was not found");
+            log.log(Level.WARN, "An order with this id was not found");
             throw e;
         }
     }
@@ -311,7 +313,7 @@ public class BookstoreFacade {
         if (severity == 3) {
             return Order.Status.CANCELED;
         } else
-            log.log(Level.WARNING, "Wrong order status");
+            log.log(Level.WARN, "Wrong order status");
             return null;
     }
 
@@ -324,7 +326,7 @@ public class BookstoreFacade {
                 orderService.changeStatus(getOrderById(id), status);
             }
         } catch (ServiceException e) {
-            log.log(Level.WARNING, "An order with this id was not found");
+            log.log(Level.WARN, "An order with this id was not found");
             throw e;
         }
     }
@@ -335,7 +337,7 @@ public class BookstoreFacade {
             orderList.forEach(System.out::println);
             return orderList;
         } catch (ServiceException e){
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
     }
@@ -346,7 +348,7 @@ public class BookstoreFacade {
             orderList.forEach(System.out::println);
             return orderList;
         } catch (ServiceException e){
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
     }
@@ -355,7 +357,7 @@ public class BookstoreFacade {
         try {
             return orderService.countIncome(date);
         } catch (ServiceException e){
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
     }
@@ -364,7 +366,7 @@ public class BookstoreFacade {
         try {
             return orderService.countCompleteOrders(date);
         } catch (ServiceException e){
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
     }
@@ -390,7 +392,7 @@ public class BookstoreFacade {
         try {
             requestService.createRequest(book);
         } catch (ServiceException e){
-            log.log(Level.WARNING, "Error when saving an object");
+            log.log(Level.WARN, "Error when saving an object");
             throw e;
         }
     }
@@ -401,7 +403,7 @@ public class BookstoreFacade {
             requestService.getAll().forEach(System.out::println);
             return requestService.getAll();
         } catch (ServiceException e){
-            log.log(Level.WARNING, "Search showed no matches");
+            log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
     }
@@ -410,7 +412,7 @@ public class BookstoreFacade {
         try{
             requestService.delete(requestService.getById(id));
         } catch (ServiceException e){
-            log.log(Level.WARNING, "An request with this id was not found");
+            log.log(Level.WARN, "An request with this id was not found");
             throw e;
         }
     }
@@ -419,7 +421,7 @@ public class BookstoreFacade {
         try{
             requestService.closeRequest(requestService.getById(id));
         } catch (ServiceException e){
-            log.log(Level.WARNING, "An request with this id was not found");
+            log.log(Level.WARN, "An request with this id was not found");
             throw e;
         }
     }
