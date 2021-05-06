@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <persistence xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                      xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.2">
+            <persistence-unit transaction-type="RESOURCE_LOCAL" name="Bookstore">
+                <description>Hibernate Entity Manager</description>
+                <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+                <class>com.senla.courses.Book</class>
+                <class>com.senla.courses.Customer</class>
+                <class>com.senla.courses.Order</class>
+                <class>com.senla.courses.Request</class>
+                <properties>
+                    <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+                    <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/advanced_bookstore"/>
+                    <property name="javax.persistence.jdbc.user" value="root"/>
+                    <property name="javax.persistence.jdbc.password" value="refrezherator"/>
+                    <property name="javax.persistence.schema-generation.database.action" value="none"/>
+                    <property name="hibernate.format_sql" value="true"/>
+                    <property name="hibernate.use_sql_comments" value="true"/>
+                    <property name="hibernate.hbm2ddl.auto" value="update" />
+                    <property name="hibernate.enable_lazy_load_no_trans" value="true" />
+                </properties>
+            </persistence-unit>
+        </persistence>
