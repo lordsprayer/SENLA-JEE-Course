@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import java.io.Serializable;
 import java.util.List;
 
-public interface HibernateGenericDao <T extends Identified<PK>, PK extends Serializable> {
+public interface GenericDao<T extends Identified<PK>, PK extends Serializable> {
 
     /**
      * Creates a new record corresponding to the object 'object'

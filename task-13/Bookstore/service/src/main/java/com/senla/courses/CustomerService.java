@@ -2,11 +2,9 @@ package com.senla.courses;
 
 import com.senla.courses.api.annotation.Inject;
 import com.senla.courses.api.annotation.Singleton;
-import com.senla.courses.dbdao.IHibernateCustomerDao;
+import com.senla.courses.dbdao.ICustomerDao;
 import com.senla.courses.exception.DaoException;
-import com.senla.courses.exception.ServiceException;
 import com.senla.courses.service.ICustomerService;
-
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,11 +13,11 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 @Singleton
-public class CustomerService implements ICustomerService {
+public class CustomerService extends ConstantUtil implements ICustomerService {
 
     private static final Logger log = LogManager.getLogger (CustomerService.class.getName ());
     @Inject
-    private IHibernateCustomerDao customerDao;
+    private ICustomerDao customerDao;
     @Inject
     private HibernateUtil util;
 
@@ -33,8 +31,8 @@ public class CustomerService implements ICustomerService {
             entityManager.close();
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Error when saving an object");
-            throw new ServiceException("Error when saving an object", e);
+            log.log(Level.WARN, SAVING_ERROR);
+            throw e;
         }
     }
 
@@ -48,8 +46,8 @@ public class CustomerService implements ICustomerService {
             entityManager.close();
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Error when deleting an object");
-            throw new ServiceException("Error when deleting an object", e);
+            log.log(Level.WARN, DELETING_ERROR);
+            throw e;
         }
     }
 
@@ -63,8 +61,8 @@ public class CustomerService implements ICustomerService {
             entityManager.close();
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Error when updating an object");
-            throw new ServiceException("Error when updating an object", e);
+            log.log(Level.WARN, UPDATING_ERROR);
+            throw e;
         }
     }
 
@@ -79,8 +77,8 @@ public class CustomerService implements ICustomerService {
             return customers;
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Search showed no matches");
-            throw new ServiceException("Search showed no matches", e);
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw e;
         }
     }
 
@@ -95,8 +93,8 @@ public class CustomerService implements ICustomerService {
             return customer;
         } catch (DaoException e){
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Search showed no matches");
-            throw new ServiceException("Search showed no matches", e);
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw e;
         }
     }
 }

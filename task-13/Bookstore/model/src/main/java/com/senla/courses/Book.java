@@ -15,7 +15,7 @@ import java.util.Set;
 @Table (name = "books")
 public class Book implements Identified<Integer>{
     @Id
-    @GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column (name = "title")
     private String title;
@@ -52,9 +52,6 @@ public class Book implements Identified<Integer>{
         this.description = null;
     }
 
-//    public Book(){
-//
-//    }
     @Override
     public Integer getId() {
         return id;
@@ -72,9 +69,4 @@ public class Book implements Identified<Integer>{
                 publicationYear +" Стоимость " + cost + " Дата поступления " +
                 receiptDate +" Доступность  " + availability + "]";
     }
-//
-//    @Override
-//    public int compareTo(Book book) {
-//        return this.id - book.id;
-//    }
 }

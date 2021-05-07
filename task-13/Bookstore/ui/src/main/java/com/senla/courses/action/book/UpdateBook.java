@@ -4,6 +4,8 @@ import com.senla.courses.BookstoreFacade;
 import com.senla.courses.action.IAction;
 import com.senla.courses.action.AbstractAction;
 import com.senla.courses.action.validation.IntNumberValidation;
+import com.senla.courses.exception.DaoException;
+import org.apache.logging.log4j.Level;
 
 public class UpdateBook extends AbstractAction implements IAction {
 
@@ -27,7 +29,12 @@ public class UpdateBook extends AbstractAction implements IAction {
                 System.out.println("Введите стоимость ");
                 Double cost = Double.parseDouble(scan.next());
                 System.out.println("Введите дату поступления ");
-                facade.updateBook(facade.createBook(title, author, publicationYear, cost, facade.createDate(), true), id);
+                try {
+                    facade.updateBook(facade.createBook(title, author, publicationYear, cost, facade.createDate(), true), id);
+                } catch (DaoException e) {
+                    log.log(Level.WARN, e.getLocalizedMessage(), e);
+                    System.out.println("Ошибка БД");
+                }
                 System.out.println("Книга обновлена");
                 facade.printBook(id);
             } catch (Exception e){

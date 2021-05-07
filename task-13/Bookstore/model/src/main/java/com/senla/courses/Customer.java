@@ -14,7 +14,7 @@ import java.util.Set;
 @Table (name = "customers")
 public class Customer implements Identified<Integer> {
     @Id
-    @GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column (name = "name")
     private String name;
@@ -31,10 +31,6 @@ public class Customer implements Identified<Integer> {
         this.phoneNumber = phoneNumber;
     }
 
-//    public Customer(){
-//
-//    }
-
     @Override
     public Integer getId() {
         return id;
@@ -44,30 +40,6 @@ public class Customer implements Identified<Integer> {
     public void setId(int id){
         this.id = id;
     }
-
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
-//
-//    public String getSurname() {
-//        return surname;
-//    }
-//
-//    public void setSurname(String surname) {
-//        this.surname = surname;
-//    }
-//
-//    public String getPhoneNumber() {
-//        return phoneNumber;
-//    }
-//
-//    public void setPhoneNumber(String phoneNumber) {
-//        this.phoneNumber = phoneNumber;
-//    }
 
     @Override
     public  String toString(){

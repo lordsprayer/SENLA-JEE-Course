@@ -1,14 +1,14 @@
 package com.senla.courses;
 
 import com.senla.courses.api.annotation.Singleton;
-import com.senla.courses.dbdao.IHibernateCustomerDao;
+import com.senla.courses.dbdao.ICustomerDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Singleton
-public class HibernateCustomerDao extends HibernateAbstractDao<Customer, Integer> implements IHibernateCustomerDao {
+public class CustomerDao extends AbstractDao<Customer, Integer> implements ICustomerDao {
 
-    private static final Logger log = LogManager.getLogger(HibernateCustomerDao.class);
+    private static final Logger log = LogManager.getLogger(CustomerDao.class);
 
     @Override
     protected Class<Customer> getClazz() {

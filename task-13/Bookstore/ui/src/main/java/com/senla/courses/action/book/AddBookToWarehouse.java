@@ -4,7 +4,7 @@ import com.senla.courses.BookstoreFacade;
 import com.senla.courses.action.AbstractAction;
 import com.senla.courses.action.IAction;
 import com.senla.courses.action.validation.IntNumberValidation;
-import com.senla.courses.exception.ServiceException;
+import com.senla.courses.exception.DaoException;
 import org.apache.logging.log4j.Level;
 
 
@@ -24,7 +24,7 @@ public class AddBookToWarehouse extends AbstractAction implements IAction {
                 facade.addBookToWarehouse(facade.getBookById(id));
                 System.out.println("Книга добавлена на склад");
                 facade.printBook(id);
-            } catch (ServiceException e) {
+            } catch (DaoException e) {
                 log.log(Level.WARN, e.getLocalizedMessage(), e);
                 System.out.println("Введён неверный id");
             }

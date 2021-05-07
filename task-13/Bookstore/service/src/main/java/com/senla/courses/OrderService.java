@@ -2,13 +2,11 @@ package com.senla.courses;
 
 import com.senla.courses.api.annotation.Inject;
 import com.senla.courses.api.annotation.Singleton;
-import com.senla.courses.dbdao.IHibernateBookDao;
-import com.senla.courses.dbdao.IHibernateOrderDao;
-import com.senla.courses.dbdao.IHibernateRequestDao;
+import com.senla.courses.dbdao.IBookDao;
+import com.senla.courses.dbdao.IOrderDao;
+import com.senla.courses.dbdao.IRequestDao;
 import com.senla.courses.exception.DaoException;
-import com.senla.courses.exception.ServiceException;
 import com.senla.courses.service.IOrderService;
-
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,15 +16,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Singleton
-public class OrderService implements IOrderService {
+public class OrderService extends ConstantUtil implements IOrderService {
 
     private static final Logger log = LogManager.getLogger(OrderService.class.getName());
     @Inject
-    private IHibernateBookDao bookDao;
+    private IBookDao bookDao;
     @Inject
-    private IHibernateOrderDao orderDao;
+    private IOrderDao orderDao;
     @Inject
-    private IHibernateRequestDao requestDao;
+    private IRequestDao requestDao;
     @Inject
     private HibernateUtil util;
 
@@ -41,8 +39,8 @@ public class OrderService implements IOrderService {
             return order;
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log (Level.WARN, "Search showed no matches");
-            throw new ServiceException ("Search showed no matches", e);
+            log.log (Level.WARN, SEARCH_ERROR);
+            throw e;
         }
     }
 
@@ -57,8 +55,8 @@ public class OrderService implements IOrderService {
             return orders;
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log (Level.WARN, "Search showed no matches");
-            throw new ServiceException ("Search showed no matches", e);
+            log.log (Level.WARN, SEARCH_ERROR);
+            throw e;
         }
     }
 
@@ -73,8 +71,8 @@ public class OrderService implements IOrderService {
             return orders;
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log (Level.WARN, "Search showed no matches");
-            throw new ServiceException ("Search showed no matches", e);
+            log.log (Level.WARN, SEARCH_ERROR);
+            throw e;
         }
     }
 
@@ -100,8 +98,8 @@ public class OrderService implements IOrderService {
             entityManager.close();
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Error when saving an object");
-            throw new ServiceException("Error when saving an object", e);
+            log.log(Level.WARN, SAVING_ERROR);
+            throw e;
         }
     }
 
@@ -115,8 +113,8 @@ public class OrderService implements IOrderService {
             entityManager.close();
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Error when deleting an object");
-            throw new ServiceException("Error when deleting an object", e);
+            log.log(Level.WARN, DELETING_ERROR);
+            throw e;
         }
     }
 
@@ -131,8 +129,8 @@ public class OrderService implements IOrderService {
             entityManager.close();
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Error when updating an object");
-            throw new ServiceException("Error when updating an object", e);
+            log.log(Level.WARN, UPDATING_ERROR);
+            throw e;
         }
     }
 
@@ -153,8 +151,8 @@ public class OrderService implements IOrderService {
             return income;
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log (Level.WARN, "Search showed no matches");
-            throw new ServiceException ("Search showed no matches", e);
+            log.log (Level.WARN, SEARCH_ERROR);
+            throw e;
         }
     }
 
@@ -175,8 +173,8 @@ public class OrderService implements IOrderService {
             return count;
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log (Level.WARN, "Search showed no matches");
-            throw new ServiceException ("Search showed no matches", e);
+            log.log (Level.WARN, SEARCH_ERROR);
+            throw e;
         }
     }
 
@@ -197,8 +195,8 @@ public class OrderService implements IOrderService {
             entityManager.close();
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Error when updating an object");
-            throw new ServiceException("Error when updating an object", e);
+            log.log(Level.WARN, UPDATING_ERROR);
+            throw e;
         }
     }
 
@@ -213,8 +211,8 @@ public class OrderService implements IOrderService {
             return orders;
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log (Level.WARN, "Search showed no matches");
-            throw new ServiceException ("Search showed no matches", e);
+            log.log (Level.WARN, SEARCH_ERROR);
+            throw e;
         }
     }
 }

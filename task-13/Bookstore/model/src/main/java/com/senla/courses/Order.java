@@ -16,7 +16,7 @@ import java.util.List;
 @Table (name = "orders")
 public class Order implements Identified<Integer>  {
     @Id
-    @GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
@@ -60,10 +60,6 @@ public class Order implements Identified<Integer>  {
         this.status = Status.NEW;
     }
 
-//    public Order(){
-//
-//    }
-
     @Override
     public Integer getId() {
         return id;
@@ -73,54 +69,6 @@ public class Order implements Identified<Integer>  {
     public void setId(int id) {
         this.id = id;
     }
-//
-//    public Customer getCustomer() {
-//        return customer;
-//    }
-//
-//    public void setCustomer(Customer customer) {
-//        this.customer = customer;
-//    }
-//
-//    public List<Book> getBookList() {
-//        return bookList;
-//    }
-//
-//    public void setBookList(List<Book> bookList) {
-//        this.bookList = bookList;
-//    }
-//
-//    public LocalDate getCreationDate() {
-//        return creationDate;
-//    }
-//
-//    public void setCreationDate(LocalDate creationDate) {
-//        this.creationDate = creationDate;
-//    }
-//
-//    public LocalDate getCompletionDate() {
-//        return completionDate;
-//    }
-//
-//    public void setCompletionDate(LocalDate completionDate) {
-//        this.completionDate = completionDate;
-//    }
-//
-//    public Double getTotalCost() {
-//        return totalCost;
-//    }
-//
-//    public void setTotalCost(Double totalCost) {
-//        this.totalCost = totalCost;
-//    }
-//
-//    public Status getStatus() {
-//        return status;
-//    }
-//
-//    public void setStatus(Status status) {
-//        this.status = status;
-//    }
 
     @Override
     public String toString() {
@@ -134,9 +82,4 @@ public class Order implements Identified<Integer>  {
         str.append("\nОбщая стоимость заказа ").append(totalCost).append(" статус = ").append(status);
         return str.toString();
     }
-//
-//    @Override
-//    public int compareTo(Order order) {
-//        return this.id - order.id;
-//    }
 }

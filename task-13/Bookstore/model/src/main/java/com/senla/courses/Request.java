@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Table (name = "requests")
 public class Request implements Identified<Integer> {
     @Id
-    @GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
@@ -30,10 +30,6 @@ public class Request implements Identified<Integer> {
         this.status = true;
     }
 
-//    public Request(){
-//
-//    }
-
     @Override
     public Integer getId() {
         return id;
@@ -44,29 +40,6 @@ public class Request implements Identified<Integer> {
         this.id = id;
     }
 
-//    public Book getBook() {
-//        return book;
-//    }
-//
-//    public void setBook(Book book) {
-//        this.book = book;
-//    }
-//
-//    public LocalDate getDate() {
-//        return date;
-//    }
-//
-//    public void setDate(LocalDate date) {
-//        this.date = date;
-//    }
-//
-//    public Boolean getStatus() {
-//        return status;
-//    }
-//
-//    public void setStatus(Boolean status) {
-//        this.status = status;
-//    }
 
     @Override
     public String toString(){
@@ -75,10 +48,4 @@ public class Request implements Identified<Integer> {
                 " Стоимость " + book.getCost() +
                 " Дата создания " + date +  " Статус " + getStatus() + "]";
     }
-
-//    @Override
-//    public int compareTo(Request request) {
-//        return this.id - request.id;
-//    }
-
 }

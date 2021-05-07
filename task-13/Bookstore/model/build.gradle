@@ -12,5 +12,5 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
+    compile group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
 }

@@ -1,5 +1,6 @@
 package com.senla.courses.action.order;
 
+import com.senla.courses.exception.DaoException;
 import com.senla.courses.exception.ServiceException;
 import com.senla.courses.BookstoreFacade;
 import com.senla.courses.action.AbstractAction;
@@ -29,13 +30,13 @@ public class ChangeOrderStatus extends AbstractAction implements IAction {
                         facade.changeOrderStatus(id, facade.getStatus(status));
                         System.out.println("Статус заказа изменён");
                     }
-                } catch (ServiceException e){
+                } catch (DaoException e){
                     log.log(Level.WARN, e.getLocalizedMessage(), e);
                     System.out.println("Заказа с таким id не существует");
                 }
 
             }
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             log.log(Level.WARN, e.getLocalizedMessage(), e);
             System.out.println("Ошибка БД");
         }

@@ -4,7 +4,7 @@ import com.senla.courses.BookstoreFacade;
 import com.senla.courses.action.AbstractAction;
 import com.senla.courses.action.IAction;
 import com.senla.courses.action.validation.IntNumberValidation;
-import com.senla.courses.exception.ServiceException;
+import com.senla.courses.exception.DaoException;
 import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class CreateOrder extends AbstractAction implements IAction {
             try {
                 facade.createOrder(facade.getCustomerById(customer), facade.createBookList(books));
                 System.out.println("Заказ создан");
-            } catch (ServiceException e){
+            } catch (DaoException e){
                 log.log(Level.WARN, e.getLocalizedMessage(), e);
                 System.out.println("Заказ не был создан, так как не существует книги либо покупателя с таким id ");
             }

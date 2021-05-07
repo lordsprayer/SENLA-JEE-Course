@@ -2,11 +2,9 @@ package com.senla.courses;
 
 import com.senla.courses.api.annotation.Inject;
 import com.senla.courses.api.annotation.Singleton;
-import com.senla.courses.dbdao.IHibernateRequestDao;
+import com.senla.courses.dbdao.IRequestDao;
 import com.senla.courses.exception.DaoException;
-import com.senla.courses.exception.ServiceException;
 import com.senla.courses.service.IRequestService;
-
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,11 +14,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Singleton
-public class RequestService implements IRequestService {
+public class RequestService extends ConstantUtil implements IRequestService {
 
     private static final Logger log = LogManager.getLogger(RequestService.class.getName());
     @Inject
-    private IHibernateRequestDao requestDao;
+    private IRequestDao requestDao;
     @Inject
     private HibernateUtil util;
 
@@ -37,8 +35,8 @@ public class RequestService implements IRequestService {
                 entityManager.close();
             } catch (DaoException e) {
                 entityManager.getTransaction().rollback();
-                log.log(Level.WARN, "Error when saving an object");
-                throw new ServiceException("Error when saving an object", e);
+                log.log(Level.WARN, SAVING_ERROR);
+                throw e;
             }
             log.log(Level.INFO, "Request created");
         } else {
@@ -56,8 +54,8 @@ public class RequestService implements IRequestService {
             entityManager.close();
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Error when deleting an object");
-            throw new ServiceException("Error when deleting an object", e);
+            log.log(Level.WARN, DELETING_ERROR);
+            throw e;
         }
     }
 
@@ -72,8 +70,8 @@ public class RequestService implements IRequestService {
             entityManager.close();
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Error when updating an object");
-            throw new ServiceException("Error when updating an object", e);
+            log.log(Level.WARN, UPDATING_ERROR);
+            throw e;
         }
     }
 
@@ -88,8 +86,8 @@ public class RequestService implements IRequestService {
             return request;
         } catch (DaoException e){
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Search showed no matches");
-            throw new ServiceException ("Search showed no matches", e);
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw e;
         }
     }
 
@@ -104,8 +102,8 @@ public class RequestService implements IRequestService {
             return requests;
         } catch (DaoException e){
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Search showed no matches");
-            throw new ServiceException ("Search showed no matches", e);
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw e;
         }
     }
 
@@ -120,8 +118,8 @@ public class RequestService implements IRequestService {
             return requests;
         } catch (DaoException e){
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Search showed no matches");
-            throw new ServiceException ("Search showed no matches", e);
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw e;
         }
     }
 
@@ -136,8 +134,8 @@ public class RequestService implements IRequestService {
             return list;
         } catch (DaoException e){
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Search showed no matches");
-            throw new ServiceException ("Search showed no matches", e);
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw e;
         }
     }
 }

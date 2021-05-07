@@ -1,7 +1,7 @@
 package com.senla.courses;
 
 import com.senla.courses.api.annotation.Singleton;
-import com.senla.courses.dbdao.HibernateGenericDao;
+import com.senla.courses.dbdao.GenericDao;
 import com.senla.courses.exception.DaoException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -16,17 +16,21 @@ import java.io.Serializable;
 import java.util.List;
 
 @Singleton
-public abstract class HibernateAbstractDao <T extends Identified<PK>, PK extends Serializable> implements HibernateGenericDao <T, PK> {
+public abstract class AbstractDao<T extends Identified<PK>, PK extends Serializable> implements GenericDao<T, PK> {
 
-    private static final Logger log = LogManager.getLogger(HibernateAbstractDao.class);
+    private static final Logger log = LogManager.getLogger(AbstractDao.class);
+    protected static final String SAVING_ERROR = "Error when saving an object ";
+    protected static final String SEARCH_ERROR = "Search showed no matches ";
+    protected static final String UPDATING_ERROR = "Error when updating an object ";
+    protected static final String DELETING_ERROR = "Error when deleting an object ";
 
     @Override
     public void persist(T object, EntityManager entityManager) {
         try {
             entityManager.persist(object);
         } catch (Exception e) {
-            log.log(Level.WARN, "Error when saving an object " + object.toString());
-            throw new DaoException("Error when saving an object", e);
+            log.log(Level.WARN, SAVING_ERROR + object.toString());
+            throw new DaoException(SAVING_ERROR, e);
         }
     }
 
@@ -35,8 +39,8 @@ public abstract class HibernateAbstractDao <T extends Identified<PK>, PK extends
         try {
             return entityManager.find(getClazz(), key);
         } catch (Exception e) {
-            log.log(Level.WARN, "Search showed no matches ");
-            throw new DaoException("Search showed no matches", e);
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw new DaoException(SEARCH_ERROR, e);
         }
     }
 
@@ -45,8 +49,8 @@ public abstract class HibernateAbstractDao <T extends Identified<PK>, PK extends
         try {
             entityManager.merge(object);
         } catch (Exception e) {
-            log.log(Level.WARN, "Error when updating an object " + object.toString());
-            throw new DaoException("Error when updating an object", e);
+            log.log(Level.WARN, UPDATING_ERROR + object.toString());
+            throw new DaoException(UPDATING_ERROR, e);
         }
     }
 
@@ -55,8 +59,8 @@ public abstract class HibernateAbstractDao <T extends Identified<PK>, PK extends
         try {
             entityManager.remove(object);
         } catch (Exception e) {
-            log.log(Level.WARN, "Error when deleting an object " + object.toString());
-            throw new DaoException("Error when deleting an object", e);
+            log.log(Level.WARN, DELETING_ERROR + object.toString());
+            throw new DaoException(DELETING_ERROR, e);
         }
     }
 
@@ -70,8 +74,8 @@ public abstract class HibernateAbstractDao <T extends Identified<PK>, PK extends
             TypedQuery<T> allQuery = entityManager.createQuery(all);
             return allQuery.getResultList();
         } catch (Exception e) {
-            log.log(Level.WARN, "Search showed no matches ");
-            throw new DaoException("Search showed no matches", e);
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw new DaoException(SEARCH_ERROR, e);
         }
     }
 

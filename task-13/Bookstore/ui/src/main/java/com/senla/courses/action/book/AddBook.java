@@ -3,7 +3,7 @@ package com.senla.courses.action.book;
 import com.senla.courses.BookstoreFacade;
 import com.senla.courses.action.AbstractAction;
 import com.senla.courses.action.IAction;
-import com.senla.courses.exception.ServiceException;
+import com.senla.courses.exception.DaoException;
 import org.apache.logging.log4j.Level;
 
 import java.util.Scanner;
@@ -29,7 +29,7 @@ public class AddBook extends AbstractAction implements IAction {
             System.out.println("Введите дату поступления");
             try{
                 facade.saveBook(facade.createBook(title, author, publicationYear, cost, facade.createDate(), true));
-            } catch (ServiceException e) {
+            } catch (DaoException e) {
                 log.log(Level.WARN, e.getLocalizedMessage(), e);
                 System.out.println("Ошибка БД");
             }

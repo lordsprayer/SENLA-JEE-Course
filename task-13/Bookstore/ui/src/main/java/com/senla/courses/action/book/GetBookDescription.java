@@ -1,11 +1,10 @@
 package com.senla.courses.action.book;
 
-import com.senla.courses.exception.ServiceException;
 import com.senla.courses.BookstoreFacade;
 import com.senla.courses.action.AbstractAction;
 import com.senla.courses.action.IAction;
 import com.senla.courses.action.validation.IntNumberValidation;
-
+import com.senla.courses.exception.DaoException;
 import org.apache.logging.log4j.Level;
 
 public class GetBookDescription extends AbstractAction implements IAction {
@@ -25,7 +24,7 @@ public class GetBookDescription extends AbstractAction implements IAction {
                if(facade.getBookDescription(id) == null) {
                    System.out.println("У книги пока нет описания");
                }
-            } catch (ServiceException e){
+            } catch (DaoException e){
                 log.log(Level.WARN, e.getLocalizedMessage(), e);
                 System.out.println("Введён неверный id");
             }

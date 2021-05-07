@@ -1,7 +1,7 @@
 package com.senla.courses;
 
 import com.senla.courses.api.annotation.Singleton;
-import com.senla.courses.dbdao.IHibernateOrderDao;
+import com.senla.courses.dbdao.IOrderDao;
 import com.senla.courses.exception.DaoException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -17,9 +17,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Singleton
-public class HibernateOrderDao extends HibernateAbstractDao<Order, Integer> implements IHibernateOrderDao {
+public class OrderDao extends AbstractDao<Order, Integer> implements IOrderDao {
 
-    private static final Logger log = LogManager.getLogger(HibernateOrderDao.class);
+    private static final Logger log = LogManager.getLogger(OrderDao.class);
 
     @Override
     public List<Order> getSortOrders(String criterion, EntityManager entityManager) {
@@ -31,8 +31,8 @@ public class HibernateOrderDao extends HibernateAbstractDao<Order, Integer> impl
             TypedQuery<Order> sortQuery = entityManager.createQuery(query);
             return sortQuery.getResultList();
         } catch (Exception e) {
-            log.log(Level.WARN, "Search showed no matches ");
-            throw new DaoException("Search showed no matches", e);
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw new DaoException(SEARCH_ERROR, e);
         }
     }
 
@@ -49,8 +49,8 @@ public class HibernateOrderDao extends HibernateAbstractDao<Order, Integer> impl
             TypedQuery<Order> sortQuery = entityManager.createQuery(query);
             return sortQuery.getResultList();
         } catch (Exception e) {
-            log.log(Level.WARN, "Search showed no matches ");
-            throw new DaoException("Search showed no matches", e);
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw new DaoException(SEARCH_ERROR, e);
         }
     }
 

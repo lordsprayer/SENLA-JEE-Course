@@ -1,11 +1,10 @@
 package com.senla.courses.action.book;
 
-import com.senla.courses.exception.ServiceException;
 import com.senla.courses.BookstoreFacade;
 import com.senla.courses.action.AbstractAction;
 import com.senla.courses.action.IAction;
 import com.senla.courses.action.validation.IntNumberValidation;
-
+import com.senla.courses.exception.DaoException;
 import org.apache.logging.log4j.Level;
 
 public class SetBookDescription extends AbstractAction implements IAction {
@@ -26,7 +25,7 @@ public class SetBookDescription extends AbstractAction implements IAction {
             try {
                 facade.setBookDescription(facade.getBookById(id), description);
                 System.out.println("Описание добавлено");
-            } catch (ServiceException e){
+            } catch (DaoException e){
                 log.log(Level.WARN, e.getLocalizedMessage(), e);
                 System.out.println("Введён неверный id");
             }

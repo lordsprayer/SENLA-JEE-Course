@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface IHibernateOrderDao extends HibernateGenericDao<Order, Integer> {
+public interface IOrderDao extends GenericDao<Order, Integer> {
     List<Order> getSortOrders(String criterion, EntityManager entityManager);
     List<Order> getSortCompleteOrders(String criterion, LocalDate date, EntityManager entityManager);
 }

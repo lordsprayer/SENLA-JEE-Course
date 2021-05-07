@@ -30,7 +30,6 @@ allprojects {
     apply plugin : 'java'
     dependencies {
         implementation 'org.projectlombok:lombok:1.18.18'
-        compileOnly 'org.projectlombok:lombok:1.18.18'
         annotationProcessor 'org.projectlombok:lombok:1.18.18'
 
         implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.1'

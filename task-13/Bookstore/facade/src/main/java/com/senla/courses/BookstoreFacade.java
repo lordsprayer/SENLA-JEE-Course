@@ -2,6 +2,7 @@ package com.senla.courses;
 
 import com.senla.courses.api.annotation.Inject;
 import com.senla.courses.api.annotation.Singleton;
+import com.senla.courses.exception.DaoException;
 import com.senla.courses.exception.ServiceException;
 import com.senla.courses.service.IBookService;
 import com.senla.courses.service.ICustomerService;
@@ -42,7 +43,7 @@ public class BookstoreFacade {
     public Customer getCustomerById(Integer id){
         try{
             return customerService.getById(id);
-        } catch(ServiceException e){
+        } catch(DaoException e){
             log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
@@ -51,7 +52,7 @@ public class BookstoreFacade {
     public void saveCustomer(Customer customer){
         try {
             customerService.save(customer);
-        } catch(ServiceException e){
+        } catch(DaoException e){
             log.log(Level.WARN, "Error when saving an object");
             throw e;
         }
@@ -60,7 +61,7 @@ public class BookstoreFacade {
     public void deleteCustomer(Integer id){
         try {
             customerService.delete(getCustomerById(id));
-        } catch(ServiceException e){
+        } catch(DaoException e){
             log.log(Level.WARN, "Error when deleting an object");
             throw e;
         }
@@ -70,7 +71,7 @@ public class BookstoreFacade {
         customer.setId(id);
         try {
             customerService.update(customer);
-        } catch(ServiceException e){
+        } catch(DaoException e){
             log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
@@ -79,7 +80,7 @@ public class BookstoreFacade {
     public List<Customer> getAllCustomers(){
         try {
             return customerService.getAll();
-        } catch(ServiceException e){
+        } catch(DaoException e){
             log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
@@ -89,7 +90,7 @@ public class BookstoreFacade {
         try {
             getAllCustomers().forEach(System.out::println);
             return getAllCustomers();
-        } catch(ServiceException e){
+        } catch(DaoException e){
             log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
@@ -98,7 +99,7 @@ public class BookstoreFacade {
     public void printCustomer(Integer id){
         try {
             System.out.println(getCustomerById(id));
-        } catch(ServiceException e){
+        } catch(DaoException e){
             log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
@@ -107,7 +108,7 @@ public class BookstoreFacade {
     public void saveBook(Book book){
         try {
             bookService.save(book);
-        } catch(ServiceException e){
+        } catch(DaoException e){
             log.log(Level.WARN, "Error when saving an object");
             throw e;
         }
@@ -116,7 +117,7 @@ public class BookstoreFacade {
     public List<Book> getAllBook(){
         try {
             return bookService.getAll();
-        } catch(ServiceException e){
+        } catch(DaoException e){
             log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
@@ -125,7 +126,7 @@ public class BookstoreFacade {
     public Book getBookById(Integer id){
         try{
             return bookService.getById(id);
-        } catch(ServiceException e){
+        } catch(DaoException e){
             log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
@@ -134,7 +135,7 @@ public class BookstoreFacade {
     public void printAllBook(){
         try {
             getAllBook().forEach(System.out::println);
-        } catch(ServiceException e){
+        } catch(DaoException e){
             log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
@@ -143,7 +144,7 @@ public class BookstoreFacade {
     public void printBook(Integer id){
         try{
             System.out.println(getBookById(id));
-        } catch (ServiceException e){
+        } catch (DaoException e){
             log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
@@ -153,7 +154,7 @@ public class BookstoreFacade {
         book.setId(id);
         try {
             bookService.update(book);
-        } catch(ServiceException e){
+        } catch(DaoException e){
             log.log(Level.WARN, "Error when updating an object");
             throw e;
         }
@@ -162,7 +163,7 @@ public class BookstoreFacade {
     public void deleteBook(Integer id){
         try {
             bookService.delete(getBookById(id));
-        } catch(ServiceException e){
+        } catch(DaoException e){
             log.log(Level.WARN, "Error when deleting an object");
             throw e;
         }
@@ -173,7 +174,7 @@ public class BookstoreFacade {
             List<Book> bookList = bookService.getSortBooks(criterion);
             bookList.forEach(System.out::println);
             return bookList;
-        } catch(ServiceException e){
+        } catch(DaoException e){
             log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
@@ -184,7 +185,7 @@ public class BookstoreFacade {
             List<Book> bookList = bookService.unsoldBook(criterion);
             bookList.forEach(System.out::println);
             return bookList;
-        } catch(ServiceException e){
+        } catch(DaoException e){
             log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
@@ -193,7 +194,7 @@ public class BookstoreFacade {
     public void addBookToWarehouse(Book book){
         try {
             bookService.addBook(book);
-        } catch(ServiceException e){
+        } catch(DaoException e){
             log.log(Level.WARN, "Error when updating an object");
             throw e;
         }
@@ -202,7 +203,7 @@ public class BookstoreFacade {
     public void cancelBookToWarehouse(Book book){
         try {
             bookService.cancelBook(book);
-        } catch(ServiceException e){
+        } catch(DaoException e){
             log.log(Level.WARN, "Error when updating an object");
             throw e;
         }
@@ -215,7 +216,7 @@ public class BookstoreFacade {
                     .collect(Collectors.toList());
             books1.forEach(System.out::println);
             return books1;
-        } catch(ServiceException e){
+        } catch(DaoException e){
             log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
@@ -224,7 +225,7 @@ public class BookstoreFacade {
     public void createOrder(Customer customer, List<Book> books) {
         try {
             orderService.createOrder(customer, books, LocalDate.now());
-        } catch(ServiceException e){
+        } catch(DaoException e){
             log.log(Level.WARN, "Error when saving an object");
             throw e;
         }
@@ -241,7 +242,7 @@ public class BookstoreFacade {
                 bookList.add(getBookById(id));
             }
             return bookList;
-        } catch (ServiceException e) {
+        } catch (DaoException e) {
             log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
@@ -251,7 +252,7 @@ public class BookstoreFacade {
         book.setDescription(description);
         try{
             bookService.update(book);
-        } catch(ServiceException e){
+        } catch(DaoException e){
             log.log(Level.WARN, "Error when updating an object");
             throw e;
         }
@@ -260,7 +261,7 @@ public class BookstoreFacade {
     public String getBookDescription(Integer id){
         try {
             return bookService.getDescription(getBookById(id));
-        } catch (ServiceException e){
+        } catch (DaoException e){
             log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
@@ -270,7 +271,7 @@ public class BookstoreFacade {
         try {
             orderService.getAll().forEach(System.out::println);
             return orderService.getAll();
-        } catch (ServiceException e){
+        } catch (DaoException e){
             log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
@@ -279,7 +280,7 @@ public class BookstoreFacade {
     public Order getOrderById(Integer id){
         try {
             return orderService.getById(id);
-        } catch (ServiceException e){
+        } catch (DaoException e){
             log.log(Level.WARN, "An order with this id was not found");
             throw e;
         }
@@ -288,7 +289,7 @@ public class BookstoreFacade {
     public void printOrder(Integer id) {
         try {
             orderService.orderDetails(getOrderById(id));
-        } catch (ServiceException e){
+        } catch (DaoException e){
             log.log(Level.WARN, "An order with this id was not found");
             throw e;
         }
@@ -297,7 +298,7 @@ public class BookstoreFacade {
     public void deleteOrder(Integer id){
         try{
             orderService.deleteOrder(getOrderById(id));
-        }  catch (ServiceException e) {
+        }  catch (DaoException e) {
             log.log(Level.WARN, "An order with this id was not found");
             throw e;
         }
@@ -325,7 +326,7 @@ public class BookstoreFacade {
             } else {
                 orderService.changeStatus(getOrderById(id), status);
             }
-        } catch (ServiceException e) {
+        } catch (DaoException e) {
             log.log(Level.WARN, "An order with this id was not found");
             throw e;
         }
@@ -336,7 +337,7 @@ public class BookstoreFacade {
             List<Order> orderList = orderService.getSortOrders(criterion);
             orderList.forEach(System.out::println);
             return orderList;
-        } catch (ServiceException e){
+        } catch (DaoException e){
             log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
@@ -347,7 +348,7 @@ public class BookstoreFacade {
             List<Order> orderList = orderService.getSortCompletedOrders(date, criterion);
             orderList.forEach(System.out::println);
             return orderList;
-        } catch (ServiceException e){
+        } catch (DaoException e){
             log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
@@ -356,7 +357,7 @@ public class BookstoreFacade {
     public Double countIncome(LocalDate date){
         try {
             return orderService.countIncome(date);
-        } catch (ServiceException e){
+        } catch (DaoException e){
             log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
@@ -365,7 +366,7 @@ public class BookstoreFacade {
     public Integer countCompleteOrders(LocalDate date){
         try {
             return orderService.countCompleteOrders(date);
-        } catch (ServiceException e){
+        } catch (DaoException e){
             log.log(Level.WARN, "Search showed no matches");
             throw e;
         }
@@ -391,7 +392,7 @@ public class BookstoreFacade {
     public void createRequest(Book book) {
         try {
             requestService.createRequest(book);
-        } catch (ServiceException e){
+        } catch (DaoException e){
             log.log(Level.WARN, "Error when saving an object");
             throw e;
         }
@@ -411,7 +412,7 @@ public class BookstoreFacade {
     public void deleteRequest(Integer id){
         try{
             requestService.delete(requestService.getById(id));
-        } catch (ServiceException e){
+        } catch (DaoException e){
             log.log(Level.WARN, "An request with this id was not found");
             throw e;
         }
@@ -420,7 +421,7 @@ public class BookstoreFacade {
     public void closeRequest(Integer id){
         try{
             requestService.closeRequest(requestService.getById(id));
-        } catch (ServiceException e){
+        } catch (DaoException e){
             log.log(Level.WARN, "An request with this id was not found");
             throw e;
         }

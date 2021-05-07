@@ -1,11 +1,10 @@
 package com.senla.courses.action.order;
 
-import com.senla.courses.exception.ServiceException;
 import com.senla.courses.BookstoreFacade;
 import com.senla.courses.action.AbstractAction;
 import com.senla.courses.action.IAction;
 import com.senla.courses.action.validation.IntNumberValidation;
-
+import com.senla.courses.exception.DaoException;
 import org.apache.logging.log4j.Level;
 
 public class OrderDetails extends AbstractAction implements IAction {
@@ -19,7 +18,7 @@ public class OrderDetails extends AbstractAction implements IAction {
         int id = IntNumberValidation.validation("Введите id заказа");
         try{
             facade.printOrder(id);
-        } catch (ServiceException e){
+        } catch (DaoException e){
             log.log(Level.WARN, e.getLocalizedMessage(), e);
             System.out.println("Заказа с таким id не существует");
         }

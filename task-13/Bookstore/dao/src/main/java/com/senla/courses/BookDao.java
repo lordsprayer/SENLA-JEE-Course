@@ -1,7 +1,7 @@
 package com.senla.courses;
 
 import com.senla.courses.api.annotation.Singleton;
-import com.senla.courses.dbdao.IHibernateBookDao;
+import com.senla.courses.dbdao.IBookDao;
 import com.senla.courses.exception.DaoException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -17,9 +17,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Singleton
-public class HibernateBookDao extends HibernateAbstractDao<Book, Integer> implements IHibernateBookDao {
+public class BookDao extends AbstractDao<Book, Integer> implements IBookDao {
 
-    private static final Logger log = LogManager.getLogger(HibernateBookDao.class);
+    private static final Logger log = LogManager.getLogger(BookDao.class);
 
     public List<Book> getSortBook(String criterion, EntityManager entityManager){
         try {
@@ -30,8 +30,8 @@ public class HibernateBookDao extends HibernateAbstractDao<Book, Integer> implem
             TypedQuery<Book> sortQuery = entityManager.createQuery(query);
             return sortQuery.getResultList();
         } catch (Exception e) {
-            log.log(Level.WARN, "Search showed no matches ");
-            throw new DaoException("Search showed no matches", e);
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw new DaoException(SEARCH_ERROR, e);
         }
     }
 
@@ -47,8 +47,8 @@ public class HibernateBookDao extends HibernateAbstractDao<Book, Integer> implem
             TypedQuery<Book> unsoldSortQuery = entityManager.createQuery(query);
             return unsoldSortQuery.getResultList();
         } catch (Exception e) {
-            log.log(Level.WARN, "Search showed no matches ");
-            throw new DaoException("Search showed no matches", e);
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw new DaoException(SEARCH_ERROR, e);
         }
     }
 
@@ -63,8 +63,8 @@ public class HibernateBookDao extends HibernateAbstractDao<Book, Integer> implem
             book.setOrder(order);
             entityManager.merge(book);
         } catch (Exception e) {
-            log.log(Level.WARN, "Error when updating an object ");
-            throw new DaoException("Error when updating an object", e);
+            log.log(Level.WARN, UPDATING_ERROR);
+            throw new DaoException(UPDATING_ERROR, e);
         }
     }
 }

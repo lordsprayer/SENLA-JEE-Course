@@ -3,12 +3,10 @@ package com.senla.courses;
 import com.senla.courses.api.annotation.ConfigProperty;
 import com.senla.courses.api.annotation.Inject;
 import com.senla.courses.api.annotation.Singleton;
-import com.senla.courses.dbdao.IHibernateBookDao;
-import com.senla.courses.dbdao.IHibernateRequestDao;
+import com.senla.courses.dbdao.IBookDao;
+import com.senla.courses.dbdao.IRequestDao;
 import com.senla.courses.exception.DaoException;
-import com.senla.courses.exception.ServiceException;
 import com.senla.courses.service.IBookService;
-
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,13 +16,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Singleton
-public class BookService implements IBookService {
+public class BookService extends ConstantUtil implements IBookService {
 
     private static final Logger log = LogManager.getLogger(BookService.class);
     @Inject
-    private IHibernateRequestDao requestDao;
+    private IRequestDao requestDao;
     @Inject
-    private IHibernateBookDao bookDao;
+    private IBookDao bookDao;
     @ConfigProperty(propertyName = "number_of_months")
     private Integer months;
     @ConfigProperty(propertyName = "permit_closing_request")
@@ -43,8 +41,8 @@ public class BookService implements IBookService {
             return books;
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Search showed no matches");
-            throw new ServiceException("Search showed no matches", e);
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw e;
         }
     }
 
@@ -59,8 +57,8 @@ public class BookService implements IBookService {
             return book;
         } catch (DaoException e){
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Search showed no matches");
-            throw new ServiceException("Search showed no matches", e);
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw e;
         }
     }
 
@@ -74,8 +72,8 @@ public class BookService implements IBookService {
             entityManager.close();
         } catch (DaoException e){
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Error when saving an object");
-            throw new ServiceException("Error when saving an object", e);
+            log.log(Level.WARN, SAVING_ERROR);
+            throw e;
         }
     }
 
@@ -89,8 +87,8 @@ public class BookService implements IBookService {
             entityManager.close();
         }  catch (DaoException e){
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Error when deleting an object");
-            throw new ServiceException("Error when deleting an object", e);
+            log.log(Level.WARN, DELETING_ERROR);
+            throw e;
         }
     }
 
@@ -104,8 +102,8 @@ public class BookService implements IBookService {
             entityManager.close();
         } catch (DaoException e){
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Error when updating an object");
-            throw new ServiceException("Error when updating an object", e);
+            log.log(Level.WARN, UPDATING_ERROR);
+            throw e;
         }
     }
 
@@ -120,8 +118,8 @@ public class BookService implements IBookService {
             entityManager.close();
         } catch (DaoException e){
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Error when updating an object");
-            throw new ServiceException("Error when updating an object", e);
+            log.log(Level.WARN, UPDATING_ERROR);
+            throw e;
         }
     }
 
@@ -147,8 +145,8 @@ public class BookService implements IBookService {
             entityManager.close();
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Error when saving an object");
-            throw new ServiceException("Error when saving an object", e);
+            log.log(Level.WARN, SAVING_ERROR);
+            throw e;
         }
     }
 
@@ -165,8 +163,8 @@ public class BookService implements IBookService {
             return books;
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Search showed no matches");
-            throw new ServiceException("Search showed no matches", e);
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw e;
         }
     }
 
@@ -187,8 +185,8 @@ public class BookService implements IBookService {
             return books;
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
-            log.log(Level.WARN, "Search showed no matches");
-            throw new ServiceException("Search showed no matches", e);
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw e;
         }
     }
 }

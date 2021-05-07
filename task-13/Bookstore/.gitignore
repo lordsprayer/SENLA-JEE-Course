@@ -1,10 +1,13 @@
 # Created by .ignore support plugin (hsz.mobi)
+#IDE
+.idea
 ### Java template
 # Compiled class file
 *.class
 
 # Log file
 *.log
+*.txt
 
 # BlueJ files
 *.ctxt
