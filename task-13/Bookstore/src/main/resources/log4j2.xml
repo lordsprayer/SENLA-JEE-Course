@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout>
+                <Pattern>%d{dd.MM.yyyy HH:mm:ss} [%t] %-5level %logger - %msg%n</Pattern>
+            </PatternLayout>
+            <ThresholdFilter level="ALL" />
+        </Console>
+        <File name="rollingFile" fileName="log.log">
+            <ThresholdFilter level="WARN"/>
+            <PatternLayout>
+                <Pattern>%d{dd.MM.yyyy HH:mm:ss} [%t] %-5level %logger - %msg%n</Pattern>
+            </PatternLayout>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="rollingFile"/>
+        </Root>
+    </Loggers>
+</Configuration>
