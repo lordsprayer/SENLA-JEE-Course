@@ -1,11 +1,12 @@
 package com.senla.courses;
 
-import com.senla.courses.api.annotation.Singleton;
 import com.senla.courses.dbdao.GenericDao;
 import com.senla.courses.exception.DaoException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -15,7 +16,7 @@ import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.List;
 
-@Singleton
+@Repository
 public abstract class AbstractDao<T extends Identified<PK>, PK extends Serializable> implements GenericDao<T, PK> {
 
     private static final Logger log = LogManager.getLogger(AbstractDao.class);
@@ -23,9 +24,12 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Serializa
     protected static final String SEARCH_ERROR = "Search showed no matches ";
     protected static final String UPDATING_ERROR = "Error when updating an object ";
     protected static final String DELETING_ERROR = "Error when deleting an object ";
+    @Autowired
+    protected HibernateUtil util;
+    protected EntityManager entityManager = HibernateUtil.getEntityManager();
 
     @Override
-    public void persist(T object, EntityManager entityManager) {
+    public void persist(T object) {
         try {
             entityManager.persist(object);
         } catch (Exception e) {
@@ -35,7 +39,7 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Serializa
     }
 
     @Override
-    public T getByPK(PK key, EntityManager entityManager) {
+    public T getByPK(PK key) {
         try {
             return entityManager.find(getClazz(), key);
         } catch (Exception e) {
@@ -45,7 +49,7 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Serializa
     }
 
     @Override
-    public void update(T object, EntityManager entityManager) {
+    public void update(T object) {
         try {
             entityManager.merge(object);
         } catch (Exception e) {
@@ -55,7 +59,7 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Serializa
     }
 
     @Override
-    public void delete(T object, EntityManager entityManager) {
+    public void delete(T object) {
         try {
             entityManager.remove(object);
         } catch (Exception e) {
@@ -65,7 +69,7 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Serializa
     }
 
     @Override
-    public List<T> getAll(EntityManager entityManager) {
+    public List<T> getAll() {
         try {
             CriteriaBuilder cb = entityManager.getCriteriaBuilder();
             CriteriaQuery<T> cq = cb.createQuery(getClazz());

@@ -1,8 +1,5 @@
 package com.senla.courses;
 
-import com.senla.courses.api.annotation.ConfigProperty;
-import com.senla.courses.api.annotation.Inject;
-import com.senla.courses.api.annotation.Singleton;
 import com.senla.courses.dbdao.IBookDao;
 import com.senla.courses.dbdao.IRequestDao;
 import com.senla.courses.exception.DaoException;
@@ -10,32 +7,35 @@ import com.senla.courses.service.IBookService;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
 
-@Singleton
+@Service
 public class BookService extends ConstantUtil implements IBookService {
 
     private static final Logger log = LogManager.getLogger(BookService.class);
-    @Inject
+    @Autowired
     private IRequestDao requestDao;
-    @Inject
+    @Autowired
     private IBookDao bookDao;
-    @ConfigProperty(propertyName = "number_of_months")
+    @Value("${number_of_months}")
     private Integer months;
-    @ConfigProperty(propertyName = "permit_closing_request")
+    @Value("${permit_closing_request}")
     private Boolean permit;
-    @Inject
+    @Autowired
     private HibernateUtil util;
 
     @Override
     public List<Book> getAll() {
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            List<Book> books = bookDao.getAll(entityManager);
+            List<Book> books = bookDao.getAll();
             entityManager.getTransaction().commit();
             entityManager.close();
             return books;
@@ -48,10 +48,10 @@ public class BookService extends ConstantUtil implements IBookService {
 
     @Override
     public Book getById(Integer id) {
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try{
             entityManager.getTransaction().begin();
-            Book book = bookDao.getByPK(id, entityManager);
+            Book book = bookDao.getByPK(id);
             entityManager.getTransaction().commit();
             entityManager.close();
             return book;
@@ -64,10 +64,10 @@ public class BookService extends ConstantUtil implements IBookService {
 
     @Override
     public void save(Book book) {
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            bookDao.persist(book, entityManager);
+            bookDao.persist(book);
             entityManager.getTransaction().commit();
             entityManager.close();
         } catch (DaoException e){
@@ -79,10 +79,10 @@ public class BookService extends ConstantUtil implements IBookService {
 
     @Override
     public void delete(Book book) {
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            bookDao.delete(book, entityManager);
+            bookDao.delete(book);
             entityManager.getTransaction().commit();
             entityManager.close();
         }  catch (DaoException e){
@@ -94,10 +94,10 @@ public class BookService extends ConstantUtil implements IBookService {
 
     @Override
     public void update(Book book) {
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            bookDao.update(book, entityManager);
+            bookDao.update(book);
             entityManager.getTransaction().commit();
             entityManager.close();
         } catch (DaoException e){
@@ -110,10 +110,10 @@ public class BookService extends ConstantUtil implements IBookService {
     @Override
     public void cancelBook(Book book) {
         book.setAvailability(false);
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            bookDao.update(book, entityManager);
+            bookDao.update(book);
             entityManager.getTransaction().commit();
             entityManager.close();
         } catch (DaoException e){
@@ -126,16 +126,16 @@ public class BookService extends ConstantUtil implements IBookService {
     @Override
     public void addBook(Book book) {
         book.setAvailability(true);
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            bookDao.update(book, util.getEntityManager());
+            bookDao.update(book);
             if (permit) {
-                List<Request> requests = requestDao.getAll(entityManager);
+                List<Request> requests = requestDao.getAll();
                 for (Request request : requests) {
                     if (request.getBook().equals(book)) {
                         request.setStatus(false);
-                        requestDao.update(request, util.getEntityManager());
+                        requestDao.update(request);
                     }
                 }
             } else {
@@ -154,10 +154,10 @@ public class BookService extends ConstantUtil implements IBookService {
     @Override
     public List<Book> unsoldBook(String criterion) {
         LocalDate date = LocalDate.now().minusMonths(months);
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            List<Book> books =  bookDao.getUnsoldBook(date,criterion,entityManager);
+            List<Book> books =  bookDao.getUnsoldBook(date,criterion);
             entityManager.getTransaction().commit();
             entityManager.close();
             return books;
@@ -176,10 +176,10 @@ public class BookService extends ConstantUtil implements IBookService {
 
     @Override
     public List<Book> getSortBooks(String criterion) {
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            List<Book> books = bookDao.getSortBook(criterion, entityManager);
+            List<Book> books = bookDao.getSortBook(criterion);
             entityManager.getTransaction().commit();
             entityManager.close();
             return books;

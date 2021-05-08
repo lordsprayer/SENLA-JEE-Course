@@ -1,7 +1,5 @@
 package com.senla.courses;
 
-import com.senla.courses.api.annotation.Inject;
-import com.senla.courses.api.annotation.Singleton;
 import com.senla.courses.dbdao.IBookDao;
 import com.senla.courses.dbdao.IOrderDao;
 import com.senla.courses.dbdao.IRequestDao;
@@ -10,30 +8,32 @@ import com.senla.courses.service.IOrderService;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
 
-@Singleton
+@Service
 public class OrderService extends ConstantUtil implements IOrderService {
 
     private static final Logger log = LogManager.getLogger(OrderService.class.getName());
-    @Inject
+    @Autowired
     private IBookDao bookDao;
-    @Inject
+    @Autowired
     private IOrderDao orderDao;
-    @Inject
+    @Autowired
     private IRequestDao requestDao;
-    @Inject
+    @Autowired
     private HibernateUtil util;
 
     @Override
     public Order getById(Integer id) {
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            Order order = orderDao.getByPK (id, entityManager);
+            Order order = orderDao.getByPK (id);
             entityManager.getTransaction().commit();
             entityManager.close();
             return order;
@@ -46,10 +46,10 @@ public class OrderService extends ConstantUtil implements IOrderService {
 
     @Override
     public List<Order> getAll() {
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            List<Order> orders = orderDao.getAll(entityManager);
+            List<Order> orders = orderDao.getAll();
             entityManager.getTransaction().commit();
             entityManager.close();
             return orders;
@@ -62,10 +62,10 @@ public class OrderService extends ConstantUtil implements IOrderService {
 
     @Override
     public List<Order> getSortOrders(String criterion) {
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            List<Order> orders = orderDao.getSortOrders(criterion, entityManager);
+            List<Order> orders = orderDao.getSortOrders(criterion);
             entityManager.getTransaction().commit();
             entityManager.close();
             return orders;
@@ -78,21 +78,21 @@ public class OrderService extends ConstantUtil implements IOrderService {
 
     @Override
     public void createOrder(Customer customer, List<Book> books, LocalDate creationDate){
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
             for (Book book : books) {
                 if (!book.getAvailability()) {
                     LocalDate date = LocalDate.now();
                     Request request = new Request(book, date);
-                    requestDao.persist(request, entityManager);
+                    requestDao.persist(request);
                 }
             }
             Order order = new Order(customer, books, creationDate);
-            orderDao.persist(order, entityManager);
+            orderDao.persist(order);
             entityManager.flush();
             for (Book book : books) {
-                bookDao.insertOrder(book, order, entityManager);
+                bookDao.insertOrder(book, order);
             }
             entityManager.getTransaction().commit();
             entityManager.close();
@@ -105,10 +105,10 @@ public class OrderService extends ConstantUtil implements IOrderService {
 
     @Override
     public void deleteOrder(Order order){
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try{
             entityManager.getTransaction().begin();
-            orderDao.delete(order, entityManager);
+            orderDao.delete(order);
             entityManager.getTransaction().commit();
             entityManager.close();
         } catch (DaoException e) {
@@ -121,10 +121,10 @@ public class OrderService extends ConstantUtil implements IOrderService {
     @Override
     public void changeStatus(Order order, Order.Status status) {
         order.setStatus(status);
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            orderDao.update(order, entityManager);
+            orderDao.update(order);
             entityManager.getTransaction().commit();
             entityManager.close();
         } catch (DaoException e) {
@@ -136,10 +136,10 @@ public class OrderService extends ConstantUtil implements IOrderService {
 
     @Override
     public Double countIncome(LocalDate date) {
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            List<Order> orders = orderDao.getAll(entityManager);
+            List<Order> orders = orderDao.getAll();
             entityManager.getTransaction().commit();
             entityManager.close();
             double income = 0;
@@ -158,10 +158,10 @@ public class OrderService extends ConstantUtil implements IOrderService {
 
     @Override
     public Integer countCompleteOrders(LocalDate date) {
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            List<Order> orders = orderDao.getAll(entityManager);
+            List<Order> orders = orderDao.getAll();
             entityManager.getTransaction().commit();
             entityManager.close();
             int count = 0;
@@ -187,10 +187,10 @@ public class OrderService extends ConstantUtil implements IOrderService {
     public void completeOrder(Order order, LocalDate date) {
         order.setStatus(Order.Status.COMPLETED);
         order.setCompletionDate(date);
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            orderDao.update(order, entityManager);
+            orderDao.update(order);
             entityManager.getTransaction().commit();
             entityManager.close();
         } catch (DaoException e) {
@@ -202,10 +202,10 @@ public class OrderService extends ConstantUtil implements IOrderService {
 
     @Override
     public List<Order> getSortCompletedOrders(LocalDate date, String criterion) {
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            List<Order> orders = orderDao.getSortCompleteOrders(criterion, date, entityManager);
+            List<Order> orders = orderDao.getSortCompleteOrders(criterion, date);
             entityManager.getTransaction().commit();
             entityManager.close();
             return orders;

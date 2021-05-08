@@ -1,8 +1,8 @@
 package com.senla.courses.menu;
 
-import com.senla.courses.api.annotation.Singleton;
+import org.springframework.stereotype.Component;
 
-@Singleton
+@Component
 public class Navigator {
 
     private Menu currentMenu;

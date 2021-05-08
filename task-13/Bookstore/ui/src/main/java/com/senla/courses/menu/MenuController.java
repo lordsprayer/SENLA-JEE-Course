@@ -1,16 +1,16 @@
 package com.senla.courses.menu;
 
-import com.senla.courses.api.annotation.Inject;
-import com.senla.courses.api.annotation.Singleton;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
-@Singleton
+@Component
 public class MenuController {
 
-    @Inject
+    @Autowired
     private Builder builder;
-    @Inject
+    @Autowired
     private Navigator navigator;
 
     public void run(){

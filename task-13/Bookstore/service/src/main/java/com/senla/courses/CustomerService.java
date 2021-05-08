@@ -1,32 +1,32 @@
 package com.senla.courses;
 
-import com.senla.courses.api.annotation.Inject;
-import com.senla.courses.api.annotation.Singleton;
 import com.senla.courses.dbdao.ICustomerDao;
 import com.senla.courses.exception.DaoException;
 import com.senla.courses.service.ICustomerService;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-@Singleton
+@Service
 public class CustomerService extends ConstantUtil implements ICustomerService {
 
     private static final Logger log = LogManager.getLogger (CustomerService.class.getName ());
-    @Inject
+    @Autowired
     private ICustomerDao customerDao;
-    @Inject
+    @Autowired
     private HibernateUtil util;
 
     @Override
     public void save(Customer customer) {
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            customerDao.persist(customer, entityManager);
+            customerDao.persist(customer);
             entityManager.getTransaction().commit();
             entityManager.close();
         } catch (DaoException e) {
@@ -38,10 +38,10 @@ public class CustomerService extends ConstantUtil implements ICustomerService {
 
     @Override
     public void delete(Customer customer) {
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            customerDao.delete(customer, entityManager);
+            customerDao.delete(customer);
             entityManager.getTransaction().commit();
             entityManager.close();
         } catch (DaoException e) {
@@ -53,10 +53,10 @@ public class CustomerService extends ConstantUtil implements ICustomerService {
 
     @Override
     public void update(Customer customer) {
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            customerDao.update(customer, entityManager);
+            customerDao.update(customer);
             entityManager.getTransaction().commit();
             entityManager.close();
         } catch (DaoException e) {
@@ -68,10 +68,10 @@ public class CustomerService extends ConstantUtil implements ICustomerService {
 
     @Override
     public List<Customer> getAll() {
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
             entityManager.getTransaction().begin();
-            List<Customer> customers = customerDao.getAll(entityManager);
+            List<Customer> customers = customerDao.getAll();
             entityManager.getTransaction().commit();
             entityManager.close();
             return customers;
@@ -84,10 +84,10 @@ public class CustomerService extends ConstantUtil implements ICustomerService {
 
     @Override
     public Customer getById(Integer id) {
-        EntityManager entityManager = util.getEntityManager();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         try{
             entityManager.getTransaction().begin();
-            Customer customer = customerDao.getByPK(id, entityManager);
+            Customer customer = customerDao.getByPK(id);
             entityManager.getTransaction().commit();
             entityManager.close();
             return customer;
