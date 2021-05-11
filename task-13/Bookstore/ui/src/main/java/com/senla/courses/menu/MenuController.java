@@ -1,17 +1,17 @@
 package com.senla.courses.menu;
 
-import com.senla.courses.api.annotation.Inject;
-import com.senla.courses.api.annotation.Singleton;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
-@Singleton
+@Component
+@RequiredArgsConstructor
 public class MenuController {
 
-    @Inject
-    private Builder builder;
-    @Inject
-    private Navigator navigator;
+    private final Builder builder;
+    private final Navigator navigator;
 
     public void run(){
         Scanner scan = new Scanner(System.in);

@@ -17,11 +17,11 @@
         </processorPath>
         <module name="Bookstore.api.main" />
         <module name="Bookstore.model.main" />
-        <module name="Bookstore.util.main" />
         <module name="Bookstore.facade.main" />
         <module name="Bookstore.dao.main" />
         <module name="Bookstore.service.main" />
         <module name="Bookstore.di.main" />
+        <module name="Bookstore.utils.main" />
         <module name="Bookstore.ui.main" />
       </profile>
     </annotationProcessing>

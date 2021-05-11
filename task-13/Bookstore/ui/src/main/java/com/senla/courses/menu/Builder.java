@@ -1,20 +1,24 @@
 package com.senla.courses.menu;
 
-import com.senla.courses.api.annotation.Inject;
-import com.senla.courses.api.annotation.Singleton;
 import com.senla.courses.BookstoreFacade;
 import com.senla.courses.action.SaveAction;
 import com.senla.courses.action.book.*;
-import com.senla.courses.action.customer.*;
+import com.senla.courses.action.customer.AddCustomer;
+import com.senla.courses.action.customer.DeleteCustomer;
+import com.senla.courses.action.customer.GetAllCustomers;
+import com.senla.courses.action.customer.UpdateCustomer;
 import com.senla.courses.action.order.*;
 import com.senla.courses.action.request.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-@Singleton
+@Component
+@RequiredArgsConstructor
 public class Builder {
 
     private Menu rootMenu;
-    @Inject
-    protected BookstoreFacade facade;
+    protected  final BookstoreFacade facade;
 
     public void buildMenu(){
         rootMenu = new Menu();

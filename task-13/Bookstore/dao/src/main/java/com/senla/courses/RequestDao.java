@@ -1,13 +1,13 @@
 package com.senla.courses;
 
-import com.senla.courses.api.annotation.Singleton;
 import com.senla.courses.dbdao.IRequestDao;
 import com.senla.courses.exception.DaoException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -15,13 +15,14 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
-@Singleton
+@Repository
+@Transactional
 public class RequestDao extends AbstractDao<Request, Integer> implements IRequestDao {
 
     private static final Logger log = LogManager.getLogger(RequestDao.class);
 
     @Override
-    public List<Request> getSortRequestsByTitle(EntityManager entityManager) {
+    public List<Request> getSortRequestsByTitle() {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Request> query = builder.createQuery(Request.class);
@@ -37,7 +38,7 @@ public class RequestDao extends AbstractDao<Request, Integer> implements IReques
     }
 
     @Override
-    public List<Request> getSortRequestsByBookCount(EntityManager entityManager) {
+    public List<Request> getSortRequestsByBookCount() {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Request> query = builder.createQuery(Request.class);

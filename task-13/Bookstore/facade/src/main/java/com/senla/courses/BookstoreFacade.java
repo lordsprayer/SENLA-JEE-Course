@@ -1,17 +1,16 @@
 package com.senla.courses;
 
-import com.senla.courses.api.annotation.Inject;
-import com.senla.courses.api.annotation.Singleton;
 import com.senla.courses.exception.DaoException;
 import com.senla.courses.exception.ServiceException;
 import com.senla.courses.service.IBookService;
 import com.senla.courses.service.ICustomerService;
 import com.senla.courses.service.IOrderService;
 import com.senla.courses.service.IRequestService;
-
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,17 +18,14 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-@Singleton
+@Component
+@RequiredArgsConstructor
 public class BookstoreFacade {
     private static final Logger log = LogManager.getLogger(BookstoreFacade.class.getName());
-    @Inject
-    private IBookService bookService;
-    @Inject
-    private ICustomerService customerService;
-    @Inject
-    private IRequestService requestService;
-    @Inject
-    private IOrderService orderService;
+    private final IBookService bookService;
+    private final ICustomerService customerService;
+    private final IRequestService requestService;
+    private final IOrderService orderService;
 
     public Book createBook(String title,
                         String author,

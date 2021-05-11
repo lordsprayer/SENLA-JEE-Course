@@ -1,28 +1,30 @@
 package com.senla.courses;
 
-import com.senla.courses.api.annotation.Singleton;
 import com.senla.courses.dbdao.IOrderDao;
 import com.senla.courses.exception.DaoException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
-@Singleton
+@Repository
+@Transactional
 public class OrderDao extends AbstractDao<Order, Integer> implements IOrderDao {
 
     private static final Logger log = LogManager.getLogger(OrderDao.class);
 
+
     @Override
-    public List<Order> getSortOrders(String criterion, EntityManager entityManager) {
+    public List<Order> getSortOrders(String criterion) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Order> query = builder.createQuery(Order.class);
@@ -37,7 +39,7 @@ public class OrderDao extends AbstractDao<Order, Integer> implements IOrderDao {
     }
 
     @Override
-    public List<Order> getSortCompleteOrders(String criterion, LocalDate date, EntityManager entityManager) {
+    public List<Order> getSortCompleteOrders(String criterion, LocalDate date) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Order> query = builder.createQuery(Order.class);

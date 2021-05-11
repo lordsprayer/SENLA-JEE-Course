@@ -2,11 +2,9 @@ rootProject.name = 'Bookstore'
 include 'api'
 include 'dao'
 include 'service'
-include 'model'
-include 'util'
-include 'ui'
 include 'di'
 include 'facade'
-
-
+include 'model'
+include 'ui'
+include 'utils'
 
