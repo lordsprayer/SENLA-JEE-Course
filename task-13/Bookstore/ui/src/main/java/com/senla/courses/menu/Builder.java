@@ -9,15 +9,16 @@ import com.senla.courses.action.customer.GetAllCustomers;
 import com.senla.courses.action.customer.UpdateCustomer;
 import com.senla.courses.action.order.*;
 import com.senla.courses.action.request.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class Builder {
 
     private Menu rootMenu;
-    @Autowired
-    protected BookstoreFacade facade;
+    protected  final BookstoreFacade facade;
 
     public void buildMenu(){
         rootMenu = new Menu();

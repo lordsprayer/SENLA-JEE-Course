@@ -12,13 +12,16 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
 @Repository
+@Transactional
 public class OrderDao extends AbstractDao<Order, Integer> implements IOrderDao {
 
     private static final Logger log = LogManager.getLogger(OrderDao.class);
+
 
     @Override
     public List<Order> getSortOrders(String criterion) {

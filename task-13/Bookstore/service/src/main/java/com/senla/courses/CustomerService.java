@@ -3,34 +3,26 @@ package com.senla.courses;
 import com.senla.courses.dbdao.ICustomerDao;
 import com.senla.courses.exception.DaoException;
 import com.senla.courses.service.ICustomerService;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CustomerService extends ConstantUtil implements ICustomerService {
 
     private static final Logger log = LogManager.getLogger (CustomerService.class.getName ());
-    @Autowired
-    private ICustomerDao customerDao;
-    @Autowired
-    private HibernateUtil util;
+    private final ICustomerDao customerDao;
 
     @Override
     public void save(Customer customer) {
-        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
-            entityManager.getTransaction().begin();
             customerDao.persist(customer);
-            entityManager.getTransaction().commit();
-            entityManager.close();
         } catch (DaoException e) {
-            entityManager.getTransaction().rollback();
             log.log(Level.WARN, SAVING_ERROR);
             throw e;
         }
@@ -38,14 +30,9 @@ public class CustomerService extends ConstantUtil implements ICustomerService {
 
     @Override
     public void delete(Customer customer) {
-        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
-            entityManager.getTransaction().begin();
             customerDao.delete(customer);
-            entityManager.getTransaction().commit();
-            entityManager.close();
         } catch (DaoException e) {
-            entityManager.getTransaction().rollback();
             log.log(Level.WARN, DELETING_ERROR);
             throw e;
         }
@@ -53,14 +40,9 @@ public class CustomerService extends ConstantUtil implements ICustomerService {
 
     @Override
     public void update(Customer customer) {
-        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
-            entityManager.getTransaction().begin();
             customerDao.update(customer);
-            entityManager.getTransaction().commit();
-            entityManager.close();
         } catch (DaoException e) {
-            entityManager.getTransaction().rollback();
             log.log(Level.WARN, UPDATING_ERROR);
             throw e;
         }
@@ -68,15 +50,9 @@ public class CustomerService extends ConstantUtil implements ICustomerService {
 
     @Override
     public List<Customer> getAll() {
-        EntityManager entityManager = HibernateUtil.getEntityManager();
         try {
-            entityManager.getTransaction().begin();
-            List<Customer> customers = customerDao.getAll();
-            entityManager.getTransaction().commit();
-            entityManager.close();
-            return customers;
+            return customerDao.getAll();
         } catch (DaoException e) {
-            entityManager.getTransaction().rollback();
             log.log(Level.WARN, SEARCH_ERROR);
             throw e;
         }
@@ -84,15 +60,9 @@ public class CustomerService extends ConstantUtil implements ICustomerService {
 
     @Override
     public Customer getById(Integer id) {
-        EntityManager entityManager = HibernateUtil.getEntityManager();
         try{
-            entityManager.getTransaction().begin();
-            Customer customer = customerDao.getByPK(id);
-            entityManager.getTransaction().commit();
-            entityManager.close();
-            return customer;
+            return customerDao.getByPK(id);
         } catch (DaoException e){
-            entityManager.getTransaction().rollback();
             log.log(Level.WARN, SEARCH_ERROR);
             throw e;
         }

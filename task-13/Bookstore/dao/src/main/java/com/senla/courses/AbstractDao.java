@@ -5,10 +5,11 @@ import com.senla.courses.exception.DaoException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -17,6 +18,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Repository
+@Transactional
 public abstract class AbstractDao<T extends Identified<PK>, PK extends Serializable> implements GenericDao<T, PK> {
 
     private static final Logger log = LogManager.getLogger(AbstractDao.class);
@@ -24,15 +26,21 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Serializa
     protected static final String SEARCH_ERROR = "Search showed no matches ";
     protected static final String UPDATING_ERROR = "Error when updating an object ";
     protected static final String DELETING_ERROR = "Error when deleting an object ";
-    @Autowired
-    protected HibernateUtil util;
-    protected EntityManager entityManager = HibernateUtil.getEntityManager();
+    @PersistenceContext
+    protected EntityManager entityManager;
+
+//    @Autowired
+//    public AbstractDao(){
+//    }
 
     @Override
     public void persist(T object) {
         try {
+            entityManager.getTransaction().begin();
             entityManager.persist(object);
+            entityManager.getTransaction().commit();
         } catch (Exception e) {
+            entityManager.getTransaction().rollback();
             log.log(Level.WARN, SAVING_ERROR + object.toString());
             throw new DaoException(SAVING_ERROR, e);
         }
@@ -61,8 +69,11 @@ public abstract class AbstractDao<T extends Identified<PK>, PK extends Serializa
     @Override
     public void delete(T object) {
         try {
+            entityManager.getTransaction().begin();
             entityManager.remove(object);
+            entityManager.getTransaction().commit();
         } catch (Exception e) {
+            entityManager.getTransaction().rollback();
             log.log(Level.WARN, DELETING_ERROR + object.toString());
             throw new DaoException(DELETING_ERROR, e);
         }

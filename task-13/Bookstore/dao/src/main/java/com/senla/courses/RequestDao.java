@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -15,6 +16,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
+@Transactional
 public class RequestDao extends AbstractDao<Request, Integer> implements IRequestDao {
 
     private static final Logger log = LogManager.getLogger(RequestDao.class);

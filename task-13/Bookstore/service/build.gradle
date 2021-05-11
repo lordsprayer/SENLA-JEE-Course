@@ -12,6 +12,6 @@ repositories {
 dependencies {
 
     compile project (":api")
-    compile project (":util")
+    compile project (":utils")
 
 }

@@ -1,17 +1,17 @@
 package com.senla.courses.menu;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
 @Component
+@RequiredArgsConstructor
 public class MenuController {
 
-    @Autowired
-    private Builder builder;
-    @Autowired
-    private Navigator navigator;
+    private final Builder builder;
+    private final Navigator navigator;
 
     public void run(){
         Scanner scan = new Scanner(System.in);

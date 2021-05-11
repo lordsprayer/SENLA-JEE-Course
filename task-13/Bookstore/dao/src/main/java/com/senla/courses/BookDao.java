@@ -5,6 +5,7 @@ import com.senla.courses.exception.DaoException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
@@ -12,13 +13,19 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
 @Repository
+@Transactional
 public class BookDao extends AbstractDao<Book, Integer> implements IBookDao {
 
     private static final Logger log = LogManager.getLogger(BookDao.class);
+//    @Autowired
+//    public BookDao(HibernateUtil util) {
+//        super();
+//    }
 
     public List<Book> getSortBook(String criterion){
         try {
@@ -60,8 +67,11 @@ public class BookDao extends AbstractDao<Book, Integer> implements IBookDao {
     public void insertOrder(Book book, Order order) {
         try {
             book.setOrder(order);
+            entityManager.getTransaction().begin();
             entityManager.merge(book);
+            entityManager.getTransaction().commit();
         } catch (Exception e) {
+            entityManager.getTransaction().rollback();
             log.log(Level.WARN, UPDATING_ERROR);
             throw new DaoException(UPDATING_ERROR, e);
         }
