@@ -1,0 +1,9 @@
+rootProject.name = 'Bookstore'
+include 'model'
+include 'api'
+include 'dao'
+include 'utils'
+include 'di'
+include 'service'
+include 'controller'
+
