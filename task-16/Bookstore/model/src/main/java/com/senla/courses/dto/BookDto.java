@@ -1,4 +1,4 @@
-package com.senla.courses.model;
+package com.senla.courses.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +12,7 @@ public class BookDto {
     private String title;
     private String author;
     private Integer publicationYear;
-    private Double costOfBook;
+    private Double cost;
     private LocalDate receiptDate;
     private String description;
 }

@@ -1,22 +1,24 @@
-package com.senla.courses.model;
+package com.senla.courses.mappers;
 
+import com.senla.courses.dto.BookDto;
+import com.senla.courses.model.Book;
 import java.time.LocalDate;
 import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-05-18T16:41:50+0300",
+    date = "2021-05-19T12:26:33+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.11 (Amazon.com Inc.)"
 )
 public class BookMapperImpl implements BookMapper {
 
     @Override
-    public BookDto carToCarDto(Book book) {
+    public BookDto bookToBookDto(Book book) {
         if ( book == null ) {
             return null;
         }
 
-        Double costOfBook = null;
+        Double cost = null;
         Integer id = null;
         String title = null;
         String author = null;
@@ -24,7 +26,7 @@ public class BookMapperImpl implements BookMapper {
         LocalDate receiptDate = null;
         String description = null;
 
-        costOfBook = book.getCost();
+        cost = book.getCost();
         id = book.getId();
         title = book.getTitle();
         author = book.getAuthor();
@@ -32,7 +34,7 @@ public class BookMapperImpl implements BookMapper {
         receiptDate = book.getReceiptDate();
         description = book.getDescription();
 
-        BookDto bookDto = new BookDto( id, title, author, publicationYear, costOfBook, receiptDate, description );
+        BookDto bookDto = new BookDto( id, title, author, publicationYear, cost, receiptDate, description );
 
         return bookDto;
     }

@@ -1,5 +1,7 @@
-package com.senla.courses.model;
+package com.senla.courses.mappers;
 
+import com.senla.courses.model.Book;
+import com.senla.courses.dto.BookDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -9,6 +11,6 @@ public interface BookMapper {
 
     BookMapper INSTANCE = Mappers.getMapper( BookMapper.class );
 
-    @Mapping(source = "cost", target = "costOfBook")
-    BookDto carToCarDto(Book book);
+    @Mapping(target = "cost")
+    BookDto bookToBookDto(Book book);
 }
