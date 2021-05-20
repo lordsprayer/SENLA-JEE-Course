@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("requests")
+@RequestMapping("/requests")
 @RequiredArgsConstructor
 public class RequestController {
 
@@ -34,15 +34,10 @@ public class RequestController {
     private final IRequestService requestService;
     private final IOrderService orderService;
 
-    @GetMapping(value = "/find-all", produces = "application/json")
+    @GetMapping(produces = "application/json")
     public List<RequestDto> getAllCustomers(){
-        try {
-            List<Request> requests = requestService.getAll();
-            return Converter.convertRequests(requests);
-        } catch(DaoException e){
-            log.log(Level.WARN, "Search showed no matches");
-            throw e;
-        }
+        log.log(Level.INFO, "Received request: /requests");
+        return requestService.getAll();
     }
 
     //@GetMapping

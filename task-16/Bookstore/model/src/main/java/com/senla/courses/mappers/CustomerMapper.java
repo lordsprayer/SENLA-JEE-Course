@@ -12,4 +12,7 @@ public interface CustomerMapper {
 
     @Mapping(source = "phoneNumber", target = "phone")
     CustomerDto customerToCustomerDto(Customer customer);
+
+    @Mapping(source = "phone", target = "phoneNumber")
+    Customer customerDtoToCustomer(CustomerDto customer);
 }

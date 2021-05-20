@@ -13,15 +13,17 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("books")
+@RequestMapping("/books")
 @RequiredArgsConstructor
 public class BookController {
 
@@ -31,15 +33,10 @@ public class BookController {
     private final IRequestService requestService;
     private final IOrderService orderService;
 
-    @GetMapping(value = "/find-all", produces = "application/json")
-    public List<BookDto> getAllBook(){
-        try {
-            List<Book> books = bookService.getAll();
-            return Converter.convertBooks(books);
-        } catch(DaoException e){
-            log.log(Level.WARN, "Search showed no matches");
-            throw e;
-        }
+    @GetMapping(produces = "application/json")
+    public ResponseEntity<List<BookDto>> getAllBook(){
+        log.log(Level.INFO, "Received request: /books");
+        return ResponseEntity.ok(bookService.getAll());
     }
 
     //@GetMapping

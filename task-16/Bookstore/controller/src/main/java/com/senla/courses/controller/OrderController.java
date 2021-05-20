@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("orders")
+@RequestMapping("/orders")
 @RequiredArgsConstructor
 public class OrderController {
 
@@ -34,15 +35,10 @@ public class OrderController {
     private final IRequestService requestService;
     private final IOrderService orderService;
 
-    @GetMapping(value = "/find-all", produces = "application/json")
-    public List<OrderDto> getAllOrders(){
-        try {
-            List<Order> orders = orderService.getAll();
-            return Converter.convertOrders(orders);
-        } catch(DaoException e){
-            log.log(Level.WARN, "Search showed no matches");
-            throw e;
-        }
+    @GetMapping(produces = "application/json")
+    public ResponseEntity<List<OrderDto>> getAllOrders(){
+        log.log(Level.INFO, "Received request: /orders");
+        return ResponseEntity.ok(orderService.getAll());
     }
 
     //@GetMapping

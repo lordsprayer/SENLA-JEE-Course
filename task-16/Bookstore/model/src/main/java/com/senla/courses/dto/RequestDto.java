@@ -14,10 +14,10 @@ public class RequestDto {
     private LocalDate date;
     private Boolean status;
 
-    public void setBook(Book book) {
-        this.book = BookMapper.INSTANCE.bookToBookDto(book);
-    }
-
+//    public void setBook(Book book) {
+//        this.book = BookMapper.INSTANCE.bookToBookDto(book);
+//    }
+//
     public RequestDto(Integer id, Book book, LocalDate date, Boolean status) {
         this.id = id;
         this.book = BookMapper.INSTANCE.bookToBookDto(book);

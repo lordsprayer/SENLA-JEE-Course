@@ -1,10 +1,15 @@
 package com.senla.courses.service;
 
 import com.senla.courses.dao.IRequestDao;
+import com.senla.courses.dto.BookDto;
+import com.senla.courses.dto.RequestDto;
 import com.senla.courses.exception.DaoException;
+import com.senla.courses.mappers.BookMapper;
+import com.senla.courses.mappers.RequestMapper;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Request;
 import com.senla.courses.util.ConstantUtil;
+import com.senla.courses.util.Converter;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -24,7 +29,8 @@ public class RequestService extends ConstantUtil implements IRequestService {
     private final IRequestDao requestDao;
 
     @Override
-    public void createRequest(Book book) {
+    public void createRequest(BookDto bookDto) {
+        Book book = BookMapper.INSTANCE.bookDtoToBook(bookDto);
         if (book.getAvailability().equals(false)) {
             LocalDate date = LocalDate.now();
             Request request = new Request(book, date);
@@ -41,8 +47,9 @@ public class RequestService extends ConstantUtil implements IRequestService {
     }
 
     @Override
-    public void delete(Request request) {
+    public void delete(RequestDto requestDto) {
         try {
+            Request request = RequestMapper.INSTANCE.requestDtoToRequest(requestDto);
             requestDao.delete(request);
         } catch (DaoException e) {
             log.log(Level.WARN, DELETING_ERROR);
@@ -51,7 +58,8 @@ public class RequestService extends ConstantUtil implements IRequestService {
     }
 
     @Override
-    public void closeRequest(Request request) {
+    public void closeRequest(RequestDto requestDto) {
+        Request request = RequestMapper.INSTANCE.requestDtoToRequest(requestDto);
         request.setStatus(false);
         try {
             requestDao.update(request);
@@ -62,9 +70,10 @@ public class RequestService extends ConstantUtil implements IRequestService {
     }
 
     @Override
-    public Request getById(Integer id) {
+    public RequestDto getById(Integer id) {
         try{
-            return requestDao.getByPK(id);
+            Request request = requestDao.getByPK(id);
+            return RequestMapper.INSTANCE.requestToRequestDto(request);
         } catch (DaoException e){
             log.log(Level.WARN, SEARCH_ERROR);
             throw e;
@@ -72,9 +81,10 @@ public class RequestService extends ConstantUtil implements IRequestService {
     }
 
     @Override
-    public List<Request> getAll() {
+    public List<RequestDto> getAll() {
         try {
-            return requestDao.getAll();
+            List<Request> requests = requestDao.getAll();
+            return Converter.convertRequests(requests);
         } catch (DaoException e){
             log.log(Level.WARN, SEARCH_ERROR);
             throw e;
@@ -82,9 +92,10 @@ public class RequestService extends ConstantUtil implements IRequestService {
     }
 
     @Override
-    public List<Request> getSortRequests() {
+    public List<RequestDto> getSortRequests() {
         try {
-            return requestDao.getSortRequestsByTitle();
+            List<Request> requests = requestDao.getSortRequestsByTitle();
+            return Converter.convertRequests(requests);
         } catch (DaoException e){
             log.log(Level.WARN, SEARCH_ERROR);
             throw e;
@@ -92,9 +103,10 @@ public class RequestService extends ConstantUtil implements IRequestService {
     }
 
     @Override
-    public List<Request> getSortRequestsByBookCount() {
+    public List<RequestDto> getSortRequestsByBookCount() {
         try {
-            return requestDao.getSortRequestsByBookCount();
+            List<Request> requests = requestDao.getSortRequestsByBookCount();
+            return Converter.convertRequests(requests);
         } catch (DaoException e){
             log.log(Level.WARN, SEARCH_ERROR);
             throw e;

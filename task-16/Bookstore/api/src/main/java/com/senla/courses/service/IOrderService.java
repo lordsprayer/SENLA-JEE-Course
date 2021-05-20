@@ -1,23 +1,24 @@
 package com.senla.courses.service;
 
-import com.senla.courses.model.Book;
-import com.senla.courses.model.Customer;
-import com.senla.courses.model.Order;
+import com.senla.courses.dto.BookDto;
+import com.senla.courses.dto.CustomerDto;
+import com.senla.courses.dto.OrderDto;
+
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface IOrderService {
 
-    Order getById(Integer id);
-    List<Order> getAll();
-    List<Order> getSortOrders(String criterion);
-    void createOrder(Customer customer, List<Book> books, LocalDate creationDate);
-    void deleteOrder(Order order);
-    void changeStatus(Order order, Order.Status status);
+    OrderDto getById(Integer id);
+    List<OrderDto> getAll();
+    List<OrderDto> getSortOrders(String criterion);
+    void createOrder(CustomerDto customer, List<BookDto> books, LocalDate creationDate);
+    void deleteOrder(OrderDto order);
+    void changeStatus(OrderDto order, String status);
     Double countIncome (LocalDate date);
     Integer countCompleteOrders(LocalDate date);
-    void orderDetails (Order order);
-    void completeOrder(Order order, LocalDate date);
-    List<Order> getSortCompletedOrders(LocalDate date, String criterion);
+    void orderDetails (OrderDto order);
+    void completeOrder(OrderDto order, LocalDate date);
+    List<OrderDto> getSortCompletedOrders(LocalDate date, String criterion);
 }

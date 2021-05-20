@@ -1,5 +1,6 @@
 package com.senla.courses.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+//@AllArgsConstructor
 @Entity
 @Table(name = "customers")
 public class Customer implements Identified<Integer> {

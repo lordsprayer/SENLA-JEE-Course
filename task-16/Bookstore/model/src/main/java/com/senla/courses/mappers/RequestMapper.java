@@ -12,4 +12,7 @@ public interface RequestMapper {
 
     @Mapping(target = "book")
     RequestDto requestToRequestDto(Request request);
+
+    @Mapping(target = "book")
+    Request requestDtoToRequest(RequestDto request);
 }

@@ -7,7 +7,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-05-19T12:26:33+0300",
+    date = "2021-05-20T21:32:24+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.11 (Amazon.com Inc.)"
 )
 public class BookMapperImpl implements BookMapper {
@@ -37,5 +37,26 @@ public class BookMapperImpl implements BookMapper {
         BookDto bookDto = new BookDto( id, title, author, publicationYear, cost, receiptDate, description );
 
         return bookDto;
+    }
+
+    @Override
+    public Book bookDtoToBook(BookDto bookDto) {
+        if ( bookDto == null ) {
+            return null;
+        }
+
+        Book book = new Book();
+
+        book.setCost( bookDto.getCost() );
+        if ( bookDto.getId() != null ) {
+            book.setId( bookDto.getId() );
+        }
+        book.setTitle( bookDto.getTitle() );
+        book.setAuthor( bookDto.getAuthor() );
+        book.setPublicationYear( bookDto.getPublicationYear() );
+        book.setReceiptDate( bookDto.getReceiptDate() );
+        book.setDescription( bookDto.getDescription() );
+
+        return book;
     }
 }

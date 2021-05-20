@@ -3,12 +3,18 @@ package com.senla.courses.service;
 import com.senla.courses.dao.IBookDao;
 import com.senla.courses.dao.IOrderDao;
 import com.senla.courses.dao.IRequestDao;
+import com.senla.courses.dto.BookDto;
+import com.senla.courses.dto.CustomerDto;
+import com.senla.courses.dto.OrderDto;
 import com.senla.courses.exception.DaoException;
+import com.senla.courses.mappers.CustomerMapper;
+import com.senla.courses.mappers.OrderMapper;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Customer;
 import com.senla.courses.model.Order;
 import com.senla.courses.model.Request;
 import com.senla.courses.util.ConstantUtil;
+import com.senla.courses.util.Converter;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -33,9 +39,10 @@ public class OrderService extends ConstantUtil implements IOrderService {
     @PersistenceContext
     private EntityManager entityManager;
     @Override
-    public Order getById(Integer id) {
+    public OrderDto getById(Integer id) {
         try {
-            return orderDao.getByPK (id);
+            Order order = orderDao.getByPK (id);
+            return OrderMapper.INSTANCE.orderToOrderDto(order);
         } catch (DaoException e) {
             log.log (Level.WARN, SEARCH_ERROR);
             throw e;
@@ -43,9 +50,10 @@ public class OrderService extends ConstantUtil implements IOrderService {
     }
 
     @Override
-    public List<Order> getAll() {
+    public List<OrderDto> getAll() {
         try {
-            return orderDao.getAll();
+            List<Order> orders = orderDao.getAll();
+            return Converter.convertOrders(orders);
         } catch (DaoException e) {
             log.log (Level.WARN, SEARCH_ERROR);
             throw e;
@@ -53,9 +61,10 @@ public class OrderService extends ConstantUtil implements IOrderService {
     }
 
     @Override
-    public List<Order> getSortOrders(String criterion) {
+    public List<OrderDto> getSortOrders(String criterion) {
         try {
-            return orderDao.getSortOrders(criterion);
+            List<Order> orders = orderDao.getSortOrders(criterion);
+            return Converter.convertOrders(orders);
         } catch (DaoException e) {
             log.log (Level.WARN, SEARCH_ERROR);
             throw e;
@@ -63,18 +72,20 @@ public class OrderService extends ConstantUtil implements IOrderService {
     }
 
     @Override
-    public void createOrder(Customer customer, List<Book> books, LocalDate creationDate){
+    public void createOrder(CustomerDto customerDto, List<BookDto> books, LocalDate creationDate){
         try {
-            for (Book book : books) {
+            List<Book> bookList = Converter.convertBooksDto(books);
+            for (Book book : bookList) {
                 if (!book.getAvailability()) {
                     LocalDate date = LocalDate.now();
                     Request request = new Request(book, date);
                     requestDao.persist(request);
                 }
             }
-            Order order = new Order(customer, books, creationDate);
+            Customer customer = CustomerMapper.INSTANCE.customerDtoToCustomer(customerDto);
+            Order order = new Order(customer, bookList, creationDate);
             orderDao.persist(order);
-            for (Book book : books) {
+            for (Book book : bookList) {
                 bookDao.insertOrder(book, order);
             }
         } catch (DaoException e) {
@@ -84,8 +95,9 @@ public class OrderService extends ConstantUtil implements IOrderService {
     }
 
     @Override
-    public void deleteOrder(Order order){
+    public void deleteOrder(OrderDto orderDto){
         try{
+            Order order = OrderMapper.INSTANCE.orderDtoToOrder(orderDto);
             orderDao.delete(order);
         } catch (DaoException e) {
             log.log(Level.WARN, DELETING_ERROR);
@@ -94,8 +106,9 @@ public class OrderService extends ConstantUtil implements IOrderService {
     }
 
     @Override
-    public void changeStatus(Order order, Order.Status status) {
-        order.setStatus(status);
+    public void changeStatus(OrderDto orderDto, String status) {
+        Order order = OrderMapper.INSTANCE.orderDtoToOrder(orderDto);
+        order.setStatus(Order.Status.valueOf(status));
         try {
             orderDao.update(order);
         } catch (DaoException e) {
@@ -138,13 +151,16 @@ public class OrderService extends ConstantUtil implements IOrderService {
         }
     }
 
+    //todo заменить в реализации на получить по айди или удалить совсем
     @Override
-    public void orderDetails(Order order) {
+    public void orderDetails(OrderDto orderDto) {
+        Order order = OrderMapper.INSTANCE.orderDtoToOrder(orderDto);
         System.out.println(order);
     }
 
     @Override
-    public void completeOrder(Order order, LocalDate date) {
+    public void completeOrder(OrderDto orderDto, LocalDate date) {
+        Order order = OrderMapper.INSTANCE.orderDtoToOrder(orderDto);
         order.setStatus(Order.Status.COMPLETED);
         order.setCompletionDate(date);
         try {
@@ -156,9 +172,10 @@ public class OrderService extends ConstantUtil implements IOrderService {
     }
 
     @Override
-    public List<Order> getSortCompletedOrders(LocalDate date, String criterion) {
+    public List<OrderDto> getSortCompletedOrders(LocalDate date, String criterion) {
         try {
-            return orderDao.getSortCompleteOrders(criterion, date);
+            List<Order> orders = orderDao.getSortCompleteOrders(criterion, date);
+            return Converter.convertOrders(orders);
         } catch (DaoException e) {
             entityManager.getTransaction().rollback();
             log.log (Level.WARN, SEARCH_ERROR);

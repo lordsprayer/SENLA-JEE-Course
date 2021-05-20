@@ -12,4 +12,7 @@ public interface OrderMapper {
 
     @Mapping(source = "bookList", target = "books")
     OrderDto orderToOrderDto(Order order);
+
+    @Mapping(source = "books", target = "bookList")
+    Order orderDtoToOrder(OrderDto order);
 }

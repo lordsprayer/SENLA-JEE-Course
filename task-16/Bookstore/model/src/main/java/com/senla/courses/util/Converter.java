@@ -27,6 +27,15 @@ public class Converter {
         return bookDtoList;
     }
 
+    public static List<Book> convertBooksDto(List<BookDto> books) {
+        List<Book> bookList = new ArrayList<>();
+        for(BookDto bookDto : books) {
+            Book book = BookMapper.INSTANCE.bookDtoToBook(bookDto);
+            bookList.add(book);
+        }
+        return bookList;
+    }
+
     public static List<CustomerDto> convertCustomers(List<Customer> customers) {
         List<CustomerDto> customerDtoList = new ArrayList<>();
         for(Customer customer : customers) {

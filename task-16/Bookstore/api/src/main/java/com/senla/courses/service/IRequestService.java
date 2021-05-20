@@ -1,18 +1,18 @@
 package com.senla.courses.service;
 
-import com.senla.courses.model.Book;
-import com.senla.courses.model.Request;
+import com.senla.courses.dto.BookDto;
+import com.senla.courses.dto.RequestDto;
 
 import java.util.List;
 
 public interface IRequestService {
 
-    void createRequest (Book book);
-    void delete(Request request);
-    void closeRequest (Request request);
-    Request getById(Integer id);
-    List<Request> getAll();
-    List<Request> getSortRequests();
-    List<Request> getSortRequestsByBookCount();
+    void createRequest (BookDto book);
+    void delete(RequestDto request);
+    void closeRequest (RequestDto request);
+    RequestDto getById(Integer id);
+    List<RequestDto> getAll();
+    List<RequestDto> getSortRequests();
+    List<RequestDto> getSortRequestsByBookCount();
 
 }

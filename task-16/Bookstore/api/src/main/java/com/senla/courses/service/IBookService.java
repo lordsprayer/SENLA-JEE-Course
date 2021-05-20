@@ -1,19 +1,19 @@
 package com.senla.courses.service;
 
-import com.senla.courses.model.Book;
+import com.senla.courses.dto.BookDto;
 
 import java.util.List;
 
 public interface IBookService {
 
-    List<Book> getAll();
-    Book getById(Integer id);
-    void save(Book book);
-    void delete(Book book);
-    void update(Book book);
-    void cancelBook(Book book);
-    void addBook(Book book);
-    List<Book> unsoldBook(String criterion);
-    String getDescription(Book book);
-    List<Book> getSortBooks(String criterion);
+    List<BookDto> getAll();
+    BookDto getById(Integer id);
+    void save(BookDto book);
+    void delete(BookDto book);
+    void update(BookDto book);
+    void cancelBook(BookDto book);
+    void addBook(BookDto book);
+    List<BookDto> unsoldBook(String criterion);
+    String getDescription(BookDto book);
+    List<BookDto> getSortBooks(String criterion);
 }
