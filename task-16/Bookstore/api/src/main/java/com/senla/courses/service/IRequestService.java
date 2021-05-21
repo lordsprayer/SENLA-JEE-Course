@@ -8,7 +8,7 @@ import java.util.List;
 public interface IRequestService {
 
     void createRequest (BookDto book);
-    void delete(RequestDto request);
+    void delete(Integer id);
     void closeRequest (RequestDto request);
     RequestDto getById(Integer id);
     List<RequestDto> getAll();

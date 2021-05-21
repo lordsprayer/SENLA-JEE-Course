@@ -50,13 +50,14 @@ public class CustomerService extends ConstantUtil implements ICustomerService {
     //todo переписать апдейты и делиты
     public void update(CustomerDto customerDto) {
         try {
-            Customer customer = CustomerMapper.INSTANCE.customerDtoToCustomer(customerDto);
-//            Customer customer = customerDao.getByPK(customerDto.getId());
-//            customer.setName(customerDto.getName());
-//            customer.setSurname(customerDto.getSurname());
-//            customer.setPhoneNumber(customerDto.getPhone());
-
+            Customer customer = customerDao.getByPK(customerDto.getId());
+            customer.setName(customerDto.getName());
+            customer.setSurname(customerDto.getSurname());
+            customer.setPhoneNumber(customerDto.getPhone());
             customerDao.update(customer);
+        } catch (NullPointerException ex) {
+            log.log(Level.WARN, SEARCH_ERROR);
+            throw new DaoException(ex);
         } catch (DaoException e) {
             log.log(Level.WARN, UPDATING_ERROR);
             throw e;

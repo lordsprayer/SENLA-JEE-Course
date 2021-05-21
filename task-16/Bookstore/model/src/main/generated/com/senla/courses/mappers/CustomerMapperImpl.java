@@ -6,7 +6,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-05-20T22:22:39+0300",
+    date = "2021-05-21T14:13:36+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.11 (Amazon.com Inc.)"
 )
 public class CustomerMapperImpl implements CustomerMapper {
@@ -17,17 +17,12 @@ public class CustomerMapperImpl implements CustomerMapper {
             return null;
         }
 
-        String phone = null;
-        Integer id = null;
-        String name = null;
-        String surname = null;
+        CustomerDto customerDto = new CustomerDto();
 
-        phone = customer.getPhoneNumber();
-        id = customer.getId();
-        name = customer.getName();
-        surname = customer.getSurname();
-
-        CustomerDto customerDto = new CustomerDto( id, name, surname, phone );
+        customerDto.setPhone( customer.getPhoneNumber() );
+        customerDto.setId( customer.getId() );
+        customerDto.setName( customer.getName() );
+        customerDto.setSurname( customer.getSurname() );
 
         return customerDto;
     }

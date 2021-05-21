@@ -95,9 +95,9 @@ public class OrderService extends ConstantUtil implements IOrderService {
     }
 
     @Override
-    public void deleteOrder(OrderDto orderDto){
+    public void deleteOrder(Integer id){
         try{
-            Order order = OrderMapper.INSTANCE.orderDtoToOrder(orderDto);
+            Order order = orderDao.getByPK(id);
             orderDao.delete(order);
         } catch (DaoException e) {
             log.log(Level.WARN, DELETING_ERROR);

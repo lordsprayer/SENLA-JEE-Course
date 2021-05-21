@@ -67,9 +67,9 @@ public class BookService extends ConstantUtil implements IBookService {
     }
 
     @Override
-    public void delete(BookDto bookDto) {
+    public void delete(Integer id) {
         try {
-            Book book = BookMapper.INSTANCE.bookDtoToBook(bookDto);
+            Book book = bookDao.getByPK(id);
             bookDao.delete(book);
         }  catch (DaoException e){
             log.log(Level.WARN, DELETING_ERROR);
@@ -80,7 +80,14 @@ public class BookService extends ConstantUtil implements IBookService {
     @Override
     public void update(BookDto bookDto) {
         try {
-            Book book = BookMapper.INSTANCE.bookDtoToBook(bookDto);
+            Book book = bookDao.getByPK(bookDto.getId());
+            book.setTitle(bookDto.getTitle());
+            book.setAuthor(bookDto.getAuthor());
+            book.setPublicationYear(bookDto.getPublicationYear());
+            book.setAvailability(bookDto.getAvailability());
+            book.setCost(bookDto.getCost());
+            book.setReceiptDate(bookDto.getReceiptDate());
+            book.setDescription(bookDto.getDescription());
             bookDao.update(book);
         } catch (DaoException e){
             log.log(Level.WARN, UPDATING_ERROR);

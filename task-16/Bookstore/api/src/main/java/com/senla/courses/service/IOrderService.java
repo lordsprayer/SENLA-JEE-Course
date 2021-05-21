@@ -14,7 +14,7 @@ public interface IOrderService {
     List<OrderDto> getAll();
     List<OrderDto> getSortOrders(String criterion);
     void createOrder(CustomerDto customer, List<BookDto> books, LocalDate creationDate);
-    void deleteOrder(OrderDto order);
+    void deleteOrder(Integer id);
     void changeStatus(OrderDto order, String status);
     Double countIncome (LocalDate date);
     Integer countCompleteOrders(LocalDate date);

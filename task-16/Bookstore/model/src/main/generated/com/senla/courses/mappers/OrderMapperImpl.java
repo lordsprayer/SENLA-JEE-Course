@@ -14,7 +14,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-05-20T22:22:39+0300",
+    date = "2021-05-21T14:13:36+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.11 (Amazon.com Inc.)"
 )
 public class OrderMapperImpl implements OrderMapper {
@@ -89,6 +89,7 @@ public class OrderMapperImpl implements OrderMapper {
         book.setPublicationYear( bookDto.getPublicationYear() );
         book.setCost( bookDto.getCost() );
         book.setReceiptDate( bookDto.getReceiptDate() );
+        book.setAvailability( bookDto.getAvailability() );
         book.setDescription( bookDto.getDescription() );
 
         return book;

@@ -7,7 +7,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-05-20T21:32:24+0300",
+    date = "2021-05-21T14:13:36+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.11 (Amazon.com Inc.)"
 )
 public class BookMapperImpl implements BookMapper {
@@ -23,6 +23,7 @@ public class BookMapperImpl implements BookMapper {
         String title = null;
         String author = null;
         Integer publicationYear = null;
+        Boolean availability = null;
         LocalDate receiptDate = null;
         String description = null;
 
@@ -31,10 +32,11 @@ public class BookMapperImpl implements BookMapper {
         title = book.getTitle();
         author = book.getAuthor();
         publicationYear = book.getPublicationYear();
+        availability = book.getAvailability();
         receiptDate = book.getReceiptDate();
         description = book.getDescription();
 
-        BookDto bookDto = new BookDto( id, title, author, publicationYear, cost, receiptDate, description );
+        BookDto bookDto = new BookDto( id, title, author, publicationYear, availability, cost, receiptDate, description );
 
         return bookDto;
     }
@@ -55,6 +57,7 @@ public class BookMapperImpl implements BookMapper {
         book.setAuthor( bookDto.getAuthor() );
         book.setPublicationYear( bookDto.getPublicationYear() );
         book.setReceiptDate( bookDto.getReceiptDate() );
+        book.setAvailability( bookDto.getAvailability() );
         book.setDescription( bookDto.getDescription() );
 
         return book;

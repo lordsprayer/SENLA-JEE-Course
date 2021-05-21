@@ -47,9 +47,9 @@ public class RequestService extends ConstantUtil implements IRequestService {
     }
 
     @Override
-    public void delete(RequestDto requestDto) {
+    public void delete(Integer id) {
         try {
-            Request request = RequestMapper.INSTANCE.requestDtoToRequest(requestDto);
+            Request request = requestDao.getByPK(id);
             requestDao.delete(request);
         } catch (DaoException e) {
             log.log(Level.WARN, DELETING_ERROR);

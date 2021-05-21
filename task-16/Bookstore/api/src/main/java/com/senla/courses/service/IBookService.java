@@ -9,7 +9,7 @@ public interface IBookService {
     List<BookDto> getAll();
     BookDto getById(Integer id);
     void save(BookDto book);
-    void delete(BookDto book);
+    void delete(Integer id);
     void update(BookDto book);
     void cancelBook(BookDto book);
     void addBook(BookDto book);
