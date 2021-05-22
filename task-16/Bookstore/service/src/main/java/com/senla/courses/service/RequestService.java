@@ -1,10 +1,9 @@
 package com.senla.courses.service;
 
+import com.senla.courses.dao.IBookDao;
 import com.senla.courses.dao.IRequestDao;
-import com.senla.courses.dto.BookDto;
 import com.senla.courses.dto.RequestDto;
 import com.senla.courses.exception.DaoException;
-import com.senla.courses.mappers.BookMapper;
 import com.senla.courses.mappers.RequestMapper;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Request;
@@ -27,10 +26,11 @@ public class RequestService extends ConstantUtil implements IRequestService {
 
     private static final Logger log = LogManager.getLogger(RequestService.class.getName());
     private final IRequestDao requestDao;
+    private final IBookDao bookDao;
 
     @Override
-    public void createRequest(BookDto bookDto) {
-        Book book = BookMapper.INSTANCE.bookDtoToBook(bookDto);
+    public void createRequest(Integer bookId) {
+        Book book = bookDao.getByPK(bookId);
         if (book.getAvailability().equals(false)) {
             LocalDate date = LocalDate.now();
             Request request = new Request(book, date);
@@ -42,7 +42,7 @@ public class RequestService extends ConstantUtil implements IRequestService {
             }
             log.log(Level.INFO, "Request created");
         } else {
-            System.out.println("Запрос не может быть создан, т.к. книга всё ещё в наличии");
+            log.log(Level.INFO,"The request cannot be created because the book is still available");
         }
     }
 
@@ -58,8 +58,8 @@ public class RequestService extends ConstantUtil implements IRequestService {
     }
 
     @Override
-    public void closeRequest(RequestDto requestDto) {
-        Request request = RequestMapper.INSTANCE.requestDtoToRequest(requestDto);
+    public void closeRequest(Integer id) {
+        Request request = requestDao.getByPK(id);
         request.setStatus(false);
         try {
             requestDao.update(request);

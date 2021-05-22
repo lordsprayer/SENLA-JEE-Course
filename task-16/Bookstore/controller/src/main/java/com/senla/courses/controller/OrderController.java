@@ -1,27 +1,15 @@
 package com.senla.courses.controller;
 
-import com.senla.courses.dto.CustomerDto;
 import com.senla.courses.dto.OrderDto;
-import com.senla.courses.exception.DaoException;
-import com.senla.courses.mappers.CustomerMapper;
-import com.senla.courses.mappers.OrderMapper;
-import com.senla.courses.model.Customer;
-import com.senla.courses.model.Order;
-import com.senla.courses.service.IBookService;
-import com.senla.courses.service.ICustomerService;
 import com.senla.courses.service.IOrderService;
-import com.senla.courses.service.IRequestService;
-import com.senla.courses.util.Converter;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -30,18 +18,60 @@ import java.util.List;
 public class OrderController {
 
     private static final Logger log = LogManager.getLogger(OrderController.class.getName());
-    private final IBookService bookService;
-    private final ICustomerService customerService;
-    private final IRequestService requestService;
     private final IOrderService orderService;
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<OrderDto>> getAllOrders(){
+    public ResponseEntity<List<OrderDto>> getAllOrders(@RequestParam(defaultValue = "id") String sort,
+                                                       @RequestParam(defaultValue = "1970-01-01") String date){
         log.log(Level.INFO, "Received request: /orders");
-        return ResponseEntity.ok(orderService.getAll());
+        LocalDate localDate = LocalDate.parse(date);
+        if(localDate.compareTo(LocalDate.of(1970,1,1)) > 0){
+            return ResponseEntity.ok(orderService.getSortCompletedOrders(localDate, sort));
+        } else {
+            return ResponseEntity.ok(orderService.getSortOrders(sort));
+        }
     }
 
-    //@GetMapping
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderDto> getById(@PathVariable Integer id){
+        log.log(Level.INFO, "Received get request: /customers/" + id);
+        return ResponseEntity.ok(orderService.getById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> createOrder(@RequestBody List<Integer> booksId,
+                                            @RequestParam Integer customerId){
+        log.log(Level.INFO, "Received post request: /customers");
+        orderService.createOrder(customerId, booksId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable Integer id){
+        log.log(Level.INFO, "Received delete request: /customers");
+        orderService.deleteOrder(id);
+        return ResponseEntity.accepted().build();
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> changeOrderStatus(@RequestBody String status,
+                                                  @RequestParam Integer id){
+        log.log(Level.INFO, "Received put request: /customers");
+        orderService.changeStatus(id, status);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/income")
+    public ResponseEntity<Double> getCountIncome(@RequestParam String date){
+        LocalDate localDate = LocalDate.parse(date);
+        return ResponseEntity.ok(orderService.countIncome(localDate));
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Integer> getCountCompleteOrders(@RequestParam String date){
+        LocalDate localDate = LocalDate.parse(date);
+        return ResponseEntity.ok(orderService.countCompleteOrders(localDate));
+    }
 
 
 }

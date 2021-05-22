@@ -42,8 +42,8 @@ public class OrderDao extends AbstractDao<Order, Integer> implements IOrderDao {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Order> query = builder.createQuery(Order.class);
             Root<Order> root = query.from(Order.class);
-            Predicate statusPredicate = builder.equal(root.get("status"), "COMPLETED");
-            Predicate datePredicate = builder.lessThan(root.get("completionDate"), date);
+            Predicate statusPredicate = builder.equal(root.get("status"), Order.Status.COMPLETED);
+            Predicate datePredicate = builder.greaterThan(root.get("completionDate"), date);
             Predicate finalPredicate = builder.and(statusPredicate, datePredicate);
             query.where(finalPredicate).orderBy(builder.asc(root.get(criterion)));
             TypedQuery<Order> sortQuery = entityManager.createQuery(query);

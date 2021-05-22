@@ -1,26 +1,14 @@
 package com.senla.courses.controller;
 
-import com.senla.courses.dto.CustomerDto;
 import com.senla.courses.dto.RequestDto;
-import com.senla.courses.exception.DaoException;
-import com.senla.courses.mappers.CustomerMapper;
-import com.senla.courses.mappers.RequestMapper;
-import com.senla.courses.model.Customer;
-import com.senla.courses.model.Request;
-import com.senla.courses.service.IBookService;
-import com.senla.courses.service.ICustomerService;
-import com.senla.courses.service.IOrderService;
 import com.senla.courses.service.IRequestService;
-import com.senla.courses.util.Converter;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,18 +17,46 @@ import java.util.List;
 public class RequestController {
 
     private static final Logger log = LogManager.getLogger(RequestController.class.getName());
-    private final IBookService bookService;
-    private final ICustomerService customerService;
     private final IRequestService requestService;
-    private final IOrderService orderService;
 
-    @GetMapping(produces = "application/json")
-    public List<RequestDto> getAllCustomers(){
-        log.log(Level.INFO, "Received request: /requests");
-        return requestService.getAll();
+    @GetMapping
+    public ResponseEntity<List<RequestDto>> getAllRequests(@RequestParam(defaultValue = "id") String sort) {
+        log.log(Level.INFO, "Received get all request: /requests");
+        if (sort.equals("book")) {
+            return ResponseEntity.ok(requestService.getSortRequests());
+        } else if (sort.equals("count")) {
+            return ResponseEntity.ok(requestService.getSortRequestsByBookCount());
+        } else {
+            return ResponseEntity.ok(requestService.getAll());
+        }
     }
 
-    //@GetMapping
+    @GetMapping("/{id}")
+    public ResponseEntity<RequestDto> getById(@PathVariable Integer id){
+        log.log(Level.INFO, "Received get request: /requests/" + id);
+        return ResponseEntity.ok(requestService.getById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> createRequest(@RequestBody Integer id){
+        log.log(Level.INFO, "Received post request: /requests");
+        requestService.createRequest(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRequest(@PathVariable Integer id){
+        log.log(Level.INFO, "Received delete request: /requests");
+        requestService.delete(id);
+        return ResponseEntity.accepted().build();
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> closeRequest(@RequestBody Integer id){
+        log.log(Level.INFO, "Received put request: /requests");
+        requestService.closeRequest(id);
+        return ResponseEntity.ok().build();
+    }
 
 
 }

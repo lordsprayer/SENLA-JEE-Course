@@ -96,9 +96,9 @@ public class BookService extends ConstantUtil implements IBookService {
     }
 
     @Override
-    public void cancelBook(BookDto bookDto) {
+    public void cancelBook(Integer id) {
         try {
-            Book book = BookMapper.INSTANCE.bookDtoToBook(bookDto);
+            Book book = bookDao.getByPK(id);
             book.setAvailability(false);
             bookDao.update(book);
         } catch (DaoException e){
@@ -108,9 +108,9 @@ public class BookService extends ConstantUtil implements IBookService {
     }
 
     @Override
-    public void addBook(BookDto bookDto) {
+    public void addBook(Integer id) {
         try {
-            Book book = BookMapper.INSTANCE.bookDtoToBook(bookDto);
+            Book book = bookDao.getByPK(id);
             book.setAvailability(true);
             bookDao.update(book);
             if (permit) {
@@ -143,12 +143,6 @@ public class BookService extends ConstantUtil implements IBookService {
         }
     }
 
-    @Override
-    public String getDescription(BookDto bookDto) {
-        Book book = BookMapper.INSTANCE.bookDtoToBook(bookDto);
-        System.out.println(book.getDescription());
-        return book.getDescription();
-    }
 
     @Override
     public List<BookDto> getSortBooks(String criterion) {

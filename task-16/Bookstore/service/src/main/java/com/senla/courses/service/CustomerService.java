@@ -47,7 +47,6 @@ public class CustomerService extends ConstantUtil implements ICustomerService {
     }
 
     @Override
-    //todo переписать апдейты и делиты
     public void update(CustomerDto customerDto) {
         try {
             Customer customer = customerDao.getByPK(customerDto.getId());
