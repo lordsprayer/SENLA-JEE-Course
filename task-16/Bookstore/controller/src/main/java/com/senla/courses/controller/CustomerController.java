@@ -21,7 +21,7 @@ public class CustomerController {
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<CustomerDto>> getAllCustomers(){
-            log.log(Level.INFO, "Received request: /customers");
+            log.log(Level.INFO, "Received get request: /customers");
             return ResponseEntity.ok(customerService.getAll());
     }
 

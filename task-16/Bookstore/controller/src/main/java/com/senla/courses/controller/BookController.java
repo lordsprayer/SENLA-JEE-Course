@@ -34,7 +34,7 @@ public class BookController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable Integer id){
-        log.log(Level.INFO, "Received delete request: /books");
+        log.log(Level.INFO, "Received delete request: /books/" + id);
         bookService.delete(id);
         return ResponseEntity.accepted().build();
     }
@@ -48,7 +48,7 @@ public class BookController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> addOrDeleteBookToWarehouse(@PathVariable Integer id, @RequestBody Boolean availability){
-        log.log(Level.INFO, "Received put request: /books");
+        log.log(Level.INFO, "Received put request: /books/" + id);
         if(availability) {
             bookService.addBook(id);
         } else {
@@ -59,17 +59,14 @@ public class BookController {
 
     @GetMapping
     public ResponseEntity<List<BookDto>> getAllBooks(@RequestParam(defaultValue = "id") String sort){
-        log.log(Level.INFO, "Received get all request: /books");
+        log.log(Level.INFO, "Received get request: /books?sort=" + sort);
         return ResponseEntity.ok(bookService.getSortBooks(sort));
     }
 
     @GetMapping("/unsold")
     public ResponseEntity<List<BookDto>> getUnsoldBooks(@RequestParam(defaultValue = "id") String sort){
-        log.log(Level.INFO, "Received get all request: /books/unsold");
+        log.log(Level.INFO, "Received get request: /books/unsold?sort=" + sort);
         return ResponseEntity.ok(bookService.unsoldBook(sort));
     }
-
-
-
 
 }

@@ -23,7 +23,7 @@ public class OrderController {
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<OrderDto>> getAllOrders(@RequestParam(defaultValue = "id") String sort,
                                                        @RequestParam(defaultValue = "1970-01-01") String date){
-        log.log(Level.INFO, "Received request: /orders");
+        log.log(Level.INFO, "Received get request: /orders?sort=" + sort + "&date=" + date);
         LocalDate localDate = LocalDate.parse(date);
         if(localDate.compareTo(LocalDate.of(1970,1,1)) > 0){
             return ResponseEntity.ok(orderService.getSortCompletedOrders(localDate, sort));
@@ -34,21 +34,21 @@ public class OrderController {
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderDto> getById(@PathVariable Integer id){
-        log.log(Level.INFO, "Received get request: /customers/" + id);
+        log.log(Level.INFO, "Received get request: /orders/" + id);
         return ResponseEntity.ok(orderService.getById(id));
     }
 
     @PostMapping
     public ResponseEntity<Void> createOrder(@RequestBody List<Integer> booksId,
                                             @RequestParam Integer customerId){
-        log.log(Level.INFO, "Received post request: /customers");
+        log.log(Level.INFO, "Received post request: /orders/customerId=" + customerId);
         orderService.createOrder(customerId, booksId);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrder(@PathVariable Integer id){
-        log.log(Level.INFO, "Received delete request: /customers");
+        log.log(Level.INFO, "Received delete request: /orders/" + id);
         orderService.deleteOrder(id);
         return ResponseEntity.accepted().build();
     }
@@ -56,19 +56,21 @@ public class OrderController {
     @PutMapping
     public ResponseEntity<Void> changeOrderStatus(@RequestBody String status,
                                                   @RequestParam Integer id){
-        log.log(Level.INFO, "Received put request: /customers");
+        log.log(Level.INFO, "Received put request: /orders?id=" + id);
         orderService.changeStatus(id, status);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/income")
     public ResponseEntity<Double> getCountIncome(@RequestParam String date){
+        log.log(Level.INFO, "Received get request: /orders/income?date=" + date);
         LocalDate localDate = LocalDate.parse(date);
         return ResponseEntity.ok(orderService.countIncome(localDate));
     }
 
     @GetMapping("/count")
     public ResponseEntity<Integer> getCountCompleteOrders(@RequestParam String date){
+        log.log(Level.INFO, "Received get request: /orders/count?date=" + date);
         LocalDate localDate = LocalDate.parse(date);
         return ResponseEntity.ok(orderService.countCompleteOrders(localDate));
     }

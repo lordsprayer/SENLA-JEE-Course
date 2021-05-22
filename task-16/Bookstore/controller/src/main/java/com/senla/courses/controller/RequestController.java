@@ -46,7 +46,7 @@ public class RequestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRequest(@PathVariable Integer id){
-        log.log(Level.INFO, "Received delete request: /requests");
+        log.log(Level.INFO, "Received delete request: /requests/" + id);
         requestService.delete(id);
         return ResponseEntity.accepted().build();
     }
