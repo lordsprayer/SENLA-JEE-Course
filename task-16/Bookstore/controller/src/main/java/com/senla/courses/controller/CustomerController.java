@@ -20,9 +20,9 @@ public class CustomerController {
     private final ICustomerService customerService;
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<CustomerDto>> getAllCustomers(){
-            log.log(Level.INFO, "Received get request: /customers");
-            return ResponseEntity.ok(customerService.getAll());
+    public ResponseEntity<List<CustomerDto>> getAllCustomers() {
+        log.log(Level.INFO, "Received get request: /customers");
+        return ResponseEntity.ok(customerService.getAll());
     }
 
     @GetMapping("/{id}")
@@ -49,6 +49,6 @@ public class CustomerController {
     public ResponseEntity<Void> updateCustomer(@RequestBody CustomerDto customer){
         log.log(Level.INFO, "Received put request: /customers");
         customerService.update(customer);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

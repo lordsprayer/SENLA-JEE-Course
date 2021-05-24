@@ -8,11 +8,11 @@ import com.senla.courses.mappers.BookMapper;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Request;
 import com.senla.courses.util.ConstantUtil;
-import com.senla.courses.util.Converter;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,12 +32,13 @@ public class BookService extends ConstantUtil implements IBookService {
     private Integer months;
     @Value("${permit_closing_request:true}")
     private Boolean permit;
+    private final BookMapper mapper= Mappers.getMapper(BookMapper.class);
 
     @Override
     public List<BookDto> getAll() {
         try {
             List<Book> books = bookDao.getAll();
-            return Converter.convertBooks(books);
+            return mapper.bookListToBookDtoList(books);
         } catch (DaoException e) {
             log.log(Level.WARN, SEARCH_ERROR);
             throw e;
@@ -48,7 +49,7 @@ public class BookService extends ConstantUtil implements IBookService {
     public BookDto getById(Integer id) {
         try{
             Book book = bookDao.getByPK(id);
-            return BookMapper.INSTANCE.bookToBookDto(book);
+            return mapper.bookToBookDto(book);
         } catch (DaoException e){
             log.log(Level.WARN, SEARCH_ERROR);
             throw e;
@@ -58,7 +59,7 @@ public class BookService extends ConstantUtil implements IBookService {
     @Override
     public void save(BookDto bookDto) {
         try {
-            Book book = BookMapper.INSTANCE.bookDtoToBook(bookDto);
+            Book book = mapper.bookDtoToBook(bookDto);
             bookDao.persist(book);
         } catch (DaoException e){
             log.log(Level.WARN, SAVING_ERROR);
@@ -136,7 +137,7 @@ public class BookService extends ConstantUtil implements IBookService {
         LocalDate date = LocalDate.now().minusMonths(months);
         try {
             List<Book> books = bookDao.getUnsoldBook(date,criterion);
-            return Converter.convertBooks(books);
+            return mapper.bookListToBookDtoList(books);
         } catch (DaoException e) {
             log.log(Level.WARN, SEARCH_ERROR);
             throw e;
@@ -148,10 +149,19 @@ public class BookService extends ConstantUtil implements IBookService {
     public List<BookDto> getSortBooks(String criterion) {
         try {
             List<Book> books = bookDao.getSortBook(criterion);
-            return Converter.convertBooks(books);
+            return mapper.bookListToBookDtoList(books);
         } catch (DaoException e) {
             log.log(Level.WARN, SEARCH_ERROR);
             throw e;
+        }
+    }
+
+    @Override
+    public void addOrDeleteBook(Integer id, Boolean availability) {
+        if(availability) {
+            addBook(id);
+        } else {
+            cancelBook(id);
         }
     }
 }

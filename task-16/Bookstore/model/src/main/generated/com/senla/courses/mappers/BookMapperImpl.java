@@ -2,14 +2,17 @@ package com.senla.courses.mappers;
 
 import com.senla.courses.dto.BookDto;
 import com.senla.courses.model.Book;
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-05-21T14:13:36+0300",
+    date = "2021-05-24T22:26:42+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.11 (Amazon.com Inc.)"
 )
+@Component
 public class BookMapperImpl implements BookMapper {
 
     @Override
@@ -18,25 +21,16 @@ public class BookMapperImpl implements BookMapper {
             return null;
         }
 
-        Double cost = null;
-        Integer id = null;
-        String title = null;
-        String author = null;
-        Integer publicationYear = null;
-        Boolean availability = null;
-        LocalDate receiptDate = null;
-        String description = null;
+        BookDto bookDto = new BookDto();
 
-        cost = book.getCost();
-        id = book.getId();
-        title = book.getTitle();
-        author = book.getAuthor();
-        publicationYear = book.getPublicationYear();
-        availability = book.getAvailability();
-        receiptDate = book.getReceiptDate();
-        description = book.getDescription();
-
-        BookDto bookDto = new BookDto( id, title, author, publicationYear, availability, cost, receiptDate, description );
+        bookDto.setCost( book.getCost() );
+        bookDto.setId( book.getId() );
+        bookDto.setTitle( book.getTitle() );
+        bookDto.setAuthor( book.getAuthor() );
+        bookDto.setPublicationYear( book.getPublicationYear() );
+        bookDto.setAvailability( book.getAvailability() );
+        bookDto.setReceiptDate( book.getReceiptDate() );
+        bookDto.setDescription( book.getDescription() );
 
         return bookDto;
     }
@@ -61,5 +55,19 @@ public class BookMapperImpl implements BookMapper {
         book.setDescription( bookDto.getDescription() );
 
         return book;
+    }
+
+    @Override
+    public List<BookDto> bookListToBookDtoList(List<Book> books) {
+        if ( books == null ) {
+            return null;
+        }
+
+        List<BookDto> list = new ArrayList<BookDto>( books.size() );
+        for ( Book book : books ) {
+            list.add( bookToBookDto( book ) );
+        }
+
+        return list;
     }
 }

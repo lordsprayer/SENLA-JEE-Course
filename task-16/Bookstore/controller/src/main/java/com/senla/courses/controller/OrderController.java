@@ -25,11 +25,7 @@ public class OrderController {
                                                        @RequestParam(defaultValue = "1970-01-01") String date){
         log.log(Level.INFO, "Received get request: /orders?sort=" + sort + "&date=" + date);
         LocalDate localDate = LocalDate.parse(date);
-        if(localDate.compareTo(LocalDate.of(1970,1,1)) > 0){
-            return ResponseEntity.ok(orderService.getSortCompletedOrders(localDate, sort));
-        } else {
-            return ResponseEntity.ok(orderService.getSortOrders(sort));
-        }
+        return ResponseEntity.ok(orderService.getAllOrders(localDate, sort));
     }
 
     @GetMapping("/{id}")
@@ -58,7 +54,7 @@ public class OrderController {
                                                   @RequestParam Integer id){
         log.log(Level.INFO, "Received put request: /orders?id=" + id);
         orderService.changeStatus(id, status);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/income")

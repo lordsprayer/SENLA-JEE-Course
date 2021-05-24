@@ -6,11 +6,11 @@ import com.senla.courses.exception.DaoException;
 import com.senla.courses.mappers.CustomerMapper;
 import com.senla.courses.model.Customer;
 import com.senla.courses.util.ConstantUtil;
-import com.senla.courses.util.Converter;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,10 +24,12 @@ public class CustomerService extends ConstantUtil implements ICustomerService {
     private static final Logger log = LogManager.getLogger (CustomerService.class.getName ());
     private final ICustomerDao customerDao;
 
+    private final CustomerMapper mapper = Mappers.getMapper(CustomerMapper.class);
+
     @Override
     public void save(CustomerDto customerDto) {
         try {
-            Customer customer = CustomerMapper.INSTANCE.customerDtoToCustomer(customerDto);
+            Customer customer = mapper.customerDtoToCustomer(customerDto);
             customerDao.persist(customer);
         } catch (DaoException e) {
             log.log(Level.WARN, SAVING_ERROR);
@@ -50,13 +52,14 @@ public class CustomerService extends ConstantUtil implements ICustomerService {
     public void update(CustomerDto customerDto) {
         try {
             Customer customer = customerDao.getByPK(customerDto.getId());
-            customer.setName(customerDto.getName());
-            customer.setSurname(customerDto.getSurname());
-            customer.setPhoneNumber(customerDto.getPhone());
-            customerDao.update(customer);
-        } catch (NullPointerException ex) {
-            log.log(Level.WARN, SEARCH_ERROR);
-            throw new DaoException(ex);
+            if (customer == null) {
+                log.log(Level.WARN, SEARCH_ERROR);
+            } else {
+                customer.setName(customerDto.getName());
+                customer.setSurname(customerDto.getSurname());
+                customer.setPhoneNumber(customerDto.getPhone());
+                customerDao.update(customer);
+            }
         } catch (DaoException e) {
             log.log(Level.WARN, UPDATING_ERROR);
             throw e;
@@ -67,7 +70,7 @@ public class CustomerService extends ConstantUtil implements ICustomerService {
     public List<CustomerDto> getAll() {
         try {
             List<Customer> customers = customerDao.getAll();
-            return Converter.convertCustomers(customers);
+            return mapper.customerListToCustomerDtoList(customers);
         } catch (DaoException e) {
             log.log(Level.WARN, SEARCH_ERROR);
             throw e;
@@ -78,7 +81,7 @@ public class CustomerService extends ConstantUtil implements ICustomerService {
     public CustomerDto getById(Integer id) {
         try{
             Customer customer = customerDao.getByPK(id);
-            return CustomerMapper.INSTANCE.customerToCustomerDto(customer);
+            return mapper.customerToCustomerDto(customer);
         } catch (DaoException e){
             log.log(Level.WARN, SEARCH_ERROR);
             throw e;

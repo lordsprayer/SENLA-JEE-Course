@@ -14,4 +14,5 @@ public interface IRequestService {
     List<RequestDto> getSortRequests();
     List<RequestDto> getSortRequestsByBookCount();
 
+    List<RequestDto> getRequests(String sort);
 }

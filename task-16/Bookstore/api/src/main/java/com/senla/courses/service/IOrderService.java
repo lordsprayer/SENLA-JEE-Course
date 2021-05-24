@@ -16,4 +16,6 @@ public interface IOrderService {
     Double countIncome (LocalDate date);
     Integer countCompleteOrders(LocalDate date);
     List<OrderDto> getSortCompletedOrders(LocalDate date, String criterion);
+
+    List<OrderDto> getAllOrders(LocalDate date, String criterion);
 }

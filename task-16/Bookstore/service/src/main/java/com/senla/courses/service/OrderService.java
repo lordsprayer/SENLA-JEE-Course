@@ -12,11 +12,12 @@ import com.senla.courses.model.Customer;
 import com.senla.courses.model.Order;
 import com.senla.courses.model.Request;
 import com.senla.courses.util.ConstantUtil;
-import com.senla.courses.util.Converter;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mapstruct.factory.Mappers;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,11 +36,14 @@ public class OrderService extends ConstantUtil implements IOrderService {
     private final IRequestDao requestDao;
     private final ICustomerDao customerDao;
 
+    private final OrderMapper mapper = Mappers.getMapper(OrderMapper.class);
+    private final LocalDate MIN_DATE = LocalDate.of(1970, 1, 1);
+
     @Override
     public OrderDto getById(Integer id) {
         try {
             Order order = orderDao.getByPK (id);
-            return OrderMapper.INSTANCE.orderToOrderDto(order);
+            return mapper.orderToOrderDto(order);
         } catch (DaoException e) {
             log.log (Level.WARN, SEARCH_ERROR);
             throw e;
@@ -50,7 +54,7 @@ public class OrderService extends ConstantUtil implements IOrderService {
     public List<OrderDto> getAll() {
         try {
             List<Order> orders = orderDao.getAll();
-            return Converter.convertOrders(orders);
+            return mapper.orderListToOrderDtoList(orders);
         } catch (DaoException e) {
             log.log (Level.WARN, SEARCH_ERROR);
             throw e;
@@ -61,7 +65,7 @@ public class OrderService extends ConstantUtil implements IOrderService {
     public List<OrderDto> getSortOrders(String criterion) {
         try {
             List<Order> orders = orderDao.getSortOrders(criterion);
-            return Converter.convertOrders(orders);
+            return mapper.orderListToOrderDtoList(orders);
         } catch (DaoException e) {
             log.log (Level.WARN, SEARCH_ERROR);
             throw e;
@@ -114,7 +118,7 @@ public class OrderService extends ConstantUtil implements IOrderService {
         if(order.getStatus().equals(Order.Status.COMPLETED)) {
             order.setCompletionDate(LocalDate.now());
         } else {
-            order.setCompletionDate(LocalDate.of(1970, 1, 1));
+            order.setCompletionDate(MIN_DATE);
         }
         try {
             orderDao.update(order);
@@ -162,10 +166,19 @@ public class OrderService extends ConstantUtil implements IOrderService {
     public List<OrderDto> getSortCompletedOrders(LocalDate date, String criterion) {
         try {
             List<Order> orders = orderDao.getSortCompleteOrders(criterion, date);
-            return Converter.convertOrders(orders);
+            return mapper.orderListToOrderDtoList(orders);
         } catch (DaoException e) {
             log.log (Level.WARN, SEARCH_ERROR);
             throw e;
+        }
+    }
+
+    @Override
+    public List<OrderDto> getAllOrders(LocalDate date, String criterion) {
+        if(date.compareTo(MIN_DATE) > 0){
+            return getSortCompletedOrders(date, criterion);
+        } else {
+            return getSortOrders(criterion);
         }
     }
 }

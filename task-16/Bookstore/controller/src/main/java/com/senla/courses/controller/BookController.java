@@ -43,18 +43,14 @@ public class BookController {
     public ResponseEntity<Void> updateBook(@RequestBody BookDto bookDto){
         log.log(Level.INFO, "Received put request: /books");
         bookService.update(bookDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> addOrDeleteBookToWarehouse(@PathVariable Integer id, @RequestBody Boolean availability){
         log.log(Level.INFO, "Received put request: /books/" + id);
-        if(availability) {
-            bookService.addBook(id);
-        } else {
-            bookService.cancelBook(id);
-        }
-        return ResponseEntity.ok().build();
+        bookService.addOrDeleteBook(id, availability);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping

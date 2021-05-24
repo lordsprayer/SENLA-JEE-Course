@@ -11,12 +11,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-05-21T14:13:36+0300",
+    date = "2021-05-24T22:26:42+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.11 (Amazon.com Inc.)"
 )
+@Component
 public class OrderMapperImpl implements OrderMapper {
 
     @Override
@@ -72,6 +74,20 @@ public class OrderMapperImpl implements OrderMapper {
         }
 
         return order1;
+    }
+
+    @Override
+    public List<OrderDto> orderListToOrderDtoList(List<Order> orders) {
+        if ( orders == null ) {
+            return null;
+        }
+
+        List<OrderDto> list = new ArrayList<OrderDto>( orders.size() );
+        for ( Order order : orders ) {
+            list.add( orderToOrderDto( order ) );
+        }
+
+        return list;
     }
 
     protected Book bookDtoToBook(BookDto bookDto) {

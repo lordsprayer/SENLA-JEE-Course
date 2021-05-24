@@ -22,13 +22,7 @@ public class RequestController {
     @GetMapping
     public ResponseEntity<List<RequestDto>> getAllRequests(@RequestParam(defaultValue = "id") String sort) {
         log.log(Level.INFO, "Received get all request: /requests");
-        if (sort.equals("book")) {
-            return ResponseEntity.ok(requestService.getSortRequests());
-        } else if (sort.equals("count")) {
-            return ResponseEntity.ok(requestService.getSortRequestsByBookCount());
-        } else {
-            return ResponseEntity.ok(requestService.getAll());
-        }
+        return ResponseEntity.ok(requestService.getRequests(sort));
     }
 
     @GetMapping("/{id}")
@@ -55,7 +49,7 @@ public class RequestController {
     public ResponseEntity<Void> closeRequest(@RequestBody Integer id){
         log.log(Level.INFO, "Received put request: /requests");
         requestService.closeRequest(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
 

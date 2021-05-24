@@ -1,19 +1,21 @@
 package com.senla.courses.mappers;
 
-import com.senla.courses.model.Book;
 import com.senla.courses.dto.BookDto;
+import com.senla.courses.model.Book;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
-@Mapper
+import java.util.List;
+
+@Mapper(componentModel = "spring")
 public interface BookMapper {
-
-    BookMapper INSTANCE = Mappers.getMapper(BookMapper.class);
 
     @Mapping(target = "cost")
     BookDto bookToBookDto(Book book);
 
     @Mapping(target = "cost")
     Book bookDtoToBook(BookDto bookDto);
+
+    @Mapping(target = "cost")
+    List<BookDto> bookListToBookDtoList(List<Book> books);
 }

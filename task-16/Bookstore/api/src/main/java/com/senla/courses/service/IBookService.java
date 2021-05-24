@@ -15,4 +15,5 @@ public interface IBookService {
     void addBook(Integer id);
     List<BookDto> unsoldBook(String criterion);
     List<BookDto> getSortBooks(String criterion);
+    void addOrDeleteBook(Integer id, Boolean availability);
 }

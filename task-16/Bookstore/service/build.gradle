@@ -10,6 +10,8 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+
     compile project (":api")
     compile project (":utils")
 }

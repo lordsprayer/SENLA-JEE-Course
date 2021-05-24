@@ -8,11 +8,12 @@ import com.senla.courses.mappers.RequestMapper;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Request;
 import com.senla.courses.util.ConstantUtil;
-import com.senla.courses.util.Converter;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mapstruct.factory.Mappers;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,8 @@ public class RequestService extends ConstantUtil implements IRequestService {
     private static final Logger log = LogManager.getLogger(RequestService.class.getName());
     private final IRequestDao requestDao;
     private final IBookDao bookDao;
+
+    private final RequestMapper mapper = Mappers.getMapper(RequestMapper.class);
 
     @Override
     public void createRequest(Integer bookId) {
@@ -73,7 +76,7 @@ public class RequestService extends ConstantUtil implements IRequestService {
     public RequestDto getById(Integer id) {
         try{
             Request request = requestDao.getByPK(id);
-            return RequestMapper.INSTANCE.requestToRequestDto(request);
+            return mapper.requestToRequestDto(request);
         } catch (DaoException e){
             log.log(Level.WARN, SEARCH_ERROR);
             throw e;
@@ -84,7 +87,7 @@ public class RequestService extends ConstantUtil implements IRequestService {
     public List<RequestDto> getAll() {
         try {
             List<Request> requests = requestDao.getAll();
-            return Converter.convertRequests(requests);
+            return mapper.requestListToRequestDtoList(requests);
         } catch (DaoException e){
             log.log(Level.WARN, SEARCH_ERROR);
             throw e;
@@ -95,7 +98,7 @@ public class RequestService extends ConstantUtil implements IRequestService {
     public List<RequestDto> getSortRequests() {
         try {
             List<Request> requests = requestDao.getSortRequestsByTitle();
-            return Converter.convertRequests(requests);
+            return mapper.requestListToRequestDtoList(requests);
         } catch (DaoException e){
             log.log(Level.WARN, SEARCH_ERROR);
             throw e;
@@ -106,10 +109,21 @@ public class RequestService extends ConstantUtil implements IRequestService {
     public List<RequestDto> getSortRequestsByBookCount() {
         try {
             List<Request> requests = requestDao.getSortRequestsByBookCount();
-            return Converter.convertRequests(requests);
+            return mapper.requestListToRequestDtoList(requests);
         } catch (DaoException e){
             log.log(Level.WARN, SEARCH_ERROR);
             throw e;
+        }
+    }
+
+    @Override
+    public List<RequestDto> getRequests(String sort) {
+        if (sort.equals("book")) {
+            return getSortRequests();
+        } else if (sort.equals("count")) {
+            return getSortRequestsByBookCount();
+        } else {
+            return getAll();
         }
     }
 }

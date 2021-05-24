@@ -5,13 +5,17 @@ import com.senla.courses.dto.RequestDto;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Request;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-05-21T14:13:36+0300",
+    date = "2021-05-24T22:26:42+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.11 (Amazon.com Inc.)"
 )
+@Component
 public class RequestMapperImpl implements RequestMapper {
 
     @Override
@@ -51,6 +55,20 @@ public class RequestMapperImpl implements RequestMapper {
         request1.setStatus( request.getStatus() );
 
         return request1;
+    }
+
+    @Override
+    public List<RequestDto> requestListToRequestDtoList(List<Request> requests) {
+        if ( requests == null ) {
+            return null;
+        }
+
+        List<RequestDto> list = new ArrayList<RequestDto>( requests.size() );
+        for ( Request request : requests ) {
+            list.add( requestToRequestDto( request ) );
+        }
+
+        return list;
     }
 
     protected Book bookDtoToBook(BookDto bookDto) {

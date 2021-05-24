@@ -1,10 +1,11 @@
 package com.senla.courses.dto;
 
+import com.senla.courses.mappers.BookMapper;
 import com.senla.courses.mappers.CustomerMapper;
 import com.senla.courses.model.Book;
 import com.senla.courses.model.Customer;
-import com.senla.courses.util.Converter;
 import lombok.Data;
+import org.mapstruct.factory.Mappers;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,17 +21,17 @@ public class OrderDto {
     private String status;
 
     public void setCustomer(Customer customer) {
-        this.customer = CustomerMapper.INSTANCE.customerToCustomerDto(customer);
+        this.customer = Mappers.getMapper(CustomerMapper.class).customerToCustomerDto(customer);
     }
 
     public void setBooks(List<Book> books) {
-        this.books = Converter.convertBooks(books);
+        this.books = Mappers.getMapper(BookMapper.class).bookListToBookDtoList(books);
     }
 
     public OrderDto(Integer id, Customer customer, List<Book> books, LocalDate creationDate, LocalDate completionDate, Double totalCost, String status) {
         this.id = id;
-        this.customer = CustomerMapper.INSTANCE.customerToCustomerDto(customer);;
-        this.books = Converter.convertBooks(books);;
+        this.customer = Mappers.getMapper(CustomerMapper.class).customerToCustomerDto(customer);
+        this.books = Mappers.getMapper(BookMapper.class).bookListToBookDtoList(books);
         this.creationDate = creationDate;
         this.completionDate = completionDate;
         this.totalCost = totalCost;
