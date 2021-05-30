@@ -22,7 +22,6 @@ dependencies {
     compile project (":controller")
     compile project (":dao")
     compile project (":service")
-//    compile project (":facade")
     compile project (":utils")
 }
 

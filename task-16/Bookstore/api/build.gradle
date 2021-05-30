@@ -10,6 +10,8 @@ repositories {
 }
 
 dependencies {
+    implementation group: 'org.springframework.security', name: 'spring-security-core', version: '5.4.6'
+
     compile project (":model")
-    compile project (":di")
+    //compile project (":di")
 }
