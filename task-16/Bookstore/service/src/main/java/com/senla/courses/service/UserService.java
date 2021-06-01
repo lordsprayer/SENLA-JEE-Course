@@ -9,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -56,7 +54,7 @@ public class UserService extends ConstantUtil implements IUserService {
         if (userFromDB != null) {
             return false;
         }
-            user.setRoles(Collections.singleton(new Role(1, "USER")));
+            user.setRoles(Collections.singleton(new Role(1, "ROLE_USER")));
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             userDao.persist(user);
             return true;

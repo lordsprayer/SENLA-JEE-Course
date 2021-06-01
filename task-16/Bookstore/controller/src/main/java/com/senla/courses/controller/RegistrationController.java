@@ -3,13 +3,14 @@ package com.senla.courses.controller;
 import com.senla.courses.model.User;
 import com.senla.courses.service.IUserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
@@ -20,27 +21,16 @@ public class RegistrationController {
 
     private final IUserService userService;
 
-    @GetMapping()
-    public String registration(Model model) {
-        model.addAttribute("userForm", new User());
-        return "registration";
-    }
-
     @PostMapping()
-    public String addUser(@RequestBody User user, BindingResult bindingResult, Model model) {
-
-        if (bindingResult.hasErrors()) {
-            return "/registration";
-        }
+    public ResponseEntity<String> addUser(@RequestBody User user) {
+        log.log(Level.INFO, "Received post request: /registration");
         if (!user.getPassword().equals(user.getPasswordConfirm())){
-            model.addAttribute("passwordError", "Пароли не совпадают");
-            return "/registration";
+            return ResponseEntity.ok("Passwords don't match");
         }
         if (!userService.save(user)){
-            model.addAttribute("usernameError", "Пользователь с таким именем уже существует");
-            return "/registration";
+            return ResponseEntity.ok("A user with this name already exists");
         }
 
-        return "redirect:/";
+        return ResponseEntity.ok("The user is registered successfully");
     }
 }
