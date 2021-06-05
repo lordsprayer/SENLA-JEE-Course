@@ -33,7 +33,7 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCustomer(@PathVariable Integer id){
+    public ResponseEntity<Void> deleteBook(@PathVariable Integer id){
         log.log(Level.INFO, "Received delete request: /books/" + id);
         bookService.delete(id);
         return ResponseEntity.accepted().build();

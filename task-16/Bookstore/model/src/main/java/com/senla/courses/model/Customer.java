@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -47,5 +48,18 @@ public class Customer implements Identified<Integer> {
     public  String toString(){
         return "Покупатель [id = " + getId() + ", имя " + getName() + ", фамилия " + getSurname() +
                 ", номер телефона " + getPhoneNumber() + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return name.equals(customer.name) && surname.equals(customer.surname) && phoneNumber.equals(customer.phoneNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, surname, phoneNumber);
     }
 }
