@@ -12,6 +12,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -29,7 +32,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void findCustomerById() {
+    public void findCustomerByIdTest() {
         when(customerDao.getByPK(1)).thenReturn(new Customer("Alex", "Tikhonov", "+375297769755"));
 
         CustomerDto customerDto = customerService.getById(1);
@@ -45,6 +48,36 @@ public class CustomerServiceTest {
         customerService.save(customerDto);
 
         verify(customerDao, times(1)).persist(Mappers.getMapper(CustomerMapper.class).customerDtoToCustomer(customerDto));
+    }
+
+    @Test
+    public void getAllCustomersTest() {
+        List<Customer> list = new ArrayList<>();
+        Customer empOne = new Customer("John", "John", "+375295857845");
+        Customer empTwo = new Customer("Alex", "Maleachi", "+375448575896");
+        Customer empThree = new Customer("Steve", "Waugh", "+375332584758");
+
+        list.add(empOne);
+        list.add(empTwo);
+        list.add(empThree);
+
+        when(customerDao.getAll()).thenReturn(list);
+
+        List<CustomerDto> empList = customerService.getAll();
+
+        assertEquals(3, empList.size());
+        verify(customerDao, times(1)).getAll();
+    }
+
+    @Test
+    public void deleteCustomerTest() {
+        Customer customer = new Customer(1);
+
+        when(customerDao.getByPK(1)).thenReturn(customer);
+
+        customerService.delete(1);
+
+        verify(customerDao, times(1)).delete(customer);
     }
 }
 

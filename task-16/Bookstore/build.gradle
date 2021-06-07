@@ -18,7 +18,7 @@ lombok {
 
 dependencies {
     compile project (":api")
-    compile project (":di")
+    compile project (":configuration")
     compile project (":controller")
     compile project (":dao")
     compile project (":service")
