@@ -29,6 +29,7 @@ public class CustomerServiceTest {
     @Before
     public void init() {
         MockitoAnnotations.openMocks(this);
+
     }
 
     @Test
@@ -71,7 +72,7 @@ public class CustomerServiceTest {
 
     @Test
     public void deleteCustomerTest() {
-        Customer customer = new Customer(1);
+        Customer customer = new Customer("Alex", "Tikhonov", "+375297769755");
 
         when(customerDao.getByPK(1)).thenReturn(customer);
 

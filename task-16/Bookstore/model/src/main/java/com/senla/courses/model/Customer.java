@@ -1,6 +1,5 @@
 package com.senla.courses.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,10 +30,6 @@ public class Customer implements Identified<Integer> {
         this.name = name;
         this.surname = surname;
         this.phoneNumber = phoneNumber;
-    }
-
-    public Customer(Integer id) {
-        this.id = id;
     }
 
     @Override
