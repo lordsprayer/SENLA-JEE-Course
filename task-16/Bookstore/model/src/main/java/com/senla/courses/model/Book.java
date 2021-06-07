@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -60,6 +61,19 @@ public class Book implements Identified<Integer>{
     @Override
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return title.equals(book.title) && author.equals(book.author) && publicationYear.equals(book.publicationYear) && cost.equals(book.cost) && receiptDate.equals(book.receiptDate) && availability.equals(book.availability);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, author, publicationYear, cost, receiptDate, availability);
     }
 
     @Override

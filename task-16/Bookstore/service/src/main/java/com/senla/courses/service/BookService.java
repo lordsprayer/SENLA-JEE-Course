@@ -34,6 +34,10 @@ public class BookService extends ConstantUtil implements IBookService {
     private Boolean permit;
     private final BookMapper mapper= Mappers.getMapper(BookMapper.class);
 
+    public void setPermit(Boolean permit) {
+        this.permit = permit;
+    }
+
     @Override
     public List<BookDto> getAll() {
         try {

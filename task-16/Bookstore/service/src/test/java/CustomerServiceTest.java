@@ -3,6 +3,7 @@ import com.senla.courses.dto.CustomerDto;
 import com.senla.courses.mappers.CustomerMapper;
 import com.senla.courses.model.Customer;
 import com.senla.courses.service.CustomerService;
+import com.senla.courses.service.ICustomerService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,7 +44,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void createCustomerTest() {
+    public void saveCustomerTest() {
         CustomerDto customerDto = new CustomerDto("Alex", "Tikhonov", "+375297769755");
 
         customerService.save(customerDto);
@@ -80,5 +81,19 @@ public class CustomerServiceTest {
 
         verify(customerDao, times(1)).delete(customer);
     }
+
+    @Test
+    public void updateCustomerTest() {
+        CustomerDto customerDto = new CustomerDto("Alex", "Tikhonov", "+375297769755");
+        Customer customer = new Customer("John", "John", "+375295857845");
+
+        when(customerDao.getByPK(null)).thenReturn(customer);
+
+        customerService.update(customerDto);
+
+        verify(customerDao, times(1)).update(Mappers.getMapper(CustomerMapper.class).customerDtoToCustomer(customerDto));
+
+    }
+
 }
 
