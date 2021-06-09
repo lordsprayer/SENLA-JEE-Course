@@ -42,10 +42,10 @@ public class BookServiceTest {
     }
 
     @Test
-    public void findBookByIdTest() {
+    public void getBookByIdTest() {
         when(bookDao.getByPK(1)).thenReturn(bookOne);
 
-        BookDto bookDto = bookService.getById(1);
+        BookDto bookDto = bookService.getBookById(1);
         assertEquals("Война и мир", bookDto.getTitle());
         assertEquals("Лев Толстой", bookDto.getAuthor());
         assertEquals(2002, bookDto.getPublicationYear());
@@ -63,16 +63,16 @@ public class BookServiceTest {
 
         when(bookDao.getAll()).thenReturn(list);
 
-        List<BookDto> empList = bookService.getAll();
+        List<BookDto> empList = bookService.getAllBooks();
 
         assertEquals(3, empList.size());
         verify(bookDao, times(1)).getAll();
     }
 
     @Test
-    public void saveBookTest() {
+    public void createBookTest() {
 
-        bookService.save(bookDto);
+        bookService.createBook(bookDto);
 
         verify(bookDao, times(1)).persist(Mappers.getMapper(BookMapper.class).bookDtoToBook(bookDto));
     }
@@ -82,7 +82,7 @@ public class BookServiceTest {
 
         when(bookDao.getByPK(1)).thenReturn(bookOne);
 
-        bookService.delete(1);
+        bookService.deleteBook(1);
 
         verify(bookDao, times(1)).delete(bookOne);
     }
@@ -92,7 +92,7 @@ public class BookServiceTest {
 
         when(bookDao.getByPK(null)).thenReturn(bookOne);
 
-        bookService.update(bookDto);
+        bookService.updateBook(bookDto);
 
         verify(bookDao, times(1)).update(Mappers.getMapper(BookMapper.class).bookDtoToBook(bookDto));
 
@@ -101,9 +101,9 @@ public class BookServiceTest {
 
     @Test
     public void cancelBookTest() {
-        when(bookDao.getByPK(null)).thenReturn(bookOne);
+        when(bookDao.getByPK(1)).thenReturn(bookOne);
 
-        bookService.cancelBook(null);
+        bookService.cancelBook(1);
 
         verify(bookDao, times(1)).update(bookOne);
 
@@ -112,19 +112,24 @@ public class BookServiceTest {
     @Test
     public void addBookTest_ifPermitTrue() {
         List<Request> list = new ArrayList<>();
+        bookOne.setAvailability(false);
+        bookTwo.setAvailability(false);
         Request requestOne = new Request(bookOne, LocalDate.now());
-        Request requestTwo = new Request(bookTwo, LocalDate.now());
-        Request requestThree = new Request(bookOne, LocalDate.now());
+        requestOne.setId(1);
+        Request requestTwo = new Request(bookTwo, LocalDate.now().minusDays(5));
+        requestTwo.setId(2);
+        Request requestThree = new Request(bookOne, LocalDate.now().minusDays(8));
+        requestThree.setId(3);
 
         list.add(requestOne);
         list.add(requestTwo);
         list.add(requestThree);
 
-        when(bookDao.getByPK(null)).thenReturn(bookOne);
+        when(bookDao.getByPK(1)).thenReturn(bookOne);
         when(requestDao.getAll()).thenReturn(list);
 
         bookService.setPermit(true);
-        bookService.addBook(null);
+        bookService.addBook(1);
 
         verify(bookDao, times(1)).update(bookOne);
         verify(requestDao, times(1)).update(requestOne);
@@ -135,6 +140,8 @@ public class BookServiceTest {
     @Test
     public void addBookTest_ifPermitFalse() {
         List<Request> list = new ArrayList<>();
+        bookOne.setAvailability(false);
+        bookTwo.setAvailability(false);
         Request requestOne = new Request(bookOne, LocalDate.now());
         Request requestTwo = new Request(bookTwo, LocalDate.now());
         Request requestThree = new Request(bookOne, LocalDate.now());
@@ -143,11 +150,11 @@ public class BookServiceTest {
         list.add(requestTwo);
         list.add(requestThree);
 
-        when(bookDao.getByPK(null)).thenReturn(bookOne);
+        when(bookDao.getByPK(1)).thenReturn(bookOne);
         when(requestDao.getAll()).thenReturn(list);
 
         bookService.setPermit(false);
-        bookService.addBook(null);
+        bookService.addBook(1);
 
         verify(bookDao, times(1)).update(bookOne);
         verify(requestDao, times(0)).update(requestOne);

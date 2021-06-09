@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -68,6 +69,19 @@ public class Order implements Identified<Integer>  {
     @Override
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order)) return false;
+        Order order = (Order) o;
+        return getCustomer().equals(order.getCustomer()) && getBookList().equals(order.getBookList()) && getCreationDate().equals(order.getCreationDate()) && getCompletionDate().equals(order.getCompletionDate()) && getTotalCost().equals(order.getTotalCost()) && getStatus() == order.getStatus();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCustomer(), getBookList(), getCreationDate(), getCompletionDate(), getTotalCost(), getStatus());
     }
 
     @Override

@@ -13,7 +13,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mapstruct.factory.Mappers;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,7 +49,7 @@ public class RequestService extends ConstantUtil implements IRequestService {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void deleteRequest(Integer id) {
         try {
             Request request = requestDao.getByPK(id);
             requestDao.delete(request);
@@ -73,7 +72,7 @@ public class RequestService extends ConstantUtil implements IRequestService {
     }
 
     @Override
-    public RequestDto getById(Integer id) {
+    public RequestDto getRequestById(Integer id) {
         try{
             Request request = requestDao.getByPK(id);
             return mapper.requestToRequestDto(request);
@@ -84,7 +83,7 @@ public class RequestService extends ConstantUtil implements IRequestService {
     }
 
     @Override
-    public List<RequestDto> getAll() {
+    public List<RequestDto> getAllRequests() {
         try {
             List<Request> requests = requestDao.getAll();
             return mapper.requestListToRequestDtoList(requests);
@@ -123,7 +122,7 @@ public class RequestService extends ConstantUtil implements IRequestService {
         } else if (sort.equals("count")) {
             return getSortRequestsByBookCount();
         } else {
-            return getAll();
+            return getAllRequests();
         }
     }
 }
