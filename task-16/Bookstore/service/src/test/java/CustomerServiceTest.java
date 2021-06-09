@@ -39,9 +39,11 @@ public class CustomerServiceTest {
 
     @Test
     public void getCustomerByIdTest() {
+        customerOne.setId(1);
         when(customerDao.getByPK(1)).thenReturn(customerOne);
 
         CustomerDto customerDto = customerService.getCustomerById(1);
+        assertEquals(1, customerDto.getId());
         assertEquals("Alex", customerDto.getName());
         assertEquals("Tikhonov", customerDto.getSurname());
         assertEquals("+375297769755", customerDto.getPhone());
@@ -81,7 +83,9 @@ public class CustomerServiceTest {
 
     @Test
     public void updateCustomerTest() {
-        when(customerDao.getByPK(null)).thenReturn(customerTwo);
+        customerTwo.setId(1);
+        customerDto.setId(1);
+        when(customerDao.getByPK(1)).thenReturn(customerTwo);
 
         customerService.updateCustomer(customerDto);
 

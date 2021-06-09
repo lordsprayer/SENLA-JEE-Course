@@ -43,9 +43,11 @@ public class BookServiceTest {
 
     @Test
     public void getBookByIdTest() {
+        bookOne.setId(1);
         when(bookDao.getByPK(1)).thenReturn(bookOne);
 
         BookDto bookDto = bookService.getBookById(1);
+        assertEquals(1, bookDto.getId());
         assertEquals("Война и мир", bookDto.getTitle());
         assertEquals("Лев Толстой", bookDto.getAuthor());
         assertEquals(2002, bookDto.getPublicationYear());
@@ -89,8 +91,9 @@ public class BookServiceTest {
 
     @Test
     public void updateBookTest() {
-
-        when(bookDao.getByPK(null)).thenReturn(bookOne);
+        bookOne.setId(1);
+        bookDto.setId(1);
+        when(bookDao.getByPK(1)).thenReturn(bookOne);
 
         bookService.updateBook(bookDto);
 

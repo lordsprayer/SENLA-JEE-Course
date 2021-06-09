@@ -43,21 +43,22 @@ public class Customer implements Identified<Integer> {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Customer)) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(getId(), customer.getId()) && Objects.equals(getName(), customer.getName()) && Objects.equals(getSurname(), customer.getSurname()) && Objects.equals(getPhoneNumber(), customer.getPhoneNumber());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getSurname(), getPhoneNumber());
+    }
+
+    @Override
     public  String toString(){
         return "Покупатель [id = " + getId() + ", имя " + getName() + ", фамилия " + getSurname() +
                 ", номер телефона " + getPhoneNumber() + "]";
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Customer customer = (Customer) o;
-        return name.equals(customer.name) && surname.equals(customer.surname) && phoneNumber.equals(customer.phoneNumber);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, surname, phoneNumber);
-    }
 }

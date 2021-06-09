@@ -61,11 +61,13 @@ public class OrderServiceTest {
     @Test
     public void getOrderByIdTest() {
         Double totalCost = Calculator.calculateTotalCost(bookList);
+        orderOne.setId(1);
 
         when(orderDao.getByPK(1)).thenReturn(orderOne);
 
         OrderDto orderDto = orderService.getOrderById(1);
 
+        assertEquals(1, orderDto.getId());
         assertEquals(Mappers.getMapper(CustomerMapper.class).customerToCustomerDto(customerOne), orderDto.getCustomer());
         assertEquals(Mappers.getMapper(BookMapper.class).bookListToBookDtoList(bookList), orderDto.getBooks());
         assertEquals(LocalDate.of(2021,5,7), orderDto.getCreationDate());

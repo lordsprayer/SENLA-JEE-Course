@@ -44,9 +44,11 @@ public class RequestServiceTest {
 
     @Test
     public void getRequestByIdTest() {
+        requestOne.setId(1);
         when(requestDao.getByPK(1)).thenReturn(requestOne);
 
         RequestDto requestDto = requestService.getRequestById(1);
+        assertEquals(1, requestDto.getId());
         assertEquals(Mappers.getMapper(BookMapper.class).bookToBookDto(bookOne), requestDto.getBook());
         assertEquals(LocalDate.of(2020,12,12), requestDto.getDate());
         assertEquals(true, requestDto.getStatus());
