@@ -46,7 +46,10 @@ public class Request implements Identified<Integer> {
         if (this == o) return true;
         if (!(o instanceof Request)) return false;
         Request request = (Request) o;
-        return Objects.equals(getId(), request.getId()) && Objects.equals(getBook(), request.getBook()) && Objects.equals(getDate(), request.getDate()) && Objects.equals(getStatus(), request.getStatus());
+        return Objects.equals(getId(), request.getId())
+                && Objects.equals(getBook(), request.getBook())
+                && Objects.equals(getDate(), request.getDate())
+                && Objects.equals(getStatus(), request.getStatus());
     }
 
     @Override

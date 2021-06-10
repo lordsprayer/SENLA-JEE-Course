@@ -47,7 +47,10 @@ public class Customer implements Identified<Integer> {
         if (this == o) return true;
         if (!(o instanceof Customer)) return false;
         Customer customer = (Customer) o;
-        return Objects.equals(getId(), customer.getId()) && Objects.equals(getName(), customer.getName()) && Objects.equals(getSurname(), customer.getSurname()) && Objects.equals(getPhoneNumber(), customer.getPhoneNumber());
+        return Objects.equals(getId(), customer.getId())
+                && Objects.equals(getName(), customer.getName())
+                && Objects.equals(getSurname(), customer.getSurname())
+                && Objects.equals(getPhoneNumber(), customer.getPhoneNumber());
     }
 
     @Override

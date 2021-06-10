@@ -68,12 +68,19 @@ public class Book implements Identified<Integer>{
         if (this == o) return true;
         if (!(o instanceof Book)) return false;
         Book book = (Book) o;
-        return Objects.equals(getId(), book.getId()) && Objects.equals(getTitle(), book.getTitle()) && Objects.equals(getAuthor(), book.getAuthor()) && Objects.equals(getPublicationYear(), book.getPublicationYear()) && Objects.equals(getCost(), book.getCost()) && Objects.equals(getReceiptDate(), book.getReceiptDate()) && Objects.equals(getAvailability(), book.getAvailability());
+        return Objects.equals(getId(), book.getId())
+                && Objects.equals(getTitle(), book.getTitle())
+                && Objects.equals(getAuthor(), book.getAuthor())
+                && Objects.equals(getPublicationYear(), book.getPublicationYear())
+                && Objects.equals(getCost(), book.getCost())
+                && Objects.equals(getReceiptDate(), book.getReceiptDate())
+                && Objects.equals(getAvailability(), book.getAvailability());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getTitle(), getAuthor(), getPublicationYear(), getCost(), getReceiptDate(), getAvailability());
+        return Objects.hash(getId(), getTitle(), getAuthor(), getPublicationYear(),
+                getCost(), getReceiptDate(), getAvailability());
     }
 
     @Override

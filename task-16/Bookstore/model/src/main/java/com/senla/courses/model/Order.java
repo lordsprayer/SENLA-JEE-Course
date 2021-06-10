@@ -76,12 +76,19 @@ public class Order implements Identified<Integer>  {
         if (this == o) return true;
         if (!(o instanceof Order)) return false;
         Order order = (Order) o;
-        return Objects.equals(getId(), order.getId()) && Objects.equals(getCustomer(), order.getCustomer()) && Objects.equals(getBookList(), order.getBookList()) && Objects.equals(getCreationDate(), order.getCreationDate()) && Objects.equals(getCompletionDate(), order.getCompletionDate()) && Objects.equals(getTotalCost(), order.getTotalCost()) && getStatus() == order.getStatus();
+        return Objects.equals(getId(), order.getId())
+                && Objects.equals(getCustomer(), order.getCustomer())
+                && Objects.equals(getBookList(), order.getBookList())
+                && Objects.equals(getCreationDate(), order.getCreationDate())
+                && Objects.equals(getCompletionDate(), order.getCompletionDate())
+                && Objects.equals(getTotalCost(), order.getTotalCost())
+                && getStatus() == order.getStatus();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getCustomer(), getBookList(), getCreationDate(), getCompletionDate(), getTotalCost(), getStatus());
+        return Objects.hash(getId(), getCustomer(), getBookList(), getCreationDate(),
+                getCompletionDate(), getTotalCost(), getStatus());
     }
 
     @Override
