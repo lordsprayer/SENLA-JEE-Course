@@ -27,7 +27,7 @@ public class CustomerService extends ConstantUtil implements ICustomerService {
     private final CustomerMapper mapper = Mappers.getMapper(CustomerMapper.class);
 
     @Override
-    public void save(CustomerDto customerDto) {
+    public void createCustomer(CustomerDto customerDto) {
         try {
             Customer customer = mapper.customerDtoToCustomer(customerDto);
             customerDao.persist(customer);
@@ -38,7 +38,7 @@ public class CustomerService extends ConstantUtil implements ICustomerService {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void deleteCustomer(Integer id) {
         try {
             Customer customer = customerDao.getByPK(id);
             customerDao.delete(customer);
@@ -49,7 +49,7 @@ public class CustomerService extends ConstantUtil implements ICustomerService {
     }
 
     @Override
-    public void update(CustomerDto customerDto) {
+    public void updateCustomer(CustomerDto customerDto) {
         try {
             Customer customer = customerDao.getByPK(customerDto.getId());
             if (customer == null) {
@@ -67,7 +67,7 @@ public class CustomerService extends ConstantUtil implements ICustomerService {
     }
 
     @Override
-    public List<CustomerDto> getAll() {
+    public List<CustomerDto> getAllCustomers() {
         try {
             List<Customer> customers = customerDao.getAll();
             return mapper.customerListToCustomerDtoList(customers);
@@ -78,7 +78,7 @@ public class CustomerService extends ConstantUtil implements ICustomerService {
     }
 
     @Override
-    public CustomerDto getById(Integer id) {
+    public CustomerDto getCustomerById(Integer id) {
         try{
             Customer customer = customerDao.getByPK(id);
             return mapper.customerToCustomerDto(customer);

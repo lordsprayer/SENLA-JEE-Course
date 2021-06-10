@@ -34,8 +34,12 @@ public class BookService extends ConstantUtil implements IBookService {
     private Boolean permit;
     private final BookMapper mapper= Mappers.getMapper(BookMapper.class);
 
+    public void setPermit(Boolean permit) {
+        this.permit = permit;
+    }
+
     @Override
-    public List<BookDto> getAll() {
+    public List<BookDto> getAllBooks() {
         try {
             List<Book> books = bookDao.getAll();
             return mapper.bookListToBookDtoList(books);
@@ -46,7 +50,7 @@ public class BookService extends ConstantUtil implements IBookService {
     }
 
     @Override
-    public BookDto getById(Integer id) {
+    public BookDto getBookById(Integer id) {
         try{
             Book book = bookDao.getByPK(id);
             return mapper.bookToBookDto(book);
@@ -57,7 +61,7 @@ public class BookService extends ConstantUtil implements IBookService {
     }
 
     @Override
-    public void save(BookDto bookDto) {
+    public void createBook(BookDto bookDto) {
         try {
             Book book = mapper.bookDtoToBook(bookDto);
             bookDao.persist(book);
@@ -68,7 +72,7 @@ public class BookService extends ConstantUtil implements IBookService {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void deleteBook(Integer id) {
         try {
             Book book = bookDao.getByPK(id);
             bookDao.delete(book);
@@ -79,7 +83,7 @@ public class BookService extends ConstantUtil implements IBookService {
     }
 
     @Override
-    public void update(BookDto bookDto) {
+    public void updateBook(BookDto bookDto) {
         try {
             Book book = bookDao.getByPK(bookDto.getId());
             book.setTitle(bookDto.getTitle());

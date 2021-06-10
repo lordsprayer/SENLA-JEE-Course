@@ -28,7 +28,7 @@ public class RequestController {
     @GetMapping("/{id}")
     public ResponseEntity<RequestDto> getById(@PathVariable Integer id){
         log.log(Level.INFO, "Received get request: /requests/" + id);
-        return ResponseEntity.ok(requestService.getById(id));
+        return ResponseEntity.ok(requestService.getRequestById(id));
     }
 
     @PostMapping
@@ -41,7 +41,7 @@ public class RequestController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRequest(@PathVariable Integer id){
         log.log(Level.INFO, "Received delete request: /requests/" + id);
-        requestService.delete(id);
+        requestService.deleteRequest(id);
         return ResponseEntity.accepted().build();
     }
 

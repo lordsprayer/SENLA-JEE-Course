@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -40,6 +41,21 @@ public class Request implements Identified<Integer> {
         this.id = id;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Request)) return false;
+        Request request = (Request) o;
+        return Objects.equals(getId(), request.getId())
+                && Objects.equals(getBook(), request.getBook())
+                && Objects.equals(getDate(), request.getDate())
+                && Objects.equals(getStatus(), request.getStatus());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getBook(), getDate(), getStatus());
+    }
 
     @Override
     public String toString(){

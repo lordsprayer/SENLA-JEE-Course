@@ -22,7 +22,7 @@ dependencies {
 
     compile project (":api")
     compile project (":utils")
-    compile project (":di")
+    compile project (":configuration")
 }
 
 test {

@@ -17,7 +17,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mapstruct.factory.Mappers;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,7 +39,7 @@ public class OrderService extends ConstantUtil implements IOrderService {
     private final LocalDate MIN_DATE = LocalDate.of(1970, 1, 1);
 
     @Override
-    public OrderDto getById(Integer id) {
+    public OrderDto getOrderById(Integer id) {
         try {
             Order order = orderDao.getByPK (id);
             return mapper.orderToOrderDto(order);
@@ -50,8 +49,7 @@ public class OrderService extends ConstantUtil implements IOrderService {
         }
     }
 
-    @Override
-    public List<OrderDto> getAll() {
+    public List<OrderDto> getAllOrders() {
         try {
             List<Order> orders = orderDao.getAll();
             return mapper.orderListToOrderDtoList(orders);

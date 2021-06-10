@@ -22,27 +22,27 @@ public class BookController {
     @GetMapping("/{id}")
     public ResponseEntity<BookDto> getById(@PathVariable Integer id){
         log.log(Level.INFO, "Received get request: /books/" + id);
-        return ResponseEntity.ok(bookService.getById(id));
+        return ResponseEntity.ok(bookService.getBookById(id));
     }
 
     @PostMapping
     public ResponseEntity<Void> createBook(@RequestBody BookDto bookDto){
         log.log(Level.INFO, "Received post request: /books");
-        bookService.save(bookDto);
+        bookService.createBook(bookDto);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable Integer id){
         log.log(Level.INFO, "Received delete request: /books/" + id);
-        bookService.delete(id);
+        bookService.deleteBook(id);
         return ResponseEntity.accepted().build();
     }
 
     @PutMapping
     public ResponseEntity<Void> updateBook(@RequestBody BookDto bookDto){
         log.log(Level.INFO, "Received put request: /books");
-        bookService.update(bookDto);
+        bookService.updateBook(bookDto);
         return ResponseEntity.noContent().build();
     }
 

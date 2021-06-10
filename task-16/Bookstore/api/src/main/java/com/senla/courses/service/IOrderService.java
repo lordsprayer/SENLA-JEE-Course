@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface IOrderService {
 
-    OrderDto getById(Integer id);
-    List<OrderDto> getAll();
+    OrderDto getOrderById(Integer id);
+    List<OrderDto> getAllOrders();
     List<OrderDto> getSortOrders(String criterion);
     void createOrder(Integer customerId, List<Integer> books);
     void deleteOrder(Integer id);
@@ -16,6 +16,5 @@ public interface IOrderService {
     Double countIncome (LocalDate date);
     Integer countCompleteOrders(LocalDate date);
     List<OrderDto> getSortCompletedOrders(LocalDate date, String criterion);
-
     List<OrderDto> getAllOrders(LocalDate date, String criterion);
 }

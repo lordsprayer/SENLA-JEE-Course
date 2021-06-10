@@ -22,33 +22,33 @@ public class CustomerController {
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<CustomerDto>> getAllCustomers() {
         log.log(Level.INFO, "Received get request: /customers");
-        return ResponseEntity.ok(customerService.getAll());
+        return ResponseEntity.ok(customerService.getAllCustomers());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CustomerDto> getById(@PathVariable Integer id){
         log.log(Level.INFO, "Received get request: /customers/" + id);
-        return ResponseEntity.ok(customerService.getById(id));
+        return ResponseEntity.ok(customerService.getCustomerById(id));
     }
 
     @PostMapping
     public ResponseEntity<Void> createCustomer(@RequestBody CustomerDto customerDto){
         log.log(Level.INFO, "Received post request: /customers");
-        customerService.save(customerDto);
+        customerService.createCustomer(customerDto);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable Integer id){
         log.log(Level.INFO, "Received delete request: /customers");
-        customerService.delete(id);
+        customerService.deleteCustomer(id);
         return ResponseEntity.accepted().build();
     }
 
     @PutMapping
     public ResponseEntity<Void> updateCustomer(@RequestBody CustomerDto customer){
         log.log(Level.INFO, "Received put request: /customers");
-        customerService.update(customer);
+        customerService.updateCustomer(customer);
         return ResponseEntity.noContent().build();
     }
 }

@@ -31,7 +31,7 @@ public class OrderController {
     @GetMapping("/{id}")
     public ResponseEntity<OrderDto> getById(@PathVariable Integer id){
         log.log(Level.INFO, "Received get request: /orders/" + id);
-        return ResponseEntity.ok(orderService.getById(id));
+        return ResponseEntity.ok(orderService.getOrderById(id));
     }
 
     @PostMapping

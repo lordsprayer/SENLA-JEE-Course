@@ -7,12 +7,11 @@ import java.util.List;
 public interface IRequestService {
 
     void createRequest (Integer bookId);
-    void delete(Integer id);
+    void deleteRequest(Integer id);
     void closeRequest (Integer id);
-    RequestDto getById(Integer id);
-    List<RequestDto> getAll();
+    RequestDto getRequestById(Integer id);
+    List<RequestDto> getAllRequests();
     List<RequestDto> getSortRequests();
     List<RequestDto> getSortRequestsByBookCount();
-
     List<RequestDto> getRequests(String sort);
 }
